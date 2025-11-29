@@ -1,7 +1,5 @@
 package com.OneBpy.services.impl;
 
-import com.OneBpy.dtos.JwtAuthenticationResponse;
-import com.OneBpy.dtos.RefreshTokenRequest;
 import com.OneBpy.services.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

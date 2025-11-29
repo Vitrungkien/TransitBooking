@@ -5,18 +5,17 @@ import com.OneBpy.models.*;
 import java.util.List;
 
 public interface SellerService {
-    Product getProductDetails(Long product_id);
     // Thêm sản phẩm
-    Product addProduct(ProductDTO productDTO);
+    void addProduct(ProductDTO productDTO);
 
     //Cập nhật thông tin sản phẩm
-    Product updateProduct(ProductDTO productDTO, Long product_id);
+    void updateProduct(ProductDTO productDTO, Long product_id);
 
     List<Stop> getStopList(Long product_id);
-    Stop addStop(StopDTO stop, Long product_id);
+    void addStop(StopDTO stop, Long product_id);
 
     // Cập nhật điểm dừng
-    Stop updateStop(StopDTO stopDTO, Long stop_id);
+    void updateStop(StopDTO stopDTO, Long stop_id);
 
     Product getProductById(Long product_id);
     Stop getStopById(Long stop_id);
@@ -28,12 +27,12 @@ public interface SellerService {
     void exceptedOrder(Long order_id, UpdatedOrder updatedOrder);
 
     //Cập nhật trạng thái hiển thị
-    Product displayStatus(Long product_id, HideShowProduct hideShowProduct);
+    void displayStatus(Long product_id, HideShowProduct hideShowProduct);
 
-    Product softRemoveProduct(Long product_id, RemoveProductDTO removeProductDTO);
+    void softRemoveProduct(Long product_id, RemoveProductDTO removeProductDTO);
 
-    Notice createNotice(CreateNoticeDTO noticeDTO);
-    Notice updateNotice(UpdateNoticeDTO noticeDTO);
+    void createNotice(CreateNoticeDTO noticeDTO);
+    void updateNotice(UpdateNoticeDTO noticeDTO);
 
     void markStop(List<StopDTO> stopDTOList);
 

@@ -5,7 +5,6 @@ import com.OneBpy.dtos.PDTO;
 import com.OneBpy.models.Order;
 import com.OneBpy.models.Product;
 import com.OneBpy.models.User;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public interface UserService {
 
     User getUserById(Long user_id);
 
-    Order createOrder(Long product_id, OrderRequest orderRequest);
+    void createOrder(Long product_id, OrderRequest orderRequest);
 
     List<PDTO> getAllProduct(List<Product> productList);
     PDTO getProductById(Long product_id);

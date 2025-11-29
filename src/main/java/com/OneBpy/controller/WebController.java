@@ -1,20 +1,20 @@
 package com.OneBpy.controller;
 
 import com.OneBpy.dtos.PDTO;
-import com.OneBpy.models.Product;
-import com.OneBpy.repositories.NoticeRepository;
-import com.OneBpy.repositories.ProductRepository;
-import com.OneBpy.repositories.StopRepository;
-import com.OneBpy.repositories.StoreRepository;
 import com.OneBpy.dtos.SearchByKeywordRq;
 import com.OneBpy.dtos.SearchForm;
+import com.OneBpy.models.Product;
+import com.OneBpy.repositories.ProductRepository;
 import com.OneBpy.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -24,10 +24,7 @@ import java.util.List;
 @RequestMapping("")
 public class WebController {
     private final ProductRepository productRepository;
-    private final StopRepository stopRepository;
-    private final StoreRepository storeRepository;
     private final UserService userService;
-    private final NoticeRepository noticeRepository;
     private static final Logger logger = LoggerFactory.getLogger(WebController.class);
     @GetMapping("/")
     public String Home(Model model) {

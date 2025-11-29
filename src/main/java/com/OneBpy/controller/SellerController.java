@@ -5,7 +5,6 @@ import com.OneBpy.dtos.*;
 import com.OneBpy.repositories.*;
 import com.OneBpy.dtos.StopDtoList;
 import com.OneBpy.services.SellerService;
-import com.OneBpy.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @CrossOrigin("*")
 public class SellerController {
-    private final UserService userService;
     private final SellerService sellerService;
-    private final OrderRepository orderRepository;
 
     // Xac nhan don hang
     @PostMapping("/my-store/{order_id}/except")

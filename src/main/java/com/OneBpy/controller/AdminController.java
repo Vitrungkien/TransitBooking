@@ -2,7 +2,6 @@ package com.OneBpy.controller;
 
 import com.OneBpy.models.*;
 import com.OneBpy.repositories.*;
-import com.OneBpy.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

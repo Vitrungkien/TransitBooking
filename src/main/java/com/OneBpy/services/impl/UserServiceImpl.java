@@ -11,12 +11,8 @@ import com.OneBpy.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -43,13 +39,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String email) {
-                return userRepository.findByEmail(email)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found" + email));
-            }
-        };
+        return email -> userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found" + email));
     }
 
     @Override
@@ -60,16 +51,17 @@ public class UserServiceImpl implements UserService {
 
         // Cập nhật thông tin người dùng
         Optional<User> user = userRepository.findByEmail(currentPrincipalName);
-        User newUser = null;
+        User newUser;
         if (user.isPresent()) {
             newUser = user.get();
-        }
-        newUser.setFirstName(updateUser.getFirstName());
-        newUser.setLastName(updateUser.getLastName());
-        newUser.setPhoneNumber(updateUser.getPhoneNumber());
+            newUser.setFirstName(updateUser.getFirstName());
+            newUser.setLastName(updateUser.getLastName());
+            newUser.setPhoneNumber(updateUser.getPhoneNumber());
 
-        //Lưu người dùng vào cơ sở dữ liệu
-        return userRepository.save(newUser);
+            //Lưu người dùng vào cơ sở dữ liệu
+            return userRepository.save(newUser);
+        }
+        return null;
     }
 
     @Override
@@ -77,24 +69,23 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> user = userRepository.findByEmail(currentPrincipalName);
-        return user.get();
+        return user.orElse(null);
     }
 
     @Override
     public List<Order> getCart() {
         User user = getCurrentUser();
-        List<Order> orderList = user.getOrderList();
-        return orderList;
+        return user.getOrderList();
     }
 
     @Override
     public User getUserById(Long user_id) {
         Optional<User> user = userRepository.findById(user_id);
-        return user.get();
+        return user.orElse(null);
     }
 
     @Override
-    public Order createOrder(Long product_id, OrderRequest orderRequest) {
+    public void createOrder(Long product_id, OrderRequest orderRequest) {
         Order newOrder = new Order();
         newOrder.setPickUpAddress(orderRequest.getPickUpAddress());
         newOrder.setDestinationAddress(orderRequest.getDestinationAddress());
@@ -113,7 +104,7 @@ public class UserServiceImpl implements UserService {
         remainSeat -= orderRequest.getQuantity();
         product.setRemainSeat(remainSeat);
         productRepository.save(product);
-        return orderRepository.save(newOrder);
+        orderRepository.save(newOrder);
     }
 
     @Override
@@ -128,11 +119,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PDTO getProductById(Long product_id) {
-        Product product = productRepository.findById(product_id).get();
-        return productToPDTO(product);
+        Optional<Product> product = productRepository.findById(product_id);
+        return productToPDTO(product.orElse(null));
     }
 
     public PDTO productToPDTO(Product product) {
+        if (product == null) {
+            return null;
+        }
         Long productID = product.getProductID();
         String productName = product.getProductName();
         String productImage = product.getProductImage();

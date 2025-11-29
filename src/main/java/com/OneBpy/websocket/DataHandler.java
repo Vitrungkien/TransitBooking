@@ -1,7 +1,6 @@
 package com.OneBpy.websocket;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;

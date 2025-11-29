@@ -33,16 +33,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JWTService jwtService;
     private final SellerService sellerService;
 
-    public User signUp(SignUpRequest signUpRequest) {
-        return saveUser(signUpRequest, Role.ROLE_USER);
+    public void signUp(SignUpRequest signUpRequest) {
+        saveUser(signUpRequest, Role.ROLE_USER);
     }
 
-    public User signUpSeller(SignUpRequest signUpRequest) {
+    public void signUpSeller(SignUpRequest signUpRequest) {
         User newSeller = saveUser(signUpRequest, Role.ROLE_SELLER);
         Store newStore = sellerService.creatStore(newSeller);
         newStore.setUser(userRepository.save(newSeller));
         storeRepository.save(newStore);
-        return newSeller;
     }
 
     private User saveUser(SignUpRequest signUpRequest, Role role) {

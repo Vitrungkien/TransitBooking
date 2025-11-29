@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +30,7 @@ public class SellerServiceImpl implements SellerService {
 
     // Thêm 1 sản phẩm
     @Override
-    public Product addProduct(ProductDTO productDTO) {
+    public void addProduct(ProductDTO productDTO) {
         Product newProduct = new Product();
         putProduct(newProduct, productDTO);
         newProduct.setStore(userService.getCurrentUser().getStore());
@@ -40,18 +39,18 @@ public class SellerServiceImpl implements SellerService {
         product.setDeleted(false);
         Long productId = product.getProductID();
         List<StopDTO> stopList = productDTO.getStopList();
-        if (stopList.size() > 0) {
+        if (!stopList.isEmpty()) {
             for (StopDTO stop : stopList) {
-                if (stop.isDeleted() == false) {
+                if (!stop.isDeleted()) {
                     addStop(stop, productId);
                 }
             }
         }
-        return productRepository.save(newProduct);
+        productRepository.save(newProduct);
     }
 
     // Thêm/sửa một sản phẩm
-    public Product putProduct(Product updateProduct, ProductDTO productDTO) {
+    public void putProduct(Product updateProduct, ProductDTO productDTO) {
         updateProduct.setProductName(productDTO.getProductName());
         updateProduct.setProductImage(productDTO.getProductImage());
         updateProduct.setRemainSeat(productDTO.getRemainSeat());
@@ -68,24 +67,24 @@ public class SellerServiceImpl implements SellerService {
         updateProduct.setStartAddress(productDTO.getStartAddress());
         updateProduct.setEndAddress(productDTO.getEndAddress());
         updateProduct.setLastUpdate(new Date());
-        return productRepository.save(updateProduct);
+        productRepository.save(updateProduct);
     }
 
     //Thêm 1 điểm dừng
     @Override
-    public Stop addStop(StopDTO stop, Long product_id) {
+    public void addStop(StopDTO stop, Long product_id) {
         Stop newStop = new Stop();
         newStop.setStopTime(stop.getStopTime());
         newStop.setStopAddress(stop.getStopAddress());
         newStop.setDeleted(false);
         Optional<Product> product = productRepository.findById(product_id);
         newStop.setProduct(product.get());
-        return stopRepository.save(newStop);
+        stopRepository.save(newStop);
     }
 
     //Cập nhật sản phẩm
     @Override
-    public Product updateProduct(ProductDTO productDTO, Long product_id) {
+    public void updateProduct(ProductDTO productDTO, Long product_id) {
         Product updateProduct = getProductById(product_id);
         putProduct(updateProduct, productDTO);
         List<StopDTO> stopList = productDTO.getStopList();
@@ -101,23 +100,17 @@ public class SellerServiceImpl implements SellerService {
                 }
             }
         }
-        return productRepository.save(updateProduct);
+        productRepository.save(updateProduct);
     }
 
     // Cập nhật 1 điểm dừng
     @Override
-    public Stop updateStop(StopDTO stopDTO, Long stop_id) {
+    public void updateStop(StopDTO stopDTO, Long stop_id) {
         Stop updateStop = getStopById(stop_id);
         updateStop.setStopTime(stopDTO.getStopTime());
         updateStop.setStopAddress(stopDTO.getStopAddress());
         updateStop.setRightNow(stopDTO.isRightNow());
-        return stopRepository.save(updateStop);
-    }
-
-    @Override
-    public Product getProductDetails(Long product_id) {
-        Product product =  getProductById(product_id);
-        return product;
+        stopRepository.save(updateStop);
     }
 
     //Lấy ra danh sach điểm dừng của 1 vé xe by id
@@ -178,41 +171,42 @@ public class SellerServiceImpl implements SellerService {
     // Cập nhật trạng thái đơn hàng
     @Override
     public void exceptedOrder(Long order_id, UpdatedOrder updatedOrder) {
-        Order order = orderRepository.getById(order_id);
-        String action = updatedOrder.getOrderAction();
-        if (action.equals("Hủy")) {
-            order.setOrderStatus("Đã hủy");
+        Optional<Order> orderOptional = orderRepository.findById(order_id);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            String action = updatedOrder.getOrderAction();
+            switch (action) {
+                case "Hủy" -> order.setOrderStatus("Đã hủy");
+                case "Xác nhận" -> {
+                    order.setTotalPrice(updatedOrder.getTotalPrice());
+                    order.setOrderStatus("Đã xác nhận");
+                }
+                case "Hoàn thành" -> order.setOrderStatus("Đã hoàn thành");
+                default -> order.setOrderStatus("Error");
+            }
+            order.setLastUpdate(new Date());
+            orderRepository.save(order);
         }
-        else if (action.equals("Xác nhận")) {
-            order.setTotalPrice(updatedOrder.getTotalPrice());
-            order.setOrderStatus("Đã xác nhận");
-        }
-        else if (action.equals("Hoàn thành")) {
-            order.setOrderStatus("Đã hoàn thành");
-        }
-        else order.setOrderStatus("Error");
-        order.setLastUpdate(new Date());
-        orderRepository.save(order);
     }
 
 
     // Ẩn/hiện sản phẩm
     @Override
-    public Product displayStatus(Long product_id, HideShowProduct hideShowProduct) {
+    public void displayStatus(Long product_id, HideShowProduct hideShowProduct) {
         Product product = getProductById(product_id);
         product.setDisplay(hideShowProduct.isDisplay());
-        return productRepository.save(product);
+        productRepository.save(product);
     }
 
     @Override
-    public Product softRemoveProduct(Long product_id, RemoveProductDTO removeProductDTO) {
+    public void softRemoveProduct(Long product_id, RemoveProductDTO removeProductDTO) {
         Product product = getProductById(product_id);
         product.setDeleted(removeProductDTO.isDeleted());
-        return productRepository.save(product);
+        productRepository.save(product);
     }
 
     @Override
-    public Notice createNotice(CreateNoticeDTO noticeDTO) {
+    public void createNotice(CreateNoticeDTO noticeDTO) {
         Notice newNotice = new Notice();
         newNotice.setTitle(noticeDTO.getTitle());
         newNotice.setContent(noticeDTO.getContent());
@@ -221,18 +215,21 @@ public class SellerServiceImpl implements SellerService {
         newNotice.setLastUpdate(new Date());
         Long productID = noticeDTO.getProductID();
         newNotice.setProduct(getProductById(productID));
-        return noticeRepository.save(newNotice);
+        noticeRepository.save(newNotice);
     }
 
     @Override
-    public Notice updateNotice(UpdateNoticeDTO noticeDTO) {
+    public void updateNotice(UpdateNoticeDTO noticeDTO) {
         Long noticeID = noticeDTO.getNoticeID();
-        Notice updateNotice = noticeRepository.getById(noticeID);
-        updateNotice.setTitle(noticeDTO.getTitle());
-        updateNotice.setContent(noticeDTO.getContent());
-        updateNotice.setExpired(noticeDTO.isExpired());
-        updateNotice.setLastUpdate(new Date());
-        return noticeRepository.save(updateNotice);
+        Optional<Notice> updateNoticeOptional = noticeRepository.findById(noticeID);
+        if (updateNoticeOptional.isPresent()) {
+            Notice updateNotice = updateNoticeOptional.get();
+            updateNotice.setTitle(noticeDTO.getTitle());
+            updateNotice.setContent(noticeDTO.getContent());
+            updateNotice.setExpired(noticeDTO.isExpired());
+            updateNotice.setLastUpdate(new Date());
+            noticeRepository.save(updateNotice);
+        }
     }
 
     @Override
