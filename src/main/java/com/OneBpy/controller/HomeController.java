@@ -1,8 +1,7 @@
 package com.OneBpy.controller;
 
 import com.OneBpy.dtos.PDTO;
-import com.OneBpy.dtos.SearchByKeywordRq;
-import com.OneBpy.dtos.SearchForm;
+import com.OneBpy.dtos.UserDto;
 import com.OneBpy.models.Notice;
 import com.OneBpy.models.Product;
 import com.OneBpy.models.ResponseObject;
@@ -98,6 +97,12 @@ public class HomeController {
         return ResponseEntity.ok().body(
                 new ResponseObject("ok", "Tim kiem thanh cong", products)
         );
+    }
+
+    @PostMapping("/create-admin")
+    public ResponseEntity<ResponseObject> createAdmin(@RequestBody UserDto userDto) {
+        UserDto response = userService.createAdminAccount(userDto);
+        return ResponseEntity.ok(new ResponseObject("200", "ok", response));
     }
 }
 

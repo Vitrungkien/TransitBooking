@@ -2,6 +2,7 @@ package com.OneBpy.services.impl;
 
 import com.OneBpy.dtos.OrderRequest;
 import com.OneBpy.dtos.PDTO;
+import com.OneBpy.dtos.UserDto;
 import com.OneBpy.models.*;
 import com.OneBpy.repositories.OrderRepository;
 import com.OneBpy.repositories.ProductRepository;
@@ -19,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
@@ -130,6 +132,47 @@ public class UserServiceImpl implements UserService {
     public PDTO getProductById(Long product_id) {
         Product product = productRepository.findById(product_id).get();
         return productToPDTO(product);
+    }
+
+    @Override
+    public UserDto createAdminAccount(UserDto userDto) {
+		Optional<User> adminAccount = userRepository.findByEmail(userDto.getEmail());
+        if (adminAccount.isEmpty()) {
+            User user = toEntity(userDto);
+            user.setRole(Role.ROLE_ADMIN.name());
+            user.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
+            userRepository.save(user);
+            return toDto(user);
+        }
+        return null;
+    }
+
+    @Override
+    public UserDto toDto(User user) {
+        if (user != null) {
+            UserDto userDto = new UserDto();
+            userDto.setEmail(user.getEmail());
+            userDto.setFirstName(user.getFirstName());
+            userDto.setLastName(user.getLastName());
+            userDto.setPhoneNumber(user.getPhoneNumber());
+            userDto.setPassword(user.getPassword());
+            return userDto;
+        }
+        return null;
+    }
+
+    @Override
+    public User toEntity(UserDto userDto) {
+        if (userDto != null) {
+            User user = new User();
+            user.setEmail(userDto.getEmail());
+            user.setFirstName(userDto.getFirstName());
+            user.setLastName(userDto.getLastName());
+            user.setPhoneNumber(userDto.getPhoneNumber());
+            user.setPassword(userDto.getPassword());
+            return user;
+        }
+        return null;
     }
 
     public PDTO productToPDTO(Product product) {

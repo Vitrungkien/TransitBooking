@@ -2,6 +2,7 @@ package com.OneBpy.services;
 
 import com.OneBpy.dtos.OrderRequest;
 import com.OneBpy.dtos.PDTO;
+import com.OneBpy.dtos.UserDto;
 import com.OneBpy.models.Order;
 import com.OneBpy.models.Product;
 import com.OneBpy.models.User;
@@ -25,4 +26,7 @@ public interface UserService {
 
     List<PDTO> getAllProduct(List<Product> productList);
     PDTO getProductById(Long product_id);
+    UserDto createAdminAccount(UserDto userDto);
+    UserDto toDto(User user);
+    User toEntity(UserDto userDto);
 }

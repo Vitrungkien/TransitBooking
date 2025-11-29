@@ -26,7 +26,7 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private Role role;
+    private String role;
     private Date createdAt;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
@@ -49,7 +49,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority(this.role));
     }
 
 

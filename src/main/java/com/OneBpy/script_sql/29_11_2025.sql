@@ -1,0 +1,2 @@
+ALTER TABLE user_tb
+    MODIFY COLUMN role VARCHAR(50) NULL;

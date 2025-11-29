@@ -52,7 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setFirstName(signUpRequest.getFirstName());
         user.setLastName(signUpRequest.getLastName());
         user.setPhoneNumber(signUpRequest.getPhoneNumber());
-        user.setRole(role);
+        user.setRole(role.name());
         return userRepository.save(user);
     }
 
@@ -73,7 +73,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         jwtAuthenticationResponse.setToken(jwt);
         jwtAuthenticationResponse.setRefreshToken(refreshToken);
-        jwtAuthenticationResponse.setRole(user.getRole().name());
+        jwtAuthenticationResponse.setRole(user.getRole());
         return jwtAuthenticationResponse;
     }
 
