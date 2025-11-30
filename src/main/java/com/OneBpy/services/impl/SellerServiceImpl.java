@@ -72,13 +72,16 @@ public class SellerServiceImpl implements SellerService {
 
     //Thêm 1 điểm dừng
     @Override
-    public void addStop(StopDTO stop, Long product_id) {
+    public void addStop(StopDTO stop, Long productId) {
+        if (productId == null) {
+            return;
+        }
         Stop newStop = new Stop();
         newStop.setStopTime(stop.getStopTime());
         newStop.setStopAddress(stop.getStopAddress());
         newStop.setDeleted(false);
-        Optional<Product> product = productRepository.findById(product_id);
-        newStop.setProduct(product.get());
+        Product product = getProductById(productId);
+        newStop.setProduct(product);
         stopRepository.save(newStop);
     }
 
@@ -88,14 +91,14 @@ public class SellerServiceImpl implements SellerService {
         Product updateProduct = getProductById(product_id);
         putProduct(updateProduct, productDTO);
         List<StopDTO> stopList = productDTO.getStopList();
-        if (stopList.size() > 0) {
+        if (!stopList.isEmpty()) {
             for (StopDTO stop : stopList) {
                 Long stopId = stop.getStopID();
-                if (stop.isDeleted() == false && stopId == -1) {
+                if (!stop.isDeleted() && stopId == -1) {
                     addStop(stop, product_id);
-                } else if (stop.isDeleted() == true && stopId != -1) {
+                } else if (stop.isDeleted() && stopId != -1) {
                     deleteStop(stopId);
-                } else if (stop.isDeleted() == false && stopId != -1) {
+                } else if (!stop.isDeleted()) {
                     updateStop(stop, stopId);
                 }
             }
@@ -107,6 +110,9 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public void updateStop(StopDTO stopDTO, Long stop_id) {
         Stop updateStop = getStopById(stop_id);
+        if (updateStop == null) {
+            return;
+        }
         updateStop.setStopTime(stopDTO.getStopTime());
         updateStop.setStopAddress(stopDTO.getStopAddress());
         updateStop.setRightNow(stopDTO.isRightNow());
@@ -117,22 +123,21 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public List<Stop> getStopList(Long product_id) {
         Product product = getProductById(product_id);
-        List<Stop> stopList = product.getStopList();
-        return stopList;
+        return product.getStopList();
     }
 
     //Lấy ra sản phẩm by id
     @Override
     public Product getProductById(Long product_id) {
         Optional<Product> productOptional = productRepository.findById(product_id);
-        return productOptional.get();
+        return productOptional.orElse(null);
     }
 
     //Lấy ra 1 điểm dừng by id
     @Override
     public Stop getStopById(Long stop_id) {
         Optional<Stop> stop = stopRepository.findById(stop_id);
-        return stop.get();
+        return stop.orElse(null);
     }
 
     //Xóa 1 điểm dừng

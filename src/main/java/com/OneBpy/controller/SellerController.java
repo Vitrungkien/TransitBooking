@@ -6,9 +6,12 @@ import com.OneBpy.repositories.*;
 import com.OneBpy.dtos.StopDtoList;
 import com.OneBpy.services.SellerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RequestMapping("/management")
 @Controller
 @RequiredArgsConstructor
@@ -33,9 +36,16 @@ public class SellerController {
     //Cập nhật sản phẩm
     @PostMapping("/my-store/{product_id}/update-product")
     public String updateProduct(@PathVariable("product_id") Long product_id,
-                                @ModelAttribute ProductDTO productDTO) {
-        sellerService.updateProduct(productDTO, product_id);
-        return "redirect:/management";
+                                @ModelAttribute ProductDTO productDTO, Model model) {
+        try {
+            sellerService.updateProduct(productDTO, product_id);
+            return "redirect:/management";
+        }
+        catch (Exception ex) {
+            log.error("Lỗi thêm sản phẩm: {}", ex.getMessage(), ex);
+            model.addAttribute("error", "Lỗi thêm sản phẩm");
+            return "redirect:/management";
+        }
     }
 
     // Ẩn hiện sản phẩm

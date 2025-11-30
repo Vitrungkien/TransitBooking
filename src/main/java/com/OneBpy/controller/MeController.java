@@ -24,7 +24,7 @@ public class MeController {
     }
 
     @GetMapping("/role")
-    Role getRole() {
+    String getRole() {
         return (userService.getCurrentUser()).getRole();
     }
 }

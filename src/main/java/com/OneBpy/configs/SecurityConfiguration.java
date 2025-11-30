@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                         .requestMatchers( "/js/**", "/css/**", "/img/**").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasAnyAuthority(Role.ROLE_ADMIN.name())
                         .requestMatchers("/api/v1/user/**").hasAnyAuthority(Role.ROLE_USER.name(), Role.ROLE_SELLER.name(), Role.ROLE_ADMIN.name())
-                        .requestMatchers("/api/v1/seller/**").hasAnyAuthority(Role.ROLE_SELLER.name())
+                        .requestMatchers("/api/v1/seller/**").hasAnyAuthority(Role.ROLE_SELLER.name(), Role.ROLE_ADMIN.name())
                         .requestMatchers("/profile", "/my-order", "/orders").hasAnyAuthority(
                                 Role.ROLE_ADMIN.name(), Role.ROLE_SELLER.name(), Role.ROLE_USER.name())
                         .requestMatchers("/all-product").permitAll()
