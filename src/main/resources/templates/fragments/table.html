@@ -1,0 +1,8 @@
+<table th:fragment="table(headers, bodyHtml)" class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th th:each="h : ${headers}" th:text="${h}"></th>
+    </tr>
+    </thead>
+    <tbody th:utext="${bodyHtml}"></tbody>
+</table>

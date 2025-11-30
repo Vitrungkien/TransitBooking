@@ -106,11 +106,6 @@ public class WebController {
         return "update-product";
     }
 
-    @GetMapping("/main")
-    public String main() {
-        return "main";
-    }
-
     @GetMapping("/search")
     public String search(Model model) {
         model.addAttribute("searchForm", new SearchForm());
@@ -123,4 +118,13 @@ public class WebController {
         return "my-order";
     }
 
+    @GetMapping("/example/example")
+    public String example() {
+        return "pages/example";
+    }
+
+    @GetMapping("/example/main")
+    public String homePage() {
+        return "layout/main";
+    }
 }

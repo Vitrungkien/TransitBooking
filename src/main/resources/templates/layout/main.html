@@ -1,0 +1,28 @@
+<!-- templates/layout/main.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title} ?: 'App'"></title>
+    <link th:href="@{/webjars/bootstrap/5.3.2/dist/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/webjars/bootstrap/5.3.2/dist/js/bootstrap.bundle.min.js}"></script>
+
+    <script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
+    <!-- Global UI Logic -->
+    <script th:src="@{/js/ui.js}"></script>
+</head>
+<body>
+<div class="container mt-4">
+
+    <!-- Global components -->
+    <div th:insert="~{fragments/toast :: toast}"></div>
+    <div th:insert="~{fragments/confirm :: confirmModal}"></div>
+    <div th:insert="~{fragments/loader :: loader}"></div>
+
+    <!-- Nơi chèn nội dung trang con -->
+    <div th:insert="~{pages/example :: examplePage}">
+        <!-- Page content sẽ được override ở đây -->
+    </div>
+
+</div>
+</body>
+</html>

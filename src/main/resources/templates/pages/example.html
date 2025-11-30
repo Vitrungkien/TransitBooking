@@ -1,0 +1,10 @@
+<!-- templates/pages/example.html -->
+<div th:fragment="examplePage">
+    <h3>Nôi dung file example page</h3>
+
+    <button class="btn btn-primary" onclick="UI.toast('Thành công!', 'success')">Show toast</button>
+
+    <button class="btn btn-warning" onclick="UI.confirm('Có chắc chắn không?', () => alert('OK!'))">
+        Confirm
+    </button>
+</div>

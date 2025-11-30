@@ -41,7 +41,8 @@ public class SecurityConfiguration {
                                 "/search-by-keywords", "/search-by-keyword", "/search-by-stop",
                                 "/all-store-name", "/all-notice", "/order/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "swagger-ui.html").permitAll()
-                        .requestMatchers( "/js/**", "/css/**", "/img/**").permitAll()
+                        .requestMatchers( "/js/**", "/css/**", "/img/**", "/webjars/**").permitAll()
+                        .requestMatchers("/example/**").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasAnyAuthority(Role.ROLE_ADMIN.name())
                         .requestMatchers("/api/v1/user/**").hasAnyAuthority(Role.ROLE_USER.name(), Role.ROLE_SELLER.name(), Role.ROLE_ADMIN.name())
                         .requestMatchers("/api/v1/seller/**").hasAnyAuthority(Role.ROLE_SELLER.name(), Role.ROLE_ADMIN.name())
