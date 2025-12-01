@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title th:text="${title} ?: 'App'"></title>
     <link th:href="@{/webjars/bootstrap/5.3.2/dist/css/bootstrap.min.css}" rel="stylesheet">
     <script th:src="@{/webjars/bootstrap/5.3.2/dist/js/bootstrap.bundle.min.js}"></script>
@@ -22,6 +23,7 @@
     <div th:insert="~{pages/example :: examplePage}">
         <!-- Page content sẽ được override ở đây -->
     </div>
+    <p th:text="#{kienvt.test}"></p>
 
 </div>
 </body>
