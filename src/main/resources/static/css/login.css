@@ -1,0 +1,40 @@
+/* Nền full màn hình */
+.bgr-img {
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../img/trong-dong.jpg'); /* Đổi sang ảnh của bạn */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Bao form để căn giữa */
+.login-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Hộp form */
+.login-box {
+    background: rgba(255, 255, 255, 0.9); /* tùy chọn: thêm nền mờ */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    margin: auto;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-input {
+    height: 50px;
+    width: 500px;
+}

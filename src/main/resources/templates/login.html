@@ -9,69 +9,52 @@
 		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 		crossorigin="anonymous">
     <script th:src="@{/js/common-component.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body>
+<div class="bgr-img">
+    <div class="login-wrapper">
+        <div class="col-md-6 col-md-offset-3 login-box">
+            <h1 style="margin-left: 280px">Đăng nhập</h1>
+            <form action="/api/v1/auth/login" method="post" object="signInRequest">
 
-	<!-- create navigation bar ( header) -->
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}"> Đăng nhập </a>
-			</div>
-		</div>
-	</nav>
-	
-	<br>
-	<br>
-	<div class = "container">
-		<div class = "row">
-			<div class = "col-md-6 col-md-offset-3">
-				<h1> Đăng nhập </h1>
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger">Tài khoản hoặc mật khẩu không hợp lệ</div>
+                </div>
+                <div th:if="${param.logout}">
+                    <div class="alert alert-info">Đăng xuất thành công!</div>
+                </div>
+                <div class="inputs">
+                    <div class="form-group ">
+                        <label for="email">Email</label> :
+                        <input type="text" class="form-control login-input" id="email" name="email"
+                               placeholder="Nhập email" autofocus />
+                    </div>
 
+                    <div class="form-group">
+                        <label for="password">Mật khẩu</label> :
+                        <input type="password" id="password" name="password" class="form-control login-input"
+                               placeholder="Nhập mật khẩu" />
+                    </div>
+                </div>
 
-				<form action="/api/v1/auth/login" method="post" object="signInRequest">
-					<div th:if="${param.error}">
-						<div class="alert alert-danger">Tài khoản hoặc mật khẩu không hợp lệ</div>
-					</div>
-					<div th:if="${param.logout}">
-						<div class="alert alert-info">Đăng xuất thành công!</div>
-					</div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <input type="submit" class="form-control btn btn-primary login-btn"
+                                   value="Đăng nhập" />
+                        </div>
+                    </div>
+                </div>
+            </form>
 
-					<div class="form-group">
-						<label for="email"> Email </label> :
-						<input type="text" class="form-control" id="email" name="email"
-							   placeholder="Nhập email" autofocus="autofocus"  />
-					</div>
-					<div class="form-group">
-						<label for="password">Mật khẩu</label>:
-						<input type="password" id="password" name="password" class="form-control"
-							   placeholder="Nhập mật khẩu" />
-					</div>
-
-
-					<div class="form-group">
-						<div class="row">
-							<div class="col-sm-6 col-sm-offset-3">
-								<input type="submit" name="login-submit" id="login-submit" class="form-control btn btn-primary" value="Đăng nhập" />
-							</div>
-						</div>
-					</div>
-				</form>
-
-				<div class="form-group">
-					<span>Chưa có tài khoản? <a th:href="@{/signup}">Đăng ký tại đây</a></span>
-					<br>
-					<span>Bạn là nhà xe? <a th:href="@{/signup-seller}">Đăng ký bán tại đây</a></span>
-				</div>
-			</div>
-		</div>
-	</div>
+            <div class="form-group text-center">
+                <span>Chưa có tài khoản? <a th:href="@{/signup}">Đăng ký tại đây</a></span><br>
+                <span>Bạn là nhà xe? <a th:href="@{/signup-seller}">Đăng ký bán tại đây</a></span>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+
 </html>
