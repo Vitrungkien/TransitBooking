@@ -105,47 +105,7 @@
   <title>Management</title>
 </head>
 <body>
-<div class="header">
-  <div class="left-menu">
-    <!--            <a th:href="@{/}"><img th:src="@{/img/logo2.png}" alt=""></a>-->
-  </div>
-  <ul class="right-menu">
-    <li class="main-menu"><a class="main-menu-a" th:href="@{/}">Trang chủ</a></li>
-    <li class="main-menu"><a class="main-menu-a" href="">Gửi hàng</a></li>
-    <li class="main-menu">
-      <a class="main-menu-a" href="">Thuê xe</a>
-      <ul class="sub-main-menu">
-        <li>Hợp đồng du lịch</li>
-        <li>Thuê xe tự lái</li>
-      </ul>
-    </li>
-    <li class="main-menu"><a class="main-menu-a" href="">Giới thiệu</a></li>
-    <li class="main-menu">
-      <a class="main-menu-a" href="">Tin tức</a>
-      <ul class="sub-main-menu">
-        <li>Thông báo nghỉ tết</li>
-        <li>Thông báo bảo trì 30/12</li>
-      </ul>
-    </li>
-    <li class="main-menu" id="me" th:if="${#authorization.expression('hasRole(''ADMIN'') or hasRole(''SELLER'') or hasRole(''USER'')')}">
-      <a class="main-menu-a" href="" >Tôi</a>
-      <ul class="sub-main-menu sub-main-menu-toi">
-        <li><a th:href="@{/profile}">My Profile</a></li>
-        <div id="management" class="some-element"
-             th:if="${#authorization.expression('hasRole(''ADMIN'') or hasRole(''SELLER'')')}">
-          <li><a th:href="@{/management}">Quản lý sản phẩm</a></li>
-        </div>
-        <li><a th:href="@{/my-order}">Quản lý đơn hàng</a></li>
-        <li><a>Giỏ hàng</a></li>
-        <li id="logoutButton"> <a href="">Đăng xuất</a> </li>
-      </ul>
-    </li>
-
-    <li class="main-menu" id="login" th:unless="${#authorization.expression('hasRole(''ADMIN'') or hasRole(''USER'') or hasRole(''SELLER'')')}">
-      <a class="main-menu-a" th:href="@{/login}">Đăng nhập</a>
-    </li>
-  </ul>
-</div>
+<div th:replace="fragments/header"></div>
 
 <div class="">
   <div class="col-2 position-fixed bg-dark top-0 text-white p-0" style="height: 713px;">

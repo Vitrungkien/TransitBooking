@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailsService userDetailsService() {
-        return email -> userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found" + email));
+        return username -> userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found" + username));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         String currentPrincipalName = authentication.getName();
 
         // Cập nhật thông tin người dùng
-        Optional<User> user = userRepository.findByEmail(currentPrincipalName);
+        Optional<User> user = userRepository.findByUsername(currentPrincipalName);
         User newUser;
         if (user.isPresent()) {
             newUser = user.get();
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
-        Optional<User> user = userRepository.findByEmail(currentPrincipalName);
+        Optional<User> user = userRepository.findByUsername(currentPrincipalName);
         return user.orElse(null);
     }
 

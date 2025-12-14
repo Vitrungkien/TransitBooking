@@ -49,17 +49,17 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIdentityReference(alwaysAsId = true)
-    @JsonManagedReference  // Đánh dấu mối quan hệ quản lý
+    @JsonManagedReference("product-stop")
     private List<Stop> stopList;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIdentityReference(alwaysAsId = true)
-    @JsonManagedReference  // Đánh dấu mối quan hệ quản lý
+    @JsonManagedReference("product-notice")
     private List<Notice> noticeList;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIdentityReference(alwaysAsId = true)
-    @JsonManagedReference  // Đánh dấu mối quan hệ quản lý
+    @JsonManagedReference("product-order")
     @JsonIgnore
     private List<Order> orderList;
 

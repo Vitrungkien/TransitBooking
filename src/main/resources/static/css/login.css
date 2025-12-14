@@ -1,11 +1,21 @@
 /* Nền full màn hình */
-.bgr-img {
-    width: 100vw;
-    height: 100vh;
-    background-image: url('../img/trong-dong.jpg'); /* Đổi sang ảnh của bạn */
+body {
+    margin: 0;
+    background-image: url("../img/bg.jpg");
     background-size: cover;
-    background-position: center;
     background-repeat: no-repeat;
+    background-position: 50%;
+    height: 100vh;
+    overflow: hidden;
+    font-family: "Euclid Circular B";
+}
+.bgr-img {
+    /*width: 100vw;*/
+    /*height: 100vh;*/
+    /*background-image: url('../img/trong-dong.jpg'); !* Đổi sang ảnh của bạn *!*/
+    /*background-size: cover;*/
+    /*background-position: center;*/
+    /*background-repeat: no-repeat;*/
 
     display: flex;
     justify-content: center;
@@ -26,6 +36,9 @@
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0,0,0,0.3);
     margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .inputs {
@@ -37,4 +50,15 @@
 .login-input {
     height: 50px;
     width: 500px;
+}
+
+.login-btn-div {
+    display: flex;
+    justify-content: center;
+}
+
+.login-btn {
+    width: 20%;
+    background-color: red;
+    border: none;
 }

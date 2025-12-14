@@ -1,9 +1,13 @@
 package com.OneBpy.models;
 
+import com.OneBpy.dtos.NoticeDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Data
@@ -23,12 +27,16 @@ public class Notice {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonBackReference  // Đánh dấu mối quan hệ không quản lý
+    @JsonManagedReference("product-notice")
     private Product product;
 
     @PrePersist
     protected void onCreate() {
         createdAt = new java.util.Date();
+    }
+
+    public NoticeDTO toNoticeDTO() {
+        NoticeDTO noticeDTO = new NoticeDTO();
     }
 
 }

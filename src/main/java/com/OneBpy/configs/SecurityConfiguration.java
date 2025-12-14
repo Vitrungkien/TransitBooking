@@ -36,6 +36,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.cors(cors -> cors.configurationSource(corsConfigurationSource())).csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/api/v1/auth/**", "/data").permitAll()
                         .requestMatchers("/login", "/signup", "/signup-seller", "/", "/search",
                                 "/search-by-keywords", "/search-by-keyword", "/search-by-stop",

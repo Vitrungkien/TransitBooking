@@ -21,7 +21,7 @@ public class User implements UserDetails {
     @Column(name = "user_id")
     private Long userID;
     @Column(unique = true, nullable = false)
-    private String email;
+    private String username;
     private String password;
     private String firstName;
     private String lastName;
@@ -56,7 +56,7 @@ public class User implements UserDetails {
     @Override
     @JsonIgnore
     public String getUsername() {
-        return email;
+        return this.username;
     }
 
     @Override

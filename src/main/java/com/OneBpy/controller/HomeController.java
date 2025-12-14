@@ -8,6 +8,7 @@ import com.OneBpy.repositories.OrderRepository;
 import com.OneBpy.repositories.ProductRepository;
 import com.OneBpy.repositories.StoreRepository;
 import com.OneBpy.services.OrderDto;
+import com.OneBpy.services.RedisService;
 import com.OneBpy.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,22 @@ public class HomeController {
     private final OrderRepository orderRepository;
     private final StoreRepository storeRepository;
     private final NoticeRepository noticeRepository;
+    private final RedisService redisService;
 
     @GetMapping("/all-product")
-    List<PDTO> getAllProduct(){
-        List<Product> productList =  productRepository.findAllActiveProducts();
-        return userService.getAllProduct(productList);
+    List<PDTO> getAllProduct() {
+        List<PDTO> cached = redisService.getList("all-product", PDTO.class);
+        if (cached != null) {
+            return cached;
+        }
+
+        List<Product> productList = productRepository.findAllActiveProducts();
+        List<PDTO> result = userService.getAllProduct(productList);
+
+        redisService.setList("all-product", result, 86400);
+        return result;
     }
+
 
     @GetMapping("/my-orders")
     public List<OrderDto> getUserOrders()

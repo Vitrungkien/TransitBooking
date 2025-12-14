@@ -127,4 +127,9 @@ public class WebController {
     public String homePage() {
         return "layout/main";
     }
+
+    @GetMapping("side-bar")
+    public String sideBar() {
+        return "/fragments/sidebar";
+    }
 }

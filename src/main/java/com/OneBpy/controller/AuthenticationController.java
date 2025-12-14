@@ -3,17 +3,22 @@ package com.OneBpy.controller;
 import com.OneBpy.dtos.*;
 import com.OneBpy.models.ResponseObject;
 import com.OneBpy.services.AuthenticationService;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Controller
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -23,9 +28,18 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public String signIn(@ModelAttribute("signInRequest") SignInRequest signInRequest,
-                                                            HttpServletResponse response) {
-        JwtAuthenticationResponse jwtAuthenticationResponse = authenticationService.logIn(signInRequest);
+                                                            HttpServletResponse response, Model model) {
+        JwtAuthenticationResponse jwtAuthenticationResponse = null;
+        try {
+            jwtAuthenticationResponse = authenticationService.logIn(signInRequest);
+        }
+        catch (BadCredentialsException ex) {
+            model.addAttribute("error", "Tài khoản hoặc mật khẩu không chính xác.");
+            log.error("Tài khoản hoặc mật khẩu không chính xác", ex);
+            return "login";
+        }
         String token = jwtAuthenticationResponse.getToken();
+
         // Thêm token vào cookie
         Cookie cookie = new Cookie("Authorization", token);
         cookie.setMaxAge((int) TimeUnit.MINUTES.toSeconds(60)); // Thời gian sống của token

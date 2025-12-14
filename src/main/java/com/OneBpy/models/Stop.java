@@ -2,6 +2,7 @@ package com.OneBpy.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,7 +27,7 @@ public class Stop {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonBackReference  // Đánh dấu mối quan hệ không quản lý
+    @JsonManagedReference("product-stop")
     private Product product;
 
     @PrePersist

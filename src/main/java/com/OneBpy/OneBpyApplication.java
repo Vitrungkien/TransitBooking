@@ -3,6 +3,7 @@ package com.OneBpy;
 import com.OneBpy.models.Role;
 import com.OneBpy.models.User;
 import com.OneBpy.repositories.UserRepository;
+import com.OneBpy.services.RedisService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.ParseException;
@@ -21,6 +23,8 @@ import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
 @SpringBootApplication
 @OpenAPIDefinition(
 		info = @Info(
@@ -49,18 +53,21 @@ public class OneBpyApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-//		User adminAccount = userRepository.findByRole(Role.ROLE_ADMIN);
-//		if (adminAccount == null) {
-//			User user = new User();
+//        List<User> users = userRepository.findAll();
 //
-//			user.setEmail("admin@gmail.com");
-//			user.setFirstName("Vi");
-//			user.setLastName("admin");
-//			user.setRole(Role.ROLE_ADMIN);
-//			user.setPassword(new BCryptPasswordEncoder().encode("admin"));
-//			userRepository.save(user);
-//		}
+//        for (User user : users) {
+//            user.setPassword(new BCryptPasswordEncoder().encode("123"));
+//        }
+//        userRepository.saveAll(users);
 	}
+
+    @Bean
+    CommandLineRunner testRedis(RedisService redisService) {
+        return args -> {
+            redisService.set("loan-kimchi", "hello jedis");
+            System.out.println("Redis value = " + redisService.get("loan-kimchi"));
+        };
+    }
 }
 
 
