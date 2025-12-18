@@ -37,7 +37,7 @@ public class SellerServiceImpl implements SellerService {
         Product product = productRepository.save(newProduct);
         product.setDisplay(false);
         product.setDeleted(false);
-        Long productId = product.getProductID();
+        Long productId = product.getProductId();
         List<StopDTO> stopList = productDTO.getStopList();
         if (!stopList.isEmpty()) {
             for (StopDTO stop : stopList) {
@@ -66,7 +66,6 @@ public class SellerServiceImpl implements SellerService {
         updateProduct.setEndTime(productDTO.getEndTime());
         updateProduct.setStartAddress(productDTO.getStartAddress());
         updateProduct.setEndAddress(productDTO.getEndAddress());
-        updateProduct.setLastUpdate(new Date());
         productRepository.save(updateProduct);
     }
 
@@ -93,7 +92,7 @@ public class SellerServiceImpl implements SellerService {
         List<StopDTO> stopList = productDTO.getStopList();
         if (!stopList.isEmpty()) {
             for (StopDTO stop : stopList) {
-                Long stopId = stop.getStopID();
+                Long stopId = stop.getStopId();
                 if (!stop.isDeleted() && stopId == -1) {
                     addStop(stop, product_id);
                 } else if (stop.isDeleted() && stopId != -1) {
@@ -189,7 +188,6 @@ public class SellerServiceImpl implements SellerService {
                 case "Hoàn thành" -> order.setOrderStatus("Đã hoàn thành");
                 default -> order.setOrderStatus("Error");
             }
-            order.setLastUpdate(new Date());
             orderRepository.save(order);
         }
     }
@@ -217,7 +215,6 @@ public class SellerServiceImpl implements SellerService {
         newNotice.setContent(noticeDTO.getContent());
         newNotice.setExpired(false);
         newNotice.setStoreName(userService.getCurrentUser().getStore().getStoreName());
-        newNotice.setLastUpdate(new Date());
         Long productID = noticeDTO.getProductID();
         newNotice.setProduct(getProductById(productID));
         noticeRepository.save(newNotice);
@@ -232,7 +229,6 @@ public class SellerServiceImpl implements SellerService {
             updateNotice.setTitle(noticeDTO.getTitle());
             updateNotice.setContent(noticeDTO.getContent());
             updateNotice.setExpired(noticeDTO.isExpired());
-            updateNotice.setLastUpdate(new Date());
             noticeRepository.save(updateNotice);
         }
     }
@@ -240,7 +236,7 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public void markStop(List<StopDTO> stopDTOList) {
         for (StopDTO stop : stopDTOList) {
-            Long stopId = stop.getStopID();
+            Long stopId = stop.getStopId();
             updateStop(stop, stopId);
         }
     }

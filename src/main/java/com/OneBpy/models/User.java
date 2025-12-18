@@ -2,24 +2,29 @@ package com.OneBpy.models;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(exclude = {"store", "orderList"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "user_tb")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userID")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long userID;
+    private Long userId;
     @Column(unique = true, nullable = false)
     private String username;
     private String password;
@@ -27,25 +32,14 @@ public class User implements UserDetails {
     private String lastName;
     private String phoneNumber;
     private String role;
-    private Date createdAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime lastUpdate;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIdentityReference(alwaysAsId = true)
-    @JsonManagedReference  // Đánh dấu mối quan hệ quản lý
-    @JsonIgnore
     private Store store;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIdentityReference(alwaysAsId = true)
-    @JsonManagedReference  // Đánh dấu mối quan hệ quản lý
-    @JsonIgnore
     private List<Order> orderList;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = new Date();
-    }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

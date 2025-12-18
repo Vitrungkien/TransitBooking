@@ -17,9 +17,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Long user_id) {
+    public User findUserById(Long user_id) {
         Optional<User> user = userRepository.findById(user_id);
         return user.orElse(null);
     }
@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
         if (product == null) {
             return null;
         }
-        Long productID = product.getProductID();
+        Long productID = product.getProductId();
         String productName = product.getProductName();
         String productImage = product.getProductImage();
         int remainSeat = product.getRemainSeat();
@@ -145,17 +145,16 @@ public class UserServiceImpl implements UserService {
         String startAddress = product.getStartAddress();
         String endAddress = product.getEndAddress();
         boolean deleted = product.isDeleted();
-        Date lastUpdate = product.getLastUpdate();
-        Date createdAt = product.getCreatedAt();
+        LocalDateTime lastUpdate = product.getLastUpdate();
+        LocalDateTime createdAt = product.getCreatedAt();
         List<Stop> stopList = product.getStopList();
         List<Notice> noticeList = product.getNoticeList();
         List<Order> orderList = product.getOrderList();
         String storeName = product.getStore().getStoreName();
-        return new PDTO(productID, productName, productImage, remainSeat, display,
-                bienSoXe, phoneNumber, phoneNumber2, description, policy, tienIch, type, price,
-                startTime, endTime, startAddress, endAddress, deleted, lastUpdate, createdAt, stopList,
-                noticeList, orderList, storeName);
+//        return new PDTO(productID, productName, productImage, remainSeat, display,
+//                bienSoXe, phoneNumber, phoneNumber2, description, policy, tienIch, type, price,
+//                startTime, endTime, startAddress, endAddress, deleted, lastUpdate, createdAt, stopList,
+//                noticeList, orderList, storeName);
+        return new PDTO();
     }
-
-
 }

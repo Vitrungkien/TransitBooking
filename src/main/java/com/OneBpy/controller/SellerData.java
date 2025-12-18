@@ -41,7 +41,7 @@ public class SellerData {
     //Lấy danh sách sản phẩm chưa bị xóa mềm của cửa hàng(checked)
     @GetMapping("/my-store/all-product")
     public List<PDTO> getAllProduct(){
-        Long store_id = userService.getCurrentUser().getStore().getStoreID();
+        Long store_id = userService.getCurrentUser().getStore().getStoreId();
         List<Product> productList = productRepository.findAllStoreProducts(store_id);
         return userService.getAllProduct(productList);
     }
@@ -76,14 +76,14 @@ public class SellerData {
     //Lấy tất cả đơn hàng của cửa hàng
     @GetMapping("/my-store/all-order")
     public List<OrderDto> getAllOrder() {
-        Long store_id = userService.getCurrentUser().getStore().getStoreID();
+        Long store_id = userService.getCurrentUser().getStore().getStoreId();
         return orderRepository.getAllStoreOrder(store_id);
     }
 
     //Lấy tất cả thông báo của cửa hàng (checked)
     @GetMapping("/my-store/all-notices")
     public List<NoticeDTO> getAllStoreNotice() {
-        Long store_id = userService.getCurrentUser().getStore().getStoreID();
+        Long store_id = userService.getCurrentUser().getStore().getStoreId();
         return noticeRepository.getAllStoreNotice(store_id);
     }
 }
