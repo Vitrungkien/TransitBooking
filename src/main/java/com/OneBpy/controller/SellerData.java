@@ -4,6 +4,7 @@ package com.OneBpy.controller;
 import com.OneBpy.dtos.*;
 import com.OneBpy.models.*;
 import com.OneBpy.repositories.*;
+import com.OneBpy.services.MapperService;
 import com.OneBpy.services.OrderDto;
 import com.OneBpy.services.SellerService;
 import com.OneBpy.services.UserService;
@@ -24,6 +25,7 @@ public class SellerData {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final NoticeRepository noticeRepository;
+    private final MapperService mapperService;
 
     // Lấy thông tin cửa hàng (checked)
     @GetMapping("/my-store")
@@ -40,10 +42,10 @@ public class SellerData {
 
     //Lấy danh sách sản phẩm chưa bị xóa mềm của cửa hàng(checked)
     @GetMapping("/my-store/all-product")
-    public List<PDTO> getAllProduct(){
+    public List<ProductDTO> getAllProduct(){
         Long store_id = userService.getCurrentUser().getStore().getStoreId();
         List<Product> productList = productRepository.findAllStoreProducts(store_id);
-        return userService.getAllProduct(productList);
+        return mapperService.toProductDTOList(productList);
     }
 
     //Lấy chi tiết sản phẩm by id (checked)
