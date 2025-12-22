@@ -171,7 +171,7 @@
     <title>Management</title>
 </head>
 <body>
-<div th:replace="fragments/header"></div>
+<div th:replace="~{fragments/header}"></div>
     <div class="">
         <div class="col-2 position-fixed bg-dark top-0 text-white p-0" style="height: 713px;">
             <div class="me row ">
@@ -538,7 +538,7 @@
                     newStopDiv.innerHTML = `
 
                     <input type="hidden" class="form-control m-2" placeholder="Nhập stopId"
-                        name="stopDTOList[${stopCount}].stopID" value="${stop.stopID}"
+                        name="stopDTOList[${stopCount}].stopId" value="${stop.stopId}"
                     >
                     <input type="text" class="form-control m-2"
                         name="stopDTOList[${stopCount}].stopAddress" value="${stop.stopAddress}"

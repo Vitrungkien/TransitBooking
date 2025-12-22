@@ -86,7 +86,7 @@
     <title>Đặt xe ghép</title>
 </head>
 <body>
-<div th:replace="fragments/header"></div>
+<div th:replace="~{fragments/header}"></div>
 
     <div class="row" >
         <div  class="col-lg-3"
@@ -466,7 +466,7 @@
       <div class="info-ve">
         <div class="info-ve-p1">
           <div class="ten-nha-xe-rate">
-            <p class="ten-nha-xe">${products[i].storeName}</p>
+            <p class="ten-nha-xe">${products[i].store.storeName}</p>
 
 <!--            <i class="fa-solid fa-star" style="color: #ffd500"></i>-->
 <!--            <i class="fa-solid fa-star" style="color: #ffd500"></i>-->
@@ -614,7 +614,7 @@
       <div class="row d-flex">
         <p class="col-sm-3">Nhà Xe:</p>
         <div class="col-sm-9">
-          <p class="">${products[i].storeName}</p>
+          <p class="">${products[i].store.storeName}</p>
         </div>
       </div>
 

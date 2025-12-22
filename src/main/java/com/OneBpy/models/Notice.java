@@ -1,14 +1,11 @@
 package com.OneBpy.models;
 
 import com.OneBpy.dtos.NoticeDTO;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Date;
 
 @Data
 @Entity
@@ -17,26 +14,16 @@ public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notice_id")
-    private Long noticeID;
+    private Long noticeId;
     private String title;
     private String content;
-    private Date createdAt;
     private String storeName;
     private boolean expired;
-    private Date lastUpdate;
+    private LocalDateTime createdAt;
+    private LocalDateTime lastUpdate;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonManagedReference("product-notice")
+    @JsonIgnore
     private Product product;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = new java.util.Date();
-    }
-
-    public NoticeDTO toNoticeDTO() {
-        NoticeDTO noticeDTO = new NoticeDTO();
-    }
-
 }

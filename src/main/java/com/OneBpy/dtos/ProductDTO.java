@@ -1,38 +1,40 @@
 package com.OneBpy.dtos;
 
-import com.OneBpy.models.Notice;
-import com.OneBpy.models.Stop;
-import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.*;
 
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(exclude = {"stopList", "noticeList", "orderList"})
+@EqualsAndHashCode(exclude = {"stopList", "noticeList", "orderList"})
 public class ProductDTO {
-    private Long productID;
+    private Long productId;
     private String productName;
     private String productImage;
     private int remainSeat;
+    private boolean display;
     private String bienSoXe;
     private String phoneNumber;
     private String phoneNumber2;
-    private String type;
     private String description;
     private String policy;
     private String tienIch;
+    private String type;
     private int price;
-    @DateTimeFormat(pattern = "HH:mm:ss")
     private LocalTime startTime;
-    @DateTimeFormat(pattern = "HH:mm:ss")
     private LocalTime endTime;
     private String startAddress;
     private String endAddress;
     private boolean deleted;
+    private LocalDateTime lastUpdate;
+    private LocalDateTime createdAt;
+    private StoreDTO store;
     private List<StopDTO> stopList;
-    private List<Notice> noticeList;
-    private String storeName;
+    private List<NoticeDTO> noticeList;
+    private List<OrderDTO> orderList;
 }

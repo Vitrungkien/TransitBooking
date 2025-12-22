@@ -1,50 +1,58 @@
 package com.OneBpy.controller;
 
 import com.OneBpy.dtos.PDTO;
+import com.OneBpy.dtos.ProductDTO;
+import com.OneBpy.dtos.UserDTO;
 import com.OneBpy.models.Notice;
 import com.OneBpy.models.Product;
-import com.OneBpy.repositories.NoticeRepository;
-import com.OneBpy.repositories.OrderRepository;
-import com.OneBpy.repositories.ProductRepository;
-import com.OneBpy.repositories.StoreRepository;
-import com.OneBpy.services.OrderDto;
-import com.OneBpy.services.RedisService;
-import com.OneBpy.services.UserService;
+import com.OneBpy.models.ResponseObject;
+import com.OneBpy.repositories.*;
+import com.OneBpy.services.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("")
 @RequiredArgsConstructor
 public class HomeController {
-    private final ProductRepository productRepository;
+    private final ProductService productService;
     private final UserService userService;
     private final OrderRepository orderRepository;
     private final StoreRepository storeRepository;
     private final NoticeRepository noticeRepository;
     private final RedisService redisService;
+    private final MapperService mapperService;
 
     @GetMapping("/all-product")
-    List<PDTO> getAllProduct() {
-        List<PDTO> cached = redisService.getList("all-product", PDTO.class);
-        if (cached != null) {
-            return cached;
+    List<ProductDTO> getAllProduct() {
+        try {
+            List<ProductDTO> cached = redisService.getList("all-product", ProductDTO.class);
+            if (cached != null) {
+                return cached;
+            }
+
+            List<Product> productList = productService.findAllProducts();
+            List<ProductDTO> result = mapperService.toProductDTOList(productList);
+
+            redisService.setList("all-product", result, 30);
+            return result;
         }
-
-        List<Product> productList = productRepository.findAllActiveProducts();
-        List<PDTO> result = userService.getAllProduct(productList);
-
-        redisService.setList("all-product", result, 86400);
-        return result;
+        catch (Exception e) {
+            log.error("Lỗi lấy danh sách vé: {}", e.getMessage(), e);
+            return new ArrayList<>();
+        }
     }
-
 
     @GetMapping("/my-orders")
     public List<OrderDto> getUserOrders()
     {
-        Long userId = userService.getCurrentUser().getUserID();
+        Long userId = userService.getCurrentUser().getUserId();
         return orderRepository.getAllUserOrder(userId);
     }
     @GetMapping("/my-order/{product_id}")
@@ -60,7 +68,7 @@ public class HomeController {
 
     @GetMapping("/all-store-name")
     public List<String> getStoreName() {
-        return storeRepository.getAllStorename();
+        return storeRepository.getAllStoreName();
     }
 
 }

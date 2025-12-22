@@ -1,11 +1,10 @@
 package com.OneBpy.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -15,25 +14,19 @@ public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
-    private Long storeID;
+    private Long storeId;
     private String storeName;
     @Column(nullable = false)
     private String phoneNumber;
     private String introduce;
-    private Date createdAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime lastUpdate;
 
     @OneToOne
     @JoinColumn(name = "user_id", unique = true)
-    @JsonBackReference  // Đánh dấu mối quan hệ không quản lý
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    @JsonIdentityReference(alwaysAsId = true)
     private List<Product> productList;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = new Date();
-    }
-
 }

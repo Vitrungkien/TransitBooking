@@ -18,10 +18,11 @@ public interface UserService {
 
     List<Order> getCart();
 
-    User getUserById(Long user_id);
+    User findUserById(Long user_id);
 
     void createOrder(Long product_id, OrderRequest orderRequest);
 
     List<PDTO> getAllProduct(List<Product> productList);
+
     PDTO getProductById(Long product_id);
 }

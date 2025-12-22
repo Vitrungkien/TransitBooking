@@ -1,11 +1,9 @@
 package com.OneBpy.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-import java.util.Date;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,7 +13,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     @Column(name = "order_id")
-    private Long orderID;
+    private Long orderId;
     private String pickUpAddress;
     private String destinationAddress;
     private LocalDateTime pickTime;
@@ -25,21 +23,16 @@ public class Order {
     private int price;
     private int totalPrice;
     private String orderStatus;
-    private Date lastUpdate;
-    private Date createdAt;
+    private LocalDateTime lastUpdate;
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference  // Đánh dấu mối quan hệ không quản lý
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonManagedReference("product-order")
+    @JsonIgnore
     private Product product;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = new java.util.Date();
-    }
 }

@@ -232,7 +232,7 @@
                         newStopDiv.innerHTML = `
 
                     <input type="hidden" class="form-control m-2" placeholder="Nhập stopId"
-                        name="stopList[${stopCount}].stopID" value="${stop.stopID}"
+                        name="stopList[${stopCount}].stopId" value="${stop.stopId}"
                     >
                     <input type="text" class="form-control m-2" placeholder="Nhập địa chỉ"
                         name="stopList[${stopCount}].stopAddress" value="${stop.stopAddress}"
@@ -266,7 +266,7 @@
                     stopIdInput.type = 'hidden';
                     stopIdInput.classList.add('form-control', 'm-2');
                     stopIdInput.placeholder = 'Nhập stopId';
-                    stopIdInput.name = 'stopList[' + stopCount + '].stopID';
+                    stopIdInput.name = 'stopList[' + stopCount + '].stopId';
                     stopIdInput.value = '-1';
 
                     // Tạo input cho địa chỉ

@@ -1,14 +1,20 @@
 package com.OneBpy.dtos;
 
-import lombok.Data;
+import lombok.*;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class StopDTO {
-    private Long stopID;
+    private Long stopId;
     private String stopAddress;
     private LocalTime stopTime;
     private boolean rightNow;
     private boolean deleted;
+    private Long productId;
+    private LocalDateTime createdAt;
 }

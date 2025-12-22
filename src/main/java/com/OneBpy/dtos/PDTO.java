@@ -31,35 +31,10 @@ public class PDTO {
     private boolean deleted;
     private Date lastUpdate;
     private Date createdAt;
-    private List<Stop> stopList;
-    private List<Notice> noticeList;
-    private List<Order> orderList;
+    private List<StopDTO> stopList;
+    private List<NoticeDTO> noticeList;
+    private List<OrderDTO> orderList;
     private String storeName;
 
-    public PDTO(Long productID, String productName, String productImage, int remainSeat, boolean display, String bienSoXe, String phoneNumber, String phoneNumber2, String description, String policy, String tienIch, String type, int price, LocalTime startTime, LocalTime endTime, String startAddress, String endAddress, boolean deleted, Date lastUpdate, Date createdAt, List<Stop> stopList, List<Notice> noticeList, List<Order> orderList, String storeName) {
-        this.productID = productID;
-        this.productName = productName;
-        this.productImage = productImage;
-        this.remainSeat = remainSeat;
-        this.display = display;
-        this.bienSoXe = bienSoXe;
-        this.phoneNumber = phoneNumber;
-        this.phoneNumber2 = phoneNumber2;
-        this.description = description;
-        this.policy = policy;
-        this.tienIch = tienIch;
-        this.type = type;
-        this.price = price;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.startAddress = startAddress;
-        this.endAddress = endAddress;
-        this.deleted = deleted;
-        this.lastUpdate = lastUpdate;
-        this.createdAt = createdAt;
-        this.stopList = stopList;
-        this.noticeList = noticeList;
-        this.orderList = orderList;
-        this.storeName = storeName;
-    }
+    public PDTO() {}
 }

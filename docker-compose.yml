@@ -1,0 +1,37 @@
+services:
+#  mysql:
+#    image: mysql:8
+#    container_name: mysql
+#    environment:
+#      MYSQL_ROOT_PASSWORD: 123
+#      MYSQL_DATABASE: transit_booking
+#    ports:
+#      - "3306:3306"
+#    volumes:
+#      - mysqldata:/var/lib/mysql
+
+#  mariadb:
+#    image: mariadb:latest
+#    container_name: mariadb
+#    environment:
+#      MARIADB_ROOT_PASSWORD: 123
+#      MYSQL_DATABASE: fix_create_bean
+#    ports:
+#      - "3307:3306"
+#    volumes:
+#      - mariadbdata:/var/lib/mysql
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+#  mysqldata:
+  redis-data:
+
+
