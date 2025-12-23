@@ -1,10 +1,12 @@
 package com.OneBpy.controller;
 
 import com.OneBpy.dtos.PDTO;
+import com.OneBpy.dtos.ProductDTO;
 import com.OneBpy.dtos.SearchByKeywordRq;
 import com.OneBpy.dtos.SearchForm;
 import com.OneBpy.models.Product;
 import com.OneBpy.repositories.ProductRepository;
+import com.OneBpy.services.RedisService;
 import com.OneBpy.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,11 +27,16 @@ import java.util.List;
 public class WebController {
     private final ProductRepository productRepository;
     private final UserService userService;
+    private final RedisService redisService;
     private static final Logger logger = LoggerFactory.getLogger(WebController.class);
     @GetMapping("/")
     public String Home(Model model) {
         model.addAttribute("searchForm", new SearchForm());
         model.addAttribute("searchByKeywordRq", new SearchByKeywordRq());
+        List<ProductDTO> cached = redisService.getList("all-product", ProductDTO.class);
+        if (cached != null) {
+            model.addAttribute("productList", cached);
+        }
         return "main";
     }
     @GetMapping("/search-by-stop")

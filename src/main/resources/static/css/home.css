@@ -3,9 +3,14 @@
 }
 
 body {
-    margin: auto;
-    font-family: var(--font-chu);
-    background-color: #F2F2F2;
+    margin: 0;
+    background-image: url("../img/bg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    /*height: 100vh;*/
+    /*overflow: hidden;*/
+    font-family: "Euclid Circular B";
 }
 .container1 {
     /*background-color: #F2F2F2;*/

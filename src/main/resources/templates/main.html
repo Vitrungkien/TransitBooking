@@ -154,6 +154,7 @@
             <div class="right-body">
                 <h2 style="">Tất cả vé</h2>
                 <div id="productList">
+                    <div th:replace="~{fragments/product-component :: productList(${productList})}"></div>
                     <!-- Placeholder for product list -->
                 </div>
 
@@ -435,9 +436,9 @@
 
             // Hiển thị sản phẩm trên trang hiện tại
             var productListDiv = document.getElementById('productList');
-            productListDiv.innerHTML = ''; // Xóa nội dung cũ
+            // productListDiv.innerHTML = ''; // Xóa nội dung cũ
 
-            // method="post" id="frmDatVe${products[i].productID}"
+            // method="post" id="frmDatVe${products[i].productId}"
 
             for (var i = start; i < end; i++) {
 
@@ -449,9 +450,9 @@
 
                 const formattedPrice = products[i].price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                 productDiv.innerHTML =
-                    `<div class="ve-xe" id="productId${products[i].productID}">
+                    `<div class="ve-xe" id="productId${products[i].productId}">
         <div>
-        <h6 id="n-hover${products[i].productID}" onclick="showNoticeList(${products[i].productID})"
+        <h6 id="n-hover${products[i].productId}" onclick="showNoticeList(${products[i].productId})"
          class="icon-notice"
          >Thông báo<i class="fa-solid fa-bell" style="color: #fff"></i></h6>
 
@@ -501,60 +502,60 @@
             <p class="contact">Liên hệ: ${products[i].phoneNumber}${products[i].phoneNumber2 ? ` - ${products[i].phoneNumber2}` : ''}</p>
 
             <div>
-              <p id="info-button" class="info-button" onclick="showProductDetail(${products[i].productID})">
+              <p id="info-button" class="info-button" onclick="showProductDetail(${products[i].productId})">
                 Thông tin chi tiết
                 <i
                   style="transform: rotate(0deg)"
-                  id="arrow-icon${products[i].productID}"
+                  id="arrow-icon${products[i].productId}"
                   class="fa-solid fa-caret-down"
                 ></i>
               </p>
               <!-- <p>Thông tin chi tiết</p> -->
-              <button onclick="showOrderForm(${products[i].productID})">Đặt xe</button>
+              <button onclick="showOrderForm(${products[i].productId})">Đặt xe</button>
             </div>
           </div>
         </div>
       </div>
       <p class="type-pay">KHÔNG CẦN THANH TOÁN TRƯỚC</p>
-        <div id="noticeList${products[i].productID}" class="noticeList">
+        <div id="noticeList${products[i].productId}" class="noticeList">
        <h5 style="margin: 10px; text-align: center">Thông báo</h5>
 </div>
-      <div id="productDetail${products[i].productID}" class="detail" style="display: none">
+      <div id="productDetail${products[i].productId}" class="detail" style="display: none">
         <div class="detail-info">
           <ul class="list-info">
             <li>
-                <button class="menu-detail${products[i].productID} detail-img-b" id="detail-img-b${products[i].productID}"
-                onclick="showPartDetail(${products[i].productID}, 1)">
+                <button class="menu-detail${products[i].productId} detail-img-b" id="detail-img-b${products[i].productId}"
+                onclick="showPartDetail(${products[i].productId}, 1)">
                   Hình ảnh
                 </button>
 
             </li>
             <li>
-              <button class="menu-detail${products[i].productID} tien-ich-b" id="tien-ich-b${products[i].productID}"
-              onclick="showPartDetail(${products[i].productID}, 2)">
+              <button class="menu-detail${products[i].productId} tien-ich-b" id="tien-ich-b${products[i].productId}"
+              onclick="showPartDetail(${products[i].productId}, 2)">
                 Tiện ích
               </button>
             </li>
             <li>
-              <button class="menu-detail${products[i].productID} diem-don-tra-b" id="diem-don-tra-b${products[i].productID}"
-              onclick="showPartDetail(${products[i].productID}, 3)">
+              <button class="menu-detail${products[i].productId} diem-don-tra-b" id="diem-don-tra-b${products[i].productId}"
+              onclick="showPartDetail(${products[i].productId}, 3)">
                 Điểm đón trả
               </button>
             </li>
             <li>
-              <button class="menu-detail${products[i].productID} chinh-sach-b" id="chinh-sach-b${products[i].productID}"
-              onclick="showPartDetail(${products[i].productID}, 4)"> Chính sách </button>
+              <button class="menu-detail${products[i].productId} chinh-sach-b" id="chinh-sach-b${products[i].productId}"
+              onclick="showPartDetail(${products[i].productId}, 4)"> Chính sách </button>
             </li>
             <li>
-              <button class="menu-detail${products[i].productID} review-b" id="review-b${products[i].productID}"
-              onclick="showPartDetail(${products[i].productID}, 5)"> Thông tin </button>
+              <button class="menu-detail${products[i].productId} review-b" id="review-b${products[i].productId}"
+              onclick="showPartDetail(${products[i].productId}, 5)"> Thông tin </button>
             </li>
           </ul>
         </div>
 
         <div class="five-info" id="five-info">
           <!--Hinh anh-->
-          <div class="part-detail${products[i].productID} detai-img" id="detai-img${products[i].productID}">
+          <div class="part-detail${products[i].productId} detai-img" id="detai-img${products[i].productId}">
             <img class="main-detail-img" src="https://static.vexere.com/production/images/1691571338555.jpeg" alt="" />
             <img class="main-detail-img" src="https://static.vexere.com/production/images/1691571338859.jpeg" alt="" />
             <img class="main-detail-img" src="https://static.vexere.com/production/images/1691571339090.jpeg" alt="" />
@@ -563,7 +564,7 @@
             </div>
           </div>
           <!--Diem don tra-->
-          <div class="part-detail${products[i].productID} diem-don-tra" id="diem-don-tra${products[i].productID}">
+          <div class="part-detail${products[i].productId} diem-don-tra" id="diem-don-tra${products[i].productId}">
             <div class="luu-y">
               <h3>Lưu ý</h3>
               <p>
@@ -572,24 +573,24 @@
               </p>
             </div>
 
-            <div id="stopList${products[i].productID}">
+            <div id="stopList${products[i].productId}">
 
             </div>
           </div>
           <!--Tien ich-->
-          <div class="part-detail${products[i].productID} tien-ich" id="tien-ich${products[i].productID}">
+          <div class="part-detail${products[i].productId} tien-ich" id="tien-ich${products[i].productId}">
             <ul class="list-tien-ich">
             <h3>Tiện ích</h3>
             ${products[i].tienIch}
             </ul>
           </div>
           <!--Chinh sach -->
-          <div class="part-detail${products[i].productID} chinh-sach" id="chinh-sach${products[i].productID}">
+          <div class="part-detail${products[i].productId} chinh-sach" id="chinh-sach${products[i].productId}">
 <!--            <h3>Chính sách nhà xe</h3>-->
             ${products[i].policy}
           </div>
           <!--Review-->
-          <div class="part-detail${products[i].productID} review" id="review${products[i].productID}">
+          <div class="part-detail${products[i].productId} review" id="review${products[i].productId}">
 <!--          <h3>Mô tả</h3>-->
              ${products[i].description}
           </div>
@@ -597,9 +598,9 @@
       </div>
     </div>
 
-<div id="frmDatVe${products[i].productID}" class="frmDatVe-modal">
+<div id="frmDatVe${products[i].productId}" class="frmDatVe-modal">
     <form class="frmDatVe p-4 rounded-1 m-auto"
-            action="/api/v1/user/${products[i].productID}/order"
+            action="/api/v1/user/${products[i].productId}/order"
             method="post"
             object="orderRequest">
       <h3 class="text-center">Đặt vé</h3>
@@ -686,7 +687,7 @@
       <div class="row mb-3">
         <div class="col-sm-6 offset-sm-3">
           <button type="submit" class="btn btn-primary">Đặt vé</button>
-          <button type="button" class="btn btn-danger" onclick="dismissForm(${products[i].productID})">
+          <button type="button" class="btn btn-danger" onclick="dismissForm(${products[i].productId})">
             Hủy
           </button>
         </div>
@@ -697,7 +698,7 @@
 
                 productListDiv.appendChild(productDiv);
 
-                const stopListDiv = document.getElementById(`stopList${products[i].productID}`);
+                const stopListDiv = document.getElementById(`stopList${products[i].productId}`);
                 if (products[i].stopList && products[i].stopList.length > 0) {
                     const ul = document.createElement('ul');
                     products[i].stopList.forEach(function (stop) {
@@ -714,7 +715,7 @@
                     stopListDiv.appendChild(ul);
                 }
 
-                const noticeListDiv = document.getElementById(`noticeList${products[i].productID}`);
+                const noticeListDiv = document.getElementById(`noticeList${products[i].productId}`);
 
                 if (products[i].noticeList && products[i].noticeList.length > 0) {
                     const noticeListChild = document.createElement('div');
