@@ -40,7 +40,7 @@ public class HomeController {
             List<Product> productList = productService.findAllProducts();
             List<ProductDTO> result = mapperService.toProductDTOList(productList);
 
-            redisService.setList("all-product", result, 30);
+            redisService.setList("all-product", result, 100000);
             return result;
         }
         catch (Exception e) {

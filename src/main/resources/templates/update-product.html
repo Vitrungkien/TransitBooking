@@ -60,15 +60,11 @@
     // Lấy giá trị PathVariable từ kết quả trích xuất
     const productId = productIdMatch[1];
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', '/api/v1/seller/my-store/' + productId, true);
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                const product = JSON.parse(xhr.responseText);
-                const productDiv = document.createElement('div');
-                productDiv.innerHTML = `
+    ApiService.get(API_ENDPOINTS.MY.PRODUCT.DETAIL(productId))
+        .then(productRes => {
+            const product = productRes;
+            const productDiv = document.createElement('div');
+            productDiv.innerHTML = `
 <form action="/management/my-store/${product.productID}/update-product" method="post" class="row addform" object="productDTO">
 
     <div class="row" style="padding-left: 60px;">
@@ -221,15 +217,15 @@
 
 </form>
 `;
-                productListDiv.appendChild(productDiv);
-                const stopListDiv = document.getElementById('stopList');
-                if (product.stopList && product.stopList.length > 0) {
-                    product.stopList.forEach(function (stop) {
-                        // Tạo một div mới cho điểm dừng
-                        const newStopDiv = document.createElement('div');
-                        newStopDiv.classList.add('stop-at');
-                        newStopDiv.id = 'stop-at' + stopCount;
-                        newStopDiv.innerHTML = `
+            productListDiv.appendChild(productDiv);
+            const stopListDiv = document.getElementById('stopList');
+            if (product.stopList && product.stopList.length > 0) {
+                product.stopList.forEach(function (stop) {
+                    // Tạo một div mới cho điểm dừng
+                    const newStopDiv = document.createElement('div');
+                    newStopDiv.classList.add('stop-at');
+                    newStopDiv.id = 'stop-at' + stopCount;
+                    newStopDiv.innerHTML = `
 
                     <input type="hidden" class="form-control m-2" placeholder="Nhập stopId"
                         name="stopList[${stopCount}].stopId" value="${stop.stopId}"
@@ -252,88 +248,84 @@
 
                         `;
 
-                        stopCount++;
-                        stopListDiv.appendChild(newStopDiv);
-                    })
-                }
-                document.getElementById('addStop').addEventListener('click', function () {
-                    // Tạo một div mới cho điểm dừng
-                    const newStopDiv = document.createElement('div');
-                    newStopDiv.classList.add('stop-at');
-
-                    //Tạo input cho stopId (hidden input)
-                    const stopIdInput = document.createElement('input');
-                    stopIdInput.type = 'hidden';
-                    stopIdInput.classList.add('form-control', 'm-2');
-                    stopIdInput.placeholder = 'Nhập stopId';
-                    stopIdInput.name = 'stopList[' + stopCount + '].stopId';
-                    stopIdInput.value = '-1';
-
-                    // Tạo input cho địa chỉ
-                    const addressInput = document.createElement('input');
-                    addressInput.type = 'text';
-                    addressInput.classList.add('form-control', 'm-2');
-                    addressInput.placeholder = 'Nhập địa chỉ';
-                    addressInput.name = 'stopList[' + stopCount + '].stopAddress';
-                    addressInput.required = true;
-
-                    // Tạo input cho thời gian
-                    const timeInput = document.createElement('input');
-                    timeInput.type = 'time';
-                    timeInput.classList.add('form-control', 'm-2', 'w-25');
-                    timeInput.placeholder = 'Nhập thời gian';
-                    timeInput.name = 'stopList[' + stopCount + '].stopTime';
-                    timeInput.required = true;
-
-                    // Tạo input để xóa
-                    const deletedInput = document.createElement('input');
-                    deletedInput.type = 'hidden';
-                    deletedInput.classList.add('form-control', 'm-2');
-                    deletedInput.name = 'stopList[' + stopCount + '].deleted';
-                    deletedInput.value = 'false';
-                    deletedInput.id = 'deleted'+ stopCount;
-
-                    // Tạo nút xóa
-                    const deleteButton = document.createElement('button');
-                    deleteButton.type = 'button';
-                    deleteButton.classList.add('btn', 'btn-danger', 'm-2');
-                    deleteButton.textContent = 'Xóa';
-                    // deleteButton.addEventListener('click', function() {
-                    //     removeStop(stopCount);
-                    // });
-
-                    deleteButton.addEventListener('click', function () {
-                        // Xóa điểm dừng khi nút xóa được nhấp
-                        deletedInput.value = 'true';
-                        addressInput.value = null;
-                        addressInput.required = false;
-
-                        timeInput.value = null;
-                        timeInput.required = false;
-                        newStopDiv.style.display = 'none';
-                    });
-
-                    // Thêm input và nút xóa vào div mới
-                    newStopDiv.appendChild(stopIdInput);
-                    newStopDiv.appendChild(addressInput);
-                    newStopDiv.appendChild(timeInput);
-                    newStopDiv.appendChild(deletedInput);
-                    newStopDiv.appendChild(deleteButton);
-
-                    // Thêm div mới vào #stopList
-                    document.getElementById('stopList').appendChild(newStopDiv);
-
-                    // Tăng số đếm
                     stopCount++;
+                    stopListDiv.appendChild(newStopDiv);
+                })
+            }
+            document.getElementById('addStop').addEventListener('click', function () {
+                // Tạo một div mới cho điểm dừng
+                const newStopDiv = document.createElement('div');
+                newStopDiv.classList.add('stop-at');
+
+                //Tạo input cho stopId (hidden input)
+                const stopIdInput = document.createElement('input');
+                stopIdInput.type = 'hidden';
+                stopIdInput.classList.add('form-control', 'm-2');
+                stopIdInput.placeholder = 'Nhập stopId';
+                stopIdInput.name = 'stopList[' + stopCount + '].stopId';
+                stopIdInput.value = '-1';
+
+                // Tạo input cho địa chỉ
+                const addressInput = document.createElement('input');
+                addressInput.type = 'text';
+                addressInput.classList.add('form-control', 'm-2');
+                addressInput.placeholder = 'Nhập địa chỉ';
+                addressInput.name = 'stopList[' + stopCount + '].stopAddress';
+                addressInput.required = true;
+
+                // Tạo input cho thời gian
+                const timeInput = document.createElement('input');
+                timeInput.type = 'time';
+                timeInput.classList.add('form-control', 'm-2', 'w-25');
+                timeInput.placeholder = 'Nhập thời gian';
+                timeInput.name = 'stopList[' + stopCount + '].stopTime';
+                timeInput.required = true;
+
+                // Tạo input để xóa
+                const deletedInput = document.createElement('input');
+                deletedInput.type = 'hidden';
+                deletedInput.classList.add('form-control', 'm-2');
+                deletedInput.name = 'stopList[' + stopCount + '].deleted';
+                deletedInput.value = 'false';
+                deletedInput.id = 'deleted'+ stopCount;
+
+                // Tạo nút xóa
+                const deleteButton = document.createElement('button');
+                deleteButton.type = 'button';
+                deleteButton.classList.add('btn', 'btn-danger', 'm-2');
+                deleteButton.textContent = 'Xóa';
+                // deleteButton.addEventListener('click', function() {
+                //     removeStop(stopCount);
+                // });
+
+                deleteButton.addEventListener('click', function () {
+                    // Xóa điểm dừng khi nút xóa được nhấp
+                    deletedInput.value = 'true';
+                    addressInput.value = null;
+                    addressInput.required = false;
+
+                    timeInput.value = null;
+                    timeInput.required = false;
+                    newStopDiv.style.display = 'none';
                 });
 
+                // Thêm input và nút xóa vào div mới
+                newStopDiv.appendChild(stopIdInput);
+                newStopDiv.appendChild(addressInput);
+                newStopDiv.appendChild(timeInput);
+                newStopDiv.appendChild(deletedInput);
+                newStopDiv.appendChild(deleteButton);
 
-            } else {
-                // Xử lý lỗi khi nhận được một phản hồi không phải 200 OK
-            }
-        }
-    };
-    xhr.send();
+                // Thêm div mới vào #stopList
+                document.getElementById('stopList').appendChild(newStopDiv);
+
+                // Tăng số đếm
+                stopCount++;
+            });
+        })
+        .catch(e => {
+            console.error('Load product detail failed', e);
+        })
 
     function removeStop(num) {
         const stop = document.getElementById('stop-at' + num);

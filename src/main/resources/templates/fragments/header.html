@@ -39,3 +39,21 @@
         </li>
     </ul>
 </div>
+
+<script>
+    // Gán sự kiện click cho thẻ button
+    document.getElementById('logoutButton').addEventListener('click', function () {
+        // Gửi yêu cầu POST đến endpoint /logout khi người dùng nhấn vào nút đăng xuất
+        ApiService.post(API_ENDPOINTS.LOG_OUT,{
+            method: 'POST',
+            credentials: 'same-origin' // Đảm bảo gửi cookie (nếu có) kèm theo yêu cầu
+        }).then(response => {
+            if (response.ok) {
+            // Nếu đăng xuất thành công, bạn có thể thực hiện các bước cần thiết
+            window.location.href = '/'; // Chuyển hướng đến trang đăng nhập, ví dụ '/login'
+            } else {
+                console.error('Logout failed:', response.status);
+            }
+        }).catch(error => console.error('Error during logout:', error));
+    });
+</script>

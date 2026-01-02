@@ -7,9 +7,10 @@
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}">
     <script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
-
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" th:href="@{/css/lib/toastr.min.css}"/>
+    <!-- Toastr JS -->
+    <script th:src="@{/js/lib/toastr.min.js}"></script>
     <style>
         body {
             background-color: #F2F2F2;
@@ -85,7 +86,8 @@
     </style>
     <title>Đặt xe ghép</title>
 </head>
-<body>
+<body><!-- Common JS -->
+<div th:replace="~{fragments/common-scripts :: commonScripts}"></div>
 <div th:replace="~{fragments/header}"></div>
 
     <div class="row" >
@@ -185,29 +187,9 @@
         <div class="footer">Copyright 2023 by Vi Trung Kiên - B19DCVT195</div>
     </footer>
 
-<!--Logout click-->
-    <script>
-        // Gán sự kiện click cho thẻ button
-        document.getElementById('logoutButton').addEventListener('click', function () {
-            // Gửi yêu cầu POST đến endpoint /logout khi người dùng nhấn vào nút đăng xuất
-            fetch('/logout', {
-                method: 'POST',
-                credentials: 'same-origin' // Đảm bảo gửi cookie (nếu có) kèm theo yêu cầu
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // Nếu đăng xuất thành công, bạn có thể thực hiện các bước cần thiết
-                        window.location.href = '/'; // Chuyển hướng đến trang đăng nhập, ví dụ '/login'
-                    } else {
-                        console.error('Logout failed:', response.status);
-                    }
-                })
-                .catch(error => console.error('Error during logout:', error));
-        });
-    </script>
-
 <!--Handle render Ui for Guest-->
     <script>
+        toastr.success("Import toastr thành công", "Thành công");
         // Kiểm tra xem có cookie có tên "Authorization" hay không
         function getCookie(name) {
             const value = `; ${document.cookie}`;
@@ -218,15 +200,13 @@
         // Lấy giá trị của cookie "Authorization"
         const authToken = getCookie('Authorization');
 
-        // Lấy phần tử cần ẩn
-        const meElement = document.getElementById('me');
-        const loginElement = document.getElementById('login');
-
         // Kiểm tra và ẩn phần tử nếu không có cookie "Authorization"
         if (!authToken) {
-            meElement.style.display = 'none'; // Ẩn phần tử
-            loginElement.style.display = 'block'
-
+            // Lấy phần tử cần ẩn
+            // const meElement = document.getElementById('me');
+            // const loginElement = document.getElementById('login');
+            // meElement.style.display = 'none'; // Ẩn phần tử
+            // loginElement.style.display = 'block'
         }
     </script>
 
@@ -368,43 +348,40 @@
         function displayValue(value) {
             return (value !== null && value !== undefined) ? value : 'null';
         }
-        // Gọi API để lấy danh sách sản phẩm khi trang web được tải
-        var notices = [];
-        var xhe1 = new XMLHttpRequest();
-        xhe1.open('GET', '/all-notice', true);
-        xhe1.onreadystatechange = function () {
-            if (xhe1.readyState == 4 && xhe1.status == 200) {
-                notices = JSON.parse(xhe1.responseText);
+        // Gọi API để lấy danh sách thông báo khi trang web được tải
+        let notices = [];
+        ApiService.get(API_ENDPOINTS.HOME.NOTICE.ALL)
+            .then(noticesRes => {
+                notices = noticesRes;
                 const allNotice = document.getElementById('all-notice');
                 notices.forEach(function (notice) {
                     var lastUpdate = moment(notice['lastUpdate']).format('HH:mm DD/MM/YYYY');
                     const noticeDiv = document.createElement('div');
                     noticeDiv.classList.add('notice-div');
                     noticeDiv.innerHTML = `
-          <h6 style="color: green">${notice.storeName}</h6>
-          <h6 style="color: red">Thông báo: ${notice.title}</h6>
-          <p>${notice.content}</p>
-          <p>${notice.expired ? 'Hết hiệu lực' : 'Còn hiệu lực'}</p>
-          <p>Sửa đổi lần cuối: ${lastUpdate}</p>
-        `;
-
+                      <h6 style="color: green">${notice.storeName}</h6>
+                      <h6 style="color: red">Thông báo: ${notice.title}</h6>
+                      <p>${notice.content}</p>
+                      <p>${notice.expired ? 'Hết hiệu lực' : 'Còn hiệu lực'}</p>
+                      <p>Sửa đổi lần cuối: ${lastUpdate}</p>
+                    `;
                     allNotice.appendChild(noticeDiv);
+                    ToastService.success("Lấy danh sách thông báo thành công");
                 })
-            }
-        };
-        xhe1.send();
+            })
+            .catch(e => {
+                console.error('Load notices failed', e);
+                ToastService.error("Lấy danh sách thông báo thất bại");
+            });
     </script>
 
 
 <!--    Lấy tên tất cả nhà xe-->
     <script>
-        // Gọi API để lấy danh sách sản phẩm khi trang web được tải
-        var storeNames = [];
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open('GET', '/all-store-name', true);
-        xhr2.onreadystatechange = function () {
-            if (xhr2.readyState == 4 && xhr2.status == 200) {
-                storeNames = JSON.parse(xhr2.responseText);
+        // Gọi API để lấy danh sách nhà xe khi trang web được tải
+        ApiService.get(API_ENDPOINTS.HOME.STORE.ALL_STORE_NAME, '')
+            .then(storeNamesRes => {
+                storeNames = storeNamesRes;
                 const listNhaXe = document.getElementById('nha-xe');
                 storeNames.forEach(function (storeName) {
                     const p = document.createElement('p');
@@ -412,10 +389,12 @@
                     p.classList = 'ten-nha-xe';
                     listNhaXe.appendChild(p);
                 });
-
-            }
-        };
-        xhr2.send();
+                ToastService.success("Lấy danh sách nhà xe thành công");
+            })
+            .catch(e => {
+                ToastService.error("Lấy danh sách nhà xe thất bại");
+                console.error('Load store failed', e);
+            });
     </script>
 
     <!--Lấy ra tất cả sản phẩm    -->
@@ -812,21 +791,18 @@
         }
 
         // Gọi API để lấy danh sách sản phẩm khi trang web được tải
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/all-product', true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                products = JSON.parse(xhr.responseText);
-                console.log("Lay san pham");
-                displayProducts(currentPage);
-                console.log("Hien thi san pham success");
+        ApiService.get(API_ENDPOINTS.HOME.PRODUCT.ALL)
+            .then(productList => {
+                products = productList;
                 if (products.length > 10) {
                     displayPagination();
                 }
-                console.log("Hien thi chuyen trang");
-            }
-        };
-        xhr.send();
+                ToastService.success("Lấy danh sách vé xe thành công");
+            })
+            .catch(e => {
+                ToastService.error("Lấy danh sách vé xe thất bại");
+                console.error('Load products failed', e);
+            });
 
 
         function calculateTimeDifference(startTimeString, endTimeString) {

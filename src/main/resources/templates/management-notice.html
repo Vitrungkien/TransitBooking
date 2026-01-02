@@ -153,90 +153,90 @@
 <script th:inline="javascript">
 
   // Sử dụng JavaScript để gọi API từ Spring Boot và tạo bảng
-  fetch('/api/v1/seller/my-store/all-notices').then(response => response.json()).then(notices => {
-    const tableOrder = document.getElementById('tb-notice');
-    var stt = 1;
-    notices.forEach(notice => {
-      const formattedStartTime = moment(notice['startTime'], "HH:mm:ss").format('HH:mm');
-      const formattedCreatedAt = moment(notice['createdAt']).format('HH:mm DD/MM/YYYY');
-      const row = tableOrder.insertRow();
-      row.insertCell().textContent = stt++;
-      row.insertCell().textContent = notice['noticeId'];
-      row.insertCell().textContent = notice['productName'];
-      row.insertCell().textContent = formattedStartTime;
-      row.insertCell().textContent = notice['bienSoXe'];
-      row.insertCell().textContent = notice['title'];
-      row.insertCell().textContent = notice['content'];
-      row.insertCell().textContent = formattedCreatedAt;
-      var status = notice['expired'] ? 'Hết hiệu lực' : 'Còn hiệu lực';
-      row.insertCell().textContent = status;
-      row.insertCell().innerHTML = `
-      <button class="btn btn-primary" onclick="openNoticeForm(${notice.noticeId})"> Sửa </button>
+  ApiService.get(API_ENDPOINTS.MY.NOTICE.ALL, '')
+      .then(notices => {
+          notices = noticesRes;
+          const tableOrder = document.getElementById('tb-notice');
+          var stt = 1;
+          notices.forEach(notice => {
+              const formattedStartTime = moment(notice['startTime'], "HH:mm:ss").format('HH:mm');
+              const formattedCreatedAt = moment(notice['createdAt']).format('HH:mm DD/MM/YYYY');
+              const row = tableOrder.insertRow();
+              row.insertCell().textContent = stt++;
+              row.insertCell().textContent = notice['noticeId'];
+              row.insertCell().textContent = notice['productName'];
+              row.insertCell().textContent = formattedStartTime;
+              row.insertCell().textContent = notice['bienSoXe'];
+              row.insertCell().textContent = notice['title'];
+              row.insertCell().textContent = notice['content'];
+              row.insertCell().textContent = formattedCreatedAt;
+              const status = notice['expired'] ? 'Hết hiệu lực' : 'Còn hiệu lực';
+              row.insertCell().textContent = status;
+              row.insertCell().innerHTML = `
+                  <button class="btn btn-primary" onclick="openNoticeForm(${notice.noticeId})"> Sửa </button>
 
-      <div id="update-notice-frm${notice.noticeId}" class="update-notice-div">
+                  <div id="update-notice-frm${notice.noticeId}" class="update-notice-div">
 
-        <form action="/management/my-store/update-notice" method="post"
-            object="noticeDTO" class="update-notice-form"
-        >
-          <h3 style="align-content: center">Sửa thông báo</h3>
-          <div class="row mb-3">
-            <label for="title${notice.noticeId}" class="form-label">Tiêu đề:</label>
-            <input type="text" id="title${notice.noticeId}" name="title" class="form-control" value="${notice.title}" required/>
-          </div>
-          <div class="row mb-3">
-            <label for="content${notice.noticeId}" class="form-label">Nội dung:</label>
-            <textarea id="content${notice.noticeId}" name="content" class="form-control">${notice.content}</textarea><br/>
-          </div>
+                    <form action="/management/my-store/update-notice" method="post"
+                        object="noticeDTO" class="update-notice-form"
+                    >
+                      <h3 style="align-content: center">Sửa thông báo</h3>
+                      <div class="row mb-3">
+                        <label for="title${notice.noticeId}" class="form-label">Tiêu đề:</label>
+                        <input type="text" id="title${notice.noticeId}" name="title" class="form-control" value="${notice.title}" required/>
+                      </div>
+                      <div class="row mb-3">
+                        <label for="content${notice.noticeId}" class="form-label">Nội dung:</label>
+                        <textarea id="content${notice.noticeId}" name="content" class="form-control">${notice.content}</textarea><br/>
+                      </div>
 
-          <div class="row mb-3">
-            <label for="expired${notice.noticeId}" class="form-label">Hiệu lực:</label>
-            <select id="expired${notice.noticeId}" name="expired" class="is-expired w-100 ">
-            </select>
-          </div>
-          <input type="hidden" id="noticeID${notice.noticeId}" name="noticeID" class="form-control" value="${notice.noticeId}" required/>
-          <button type="submit" class="btn btn-primary">Xong</button>
-          <button type="button" class="btn btn-danger" onclick="closeUpdateNotice(${notice.noticeId})">Hủy</button>
-        </form>
+                      <div class="row mb-3">
+                        <label for="expired${notice.noticeId}" class="form-label">Hiệu lực:</label>
+                        <select id="expired${notice.noticeId}" name="expired" class="is-expired w-100 ">
+                        </select>
+                      </div>
+                      <input type="hidden" id="noticeID${notice.noticeId}" name="noticeID" class="form-control" value="${notice.noticeId}" required/>
+                      <button type="submit" class="btn btn-primary">Xong</button>
+                      <button type="button" class="btn btn-danger" onclick="closeUpdateNotice(${notice.noticeId})">Hủy</button>
+                    </form>
+                  </div> `;
+              if (status === 'Còn hiệu lực') {
+                  row.style.backgroundColor = '#cbf7d7';
+              }
+              else {
+                  row.style.backgroundColor = '#ccc';
+              }
 
-      </div>
+              const expiredElment = document.getElementById(`expired${notice.noticeId}`);
+              if (notice['expired']) {
+                  const option1 = document.createElement('option');
+                  option1.value = 'true';
+                  option1.text = 'Hết hiệu lực';
+                  expiredElment.appendChild(option1);
 
-`;
-      if (status == 'Còn hiệu lực') {
-        row.style.backgroundColor = '#cbf7d7';
-      }
-      else {
-        row.style.backgroundColor = '#ccc';
-      }
-
-      const expiredElment = document.getElementById(`expired${notice.noticeId}`);
-      if (notice['expired']) {
-        const option1 = document.createElement('option');
-        option1.value = 'true';
-        option1.text = 'Hết hiệu lực';
-        expiredElment.appendChild(option1);
-
-        const option2 = document.createElement('option');
-        option2.value = 'false';
-        option2.text = 'Còn hiệu lực';
+                  const option2 = document.createElement('option');
+                  option2.value = 'false';
+                  option2.text = 'Còn hiệu lực';
 
 
-        expiredElment.appendChild(option2);
-      }
-      else {
-        const option1 = document.createElement('option');
-        option1.value = 'false';
-        option1.text = 'Còn hiệu lực';
-        const option2 = document.createElement('option');
-        option2.value = 'true';
-        option2.text = 'Hết hiệu lực';
-        expiredElment.appendChild(option1);
-        expiredElment.appendChild(option2);
-      }
+                  expiredElment.appendChild(option2);
+              }
+              else {
+                  const option1 = document.createElement('option');
+                  option1.value = 'false';
+                  option1.text = 'Còn hiệu lực';
+                  const option2 = document.createElement('option');
+                  option2.value = 'true';
+                  option2.text = 'Hết hiệu lực';
+                  expiredElment.appendChild(option1);
+                  expiredElment.appendChild(option2);
+              }
 
-    });
-  })
-          .catch(error => console.error('Error fetching notices:', error));
-
+          });
+      })
+      .catch(e => {
+          console.error('Load my notices failed', e);
+      });
 
   function openNoticeForm(noticeID) {
     const newNotice = document.getElementById('update-notice-frm' + noticeID);
@@ -249,90 +249,67 @@
 </script>
 
 
-
-
-
-
 <!--Tạo form thông báo-->
 <script th:inline="javascript">
-  fetch('/api/v1/seller/my-store/all-product').then(response => response.json()).then(products => {
-    const newNoticeDiv = document.getElementById('new-notice-div');
-    newNoticeDiv.innerHTML = `
-<button class="add btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-notice">
-    Tạo thông báo mới
-</button>
-     <div class="modal" id="new-notice" >
-       <div class="modal-dialog">
-            <div class="modal-content">
-        <form action="/management/my-store/create-notice" method="post" object="noticeDTO"
-            class="new-notice-form">
+  ApiService.get(API_ENDPOINTS.MY.PRODUCT.ALL, '')
+      .then(products => {
+          const newNoticeDiv = document.getElementById('new-notice-div');
+          newNoticeDiv.innerHTML = `
+            <button class="add btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-notice">
+                Tạo thông báo mới
+            </button>
+                 <div class="modal" id="new-notice" >
+                   <div class="modal-dialog">
+                        <div class="modal-content">
+                    <form action="/management/my-store/create-notice" method="post" object="noticeDTO"
+                        class="new-notice-form">
 
-          <div class="modal-header">
-            <h3 style="align-content: center">Tạo thông báo mới</h3>
-          </div>
-          <div class="modal-body">
-            <div class="row mb-3">
-              <label for="title" class="form-label">Tiêu đề:</label>
-              <input type="text" id="title" name="title" class="form-control" required/>
-            </div>
-            <div class="row mb-3">
-              <label for="content" class="form-label">Nội dung:</label>
-              <textarea id="content" name="content" class="form-control"></textarea>
-            </div>
-            <div class="row mb-3">
-              <label for="productID-option" class="form-label">Vé:</label>
-              <select id="productID-option" name="productID" class=" w-100 ">
-      <!--            option ...-->
-              </select>
-            </div>
-           </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Xong</button>
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Hủy</button>
-          </div>
-        </form>
-            </div>
-        </div>
-    </div>
-    `;
+                      <div class="modal-header">
+                        <h3 style="align-content: center">Tạo thông báo mới</h3>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row mb-3">
+                          <label for="title" class="form-label">Tiêu đề:</label>
+                          <input type="text" id="title" name="title" class="form-control" required/>
+                        </div>
+                        <div class="row mb-3">
+                          <label for="content" class="form-label">Nội dung:</label>
+                          <textarea id="content" name="content" class="form-control"></textarea>
+                        </div>
+                        <div class="row mb-3">
+                          <label for="productID-option" class="form-label">Vé:</label>
+                          <select id="productID-option" name="productID" class=" w-100 ">
+                  <!--            option ...-->
+                          </select>
+                        </div>
+                       </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Xong</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Hủy</button>
+                      </div>
+                    </form>
+                        </div>
+                    </div>
+                </div>
+                `;
 
-    const productIDOption = document.getElementById('productID-option');
-    products.forEach(product => {
-      const option = document.createElement('option');
-      option.value = product['productID'];
-      const formattedStartTime = moment(product['startTime'], "HH:mm:ss").format('HH:mm');
-      option.text = product['productName'] + ' - ' +  formattedStartTime +  (product.bienSoXe ? ` - ${product.bienSoXe}` : '');
-      productIDOption.appendChild(option);
-    });
-  })
-          .catch(error => console.error('Error fetching products:', error));
-
+          const productIDOption = document.getElementById('productID-option');
+          products.forEach(product => {
+              const option = document.createElement('option');
+              option.value = product['productID'];
+              const formattedStartTime = moment(product['startTime'], "HH:mm:ss").format('HH:mm');
+              option.text = product['productName'] + ' - ' +  formattedStartTime +  (product.bienSoXe ? ` - ${product.bienSoXe}` : '');
+              productIDOption.appendChild(option);
+          });
+      })
+      .catch(e => {
+          console.error('Load my products failed', e);
+      });
 
   function closeNoticeForm() {
     const newNotice = document.getElementById('new-notice');
     newNotice.style.display = 'none';
   }
-</script>
-
-<!--Logout click-->
-<script>
-  // Gán sự kiện click cho thẻ button
-  document.getElementById('logoutButton').addEventListener('click', function () {
-    // Gửi yêu cầu POST đến endpoint /logout khi người dùng nhấn vào nút đăng xuất
-    fetch('/logout', {
-      method: 'POST',
-      credentials: 'same-origin' // Đảm bảo gửi cookie (nếu có) kèm theo yêu cầu
-    })
-            .then(response => {
-              if (response.ok) {
-                // Nếu đăng xuất thành công, bạn có thể thực hiện các bước cần thiết
-                window.location.href = '/'; // Chuyển hướng đến trang đăng nhập, ví dụ '/login'
-              } else {
-                console.error('Logout failed:', response.status);
-              }
-            })
-            .catch(error => console.error('Error during logout:', error));
-  });
 </script>
 
 <!--Handle render Ui for Guest-->
