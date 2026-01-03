@@ -1,0 +1,9 @@
+============03/01/2026======
+Todo nội dung sửa trang chủ:
+	- Hoàn thành chuyển đổi render dùng for javascript render vé xe sang render bằng component fragment sử dụng th:each
+		+ chuyển render notice sử dụng th:each thay vì for bằng js tạo element rồi append vào html
+		+ chuyển render stopList sử dụng th:each thay vì dùng for tạo element rồi append vào html
+		+ chuyển sinh 1 order form duy nhất thay vì mỗi product có 1 order form
+	- Phân trang từ Backend + Viết logic FE show vùng điều khiển phân trang 	
+	- Căn chỉnh lại danh sách thông báo bên phải
+	- Chỉnh lại nội dung danh sách nhà xe bên trái
