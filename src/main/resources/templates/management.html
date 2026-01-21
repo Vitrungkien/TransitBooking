@@ -1,880 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản trị Hệ thống - TransitBooking</title>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/management.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
     <link rel="stylesheet" th:href="@{/css/header.css}">
-<!--    <link rel="stylesheet" th:href="@{/css/update.css}">-->
-    <link rel="stylesheet" th:href="@{/css/home.css}">
-    <script th:src="@{/js/main.js}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
     <style>
-        button {
-            border: none;
-            padding: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .ve-xe .info-ve-p2-2 div button {
-
-        }
-        .add {
-            background-color: #2474E5;
-            color: #fff
-        }
-        .search-btn {
-            background-color: #FFD333;
-            color: black;
-            width: 60px;
+        /* Specific module styles moved here for SPA efficiency */
+        .product-img {
+            width: 45px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #eee;
         }
 
-        .tim-sp {
-            padding: 10px;
-        }
-        .them-sua-sp {
-            padding: 10px;
-        }
-
-        .delete {
-            background-color: red;
-            color: #fff;
-        }
-        th {
-            background-color: #212529;
-            color: white;
-            padding: 10px;
-        }
-        td {
-            border: 2px solid #eae6e6;
-            padding: 5px 5px 5px 10px;
-            max-width: 250px;
-        }
-        .me1:hover{
-            background-color: #ccc;
-            color: black;
-        }
-        .me2:hover {
-            background-color: #564e4e;
-        }
-        .me {
-            cursor: pointer;
-            margin: 0;
-        }
-        .don-hang {
-            display: none;
-        }
-        .chi-tiet {
-            background-color: #55acee;
-        }
-        .max-column {
-            max-width: 150px;
-        }
-        #tb-order {
-            max-height: 800px;
-            overflow-y: auto;
-        }
-        #qlsp {
-            background-color: #ccc;
-            /*color: black;*/
-        }
-        #qlsp a {
-            color: black;
-        }
-        .frmDatVe {
-            background-color: rgb(64, 176, 112);
-            display: none;
-            position: fixed;
-            top: 10px;
-            left: 0;
-            transform: translateX(91%);
-            width: 40%;
-        }
-        .btn-order {
-            display: none;
-            margin: 5px;
-        }
-        .btn-secondary {
-            margin: 5px;
-        }
-        .totalPrice {
-            display: none;
-        }
-        .ve-xe {
-            position: absolute;
-            width: 800px;
-            left: -950px;
-            top: -237px;
-            display: none;
-            background-color: #fff;
-            border-radius: 5px;
-            margin: 16px 0;
-            padding: 16px;
-            box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.5);
-
-        }
-        a {
-            color: white;
-            text-decoration: none;
-        }
-        .btn-action {
-            margin-bottom: 5px;
-            margin-right: 5px;
-            width: 53px;
-            padding: 6px;
-        }
-        .actions {
+        .route-info {
             display: flex;
-            position: relative;
+            flex-direction: column;
         }
-        .me1 {
-            /*padding: 10px;*/
-            height: 50px;
-            padding: 8px 20px;
+
+        .route-main {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 2px;
         }
-        .me1 a {
-            line-height: 32px;
-            margin: 0;
+
+        .route-sub {
+            color: #888;
+            font-size: 0.8rem;
         }
-        .mark-stop-backgr {
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #fffbe6;
+            color: #faad14;
+            border: 1px solid #ffe58f;
+        }
+
+        .status-confirmed {
+            background: #e6f7ff;
+            color: #1890ff;
+            border: 1px solid #91d5ff;
+        }
+
+        .status-completed {
+            background: #f6ffed;
+            color: #52c41a;
+            border: 1px solid #b7eb8f;
+        }
+
+        .status-cancelled {
+            background: #fff1f0;
+            color: #f5222d;
+            border: 1px solid #ffa39e;
+        }
+
+        .notice-title {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .status-active {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .status-expired {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary), #1e3c72);
+            height: 100px;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin-top: -50px;
+            background: white;
+        }
+
+        /* Loading overlay */
+        #spa-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 2000;
             display: none;
-            background-color: rgb(40,42,53, 0.6);
-            width: 1800px;
-            height: 800px;
-            position: fixed;
-            top: 0px;
-            left: 0px;
-        }
-        .mark-stop-form {
-            width: 650px;
-            background-color: #f2f2f2;
-            padding: 20px;
-            position: fixed;
-            border-radius: 10px;
-            top: 50px;
-            left: 500px;
-        }
-        .stop-at {
-            height: 50px;
-        }
-        .resetMarkBtn {
-            color: white;
-            background-color: black;
-            /*margin: 0px 0px 15px 8px;*/
-            margin-left: 8px;
+            align-items: center;
+            justify-content: center;
         }
     </style>
-    <title>Management</title>
 </head>
+
 <body>
-<div th:replace="~{fragments/header}"></div>
-    <div class="">
-        <div class="col-2 position-fixed bg-dark top-0 text-white p-0" style="height: 713px;">
-            <div class="me row ">
-                <h5 class="me1 " id="qlsp" onclick="showMenu(1)"><a th:href="@{/management}">Quản lý sản phẩm</a></h5>
-            </div>
-            <div class="me row " >
-<!--                <h5 class="me1 p-2" id="qldh" onclick="showSubMenu(), showMenu(2)">Quản lý đơn hàng</h5>-->
-                <h5 class="me1 " id="qldh" ><a th:href="@{/management-order}">Quản lý đơn hàng</a></h5>
-                <ul class="" id="subOrder" style="display: none; margin-left: 15px;">
-                    <li class="me2">Tất cả đơn hàng</li>
-                    <li class="me2">Đơn chờ xác nhận</li>
-                    <li class="me2">Đơn đã đã xác nhận</li>
-                    <li class="me2">Đơn đã hoàn thành</li>
-                </ul>
-            </div>
-            <div class="me row " >
-                <h5 class="me1 " id="qltb" ><a th:href="@{/management-notice}">Quản lý thông báo</a></h5>
-            </div>
-        </div>
-        <div class="col-10 ms-auto p-4" style="background-color: #fff;">
-            <div class="san-pham" id="san-pham">
-                <h1>Danh sách vé</h1>
-<!--                <div class="row-cols tim-sp">-->
-<!--                    <input type="text" placeholder="Tìm sản phẩm">-->
-<!--                    <input type="text" placeholder="Danh mục">-->
-<!--                    <button class="search-btn">Tìm</button>-->
-<!--                </div>-->
-
-                <div class="row-cols-8 them-sua-sp">
-                    <button class="add btn btn-primary"> <a th:href="@{/management/add-product}">Thêm mới</a> </button>
-<!--                    <button class="delete">Xóa nhiều bản ghi</button>-->
-                </div>
-
-                <table class="row-cols-1" id="tb-product">
-                    <tr>
-                        <th>STT</th>
-                        <th>ID</th>
-                        <th>Ảnh</th>
-                        <th>Tên vé</th>
-                        <th style="max-width: 200px">Điểm xuất phát</th>
-                        <th style="max-width: 200px">Điểm kết thúc</th>
-                        <th>Giờ đi</th>
-                        <th>Còn trống</th>
-                        <th>Giá vé</th>
-                        <th>Số điện thoại</th>
-                        <th>Ngày thêm</th>
-                        <th>Trạng thái</th>
-                        <th>Hành động</th>
-                    </tr>
-                </table>
-            </div>
-
-        </div>
+    <div th:replace="~{fragments/header}"></div>
+    <div id="spa-loader">
+        <div class="spinner-border text-primary"></div>
     </div>
+
+    <div class="dashboard-wrapper">
+        <div th:replace="~{fragments/sidebar :: sidebar('products')}"></div>
+
+        <main class="main-content" id="main-content-area">
+            <!-- Dynamic Content Injected Here -->
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary mb-3"></div>
+                <p>Khởi tạo hệ thống quản trị...</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals (Global Container) -->
+    <div id="modal-container"></div>
+
+    <div th:replace="~{fragments/common-scripts :: commonScripts}"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/management.js}"></script>
 </body>
 
-
-<!--menu-->
-<script>
-    function showSubMenu() {
-        const subOder = document.getElementById('subOrder');
-        if (subOder.style.display === 'none' || subOder.style.display === '') {
-            subOder.style.display = 'block';
-        }
-        else {
-            subOder.style.display = 'none';
-        }
-    }
-
-    function showMenu(number) {
-        const sanPham = document.getElementById('san-pham');
-        const donHang = document.getElementById('don-hang');
-        const subOder = document.getElementById('subOrder');
-        const qlsp = document.getElementById('qlsp');
-        const qldh = document.getElementById('qldh');
-        if (number === 1) {
-            sanPham.style.display = 'block';
-            donHang.style.display = 'none';
-            subOder.style.display = 'none';
-            qlsp.style.backgroundColor = '#ccc';
-            qlsp.style.color = 'black';
-            qldh.style.color = 'white';
-            qldh.style.backgroundColor = 'inherit';
-        }
-        else if (number === 2) {
-            sanPham.style.display = 'none';
-            donHang.style.display = 'block';
-            qldh.style.backgroundColor = '#ccc';
-            qldh.style.color = 'black';
-            qlsp.style.color = 'white';
-            qlsp.style.backgroundColor = 'inherit';
-
-        }
-    }
-
-</script>
-
-<!--Danh sach products-->
-<script th:inline="javascript">
-    function displayValue(value) {
-        return (value !== null && value !== undefined) ? value : 'null';
-    }
-    // Sử dụng JavaScript để gọi API từ Spring Boot và tạo bảng
-    fetch('/api/v1/seller/my-store/all-product').then(response => response.json()).then(products => {
-        // var products = /*[[${products}]]*/ [];
-        const table = document.getElementById('tb-product');
-        var stt = 1;
-        products.forEach(product => {
-            const timeDifferenceString = calculateTimeDifference(product['startTime'], product['endTime']);
-            const formattedStartTime = moment(product['startTime'], "HH:mm:ss").format('HH:mm');
-            const formattedEndTime = moment(product['endTime'], "HH:mm:ss").format('HH:mm');
-            const formattedCreatedAt = moment(product['createdAt']).format('HH:mm DD/MM/YYYY');
-            const row = table.insertRow();
-            row.insertCell().textContent = stt++;
-            row.insertCell().textContent = product['productID'];
-            row.insertCell().innerHTML = '<img src="./img/Picture1.png" alt="Image">';
-            row.insertCell().textContent = product['productName'];
-            row.insertCell().textContent = product['startAddress'];
-            row.insertCell().textContent = product['endAddress'];
-            row.insertCell().textContent = formattedStartTime;
-            row.insertCell().textContent = product['remainSeat'] + ' ghế';
-            row.insertCell().textContent = product['price'];
-            row.insertCell().textContent = product['phoneNumber'];
-            row.insertCell().textContent = formattedCreatedAt;
-            var displays = product['display'] ? 'Hiển thị' : 'Ẩn';
-            row.insertCell().textContent = displays;
-            row.insertCell().innerHTML = `
-<div class="actions">
-    <button class="chi-tiet btn-action btn btn-info" onclick="showDetailProduct(${product.productID})">Chi tiết</button>
-
-<div class="ve-xe" id="productId${product.productID}">
-        <div>
-            <h6 id="n-hover${product.productID}" onmouseover="showNoticeList(${product.productID})"
-         onmouseout="hideNoticeList(${product.productID})" class="icon-notice"
-         >Thông báo<i class="fa-solid fa-bell" style="color: #fff"></i></h6>
-<!--            <img id="anh-xe" src="/img/Picture1.png" alt="Anh xe" />-->
-                <img id="anh-xe" src="${product.productImage}" alt="Anh xe" />
-        </div>
-
-      <div class="info-ve">
-        <div class="info-ve-p1">
-          <div class="ten-nha-xe-rate">
-            <p class="ten-nha-xe">${product.storeName}</p>
-
-          </div>
-          <p class="price">${product.price}đ</p>
-        </div>
-        <p class="productName" style="font-weight: bold">Tuyến: ${product.productName}</p>
-        <p class="car-type">${product.type} ${product.bienSoXe ? ` - ${product.bienSoXe}` : ''}</p>
-        <div class="info-ve-p2">
-          <div class="info-ve-p2-1">
-            <div class="info-p2-1-1">
-              <img class="start-icon" src="/img/clock-regular.svg" alt="" />
-              <p class="info-time">${formattedStartTime}</p>
-              <p>- ${product.startAddress}</p>
-            </div>
-
-            <div class="info-p2-1-1">
-              <img class="dot-dot" src="/img/dot.png" alt="" />
-              <p class="info-time" id="info-take-time">${timeDifferenceString}</p>
-            </div>
-            <div class="info-p2-1-1">
-              <img class="start-icon" src="/img/location.png" alt="" />
-              <p class="info-time">${formattedEndTime}</p>
-              <p>- ${product.endAddress}</p>
-            </div>
-          </div>
-          <div class="info-ve-p2-2">
-            <p id="blank">Còn ${product.remainSeat} chỗ trống</p>
-            <p class="contact">Liên hệ: ${product.phoneNumber}${product.phoneNumber2 ? ` - ${product.phoneNumber2}` : ''}</p>
-
-            <div>
-              <p id="info-button" class="info-button" onclick="showProductDetail(${product.productID})">
-                Thông tin chi tiết
-                <i
-                  style="transform: rotate(0deg)"
-                  id="arrow-icon${product.productID}"
-                  class="fa-solid fa-caret-down"
-                ></i>
-              </p>
-              <!-- <p>Thông tin chi tiết</p> -->
-            <button type="button" class="btn btn-danger"
-                onclick="dismissDetailProduct(${product.productID})">
-                Thoát
-            </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <p class="type-pay">KHÔNG CẦN THANH TOÁN TRƯỚC</p>
-        <div id="noticeList${product.productID}" class="noticeList"></div>
-      <div id="productDetail${product.productID}" class="detail" style="display: none">
-        <div class="detail-info">
-          <ul class="list-info">
-            <li>
-                <button class="menu-detail${product.productID} detail-img-b" id="detail-img-b${product.productID}"
-                onclick="showPartDetail(${product.productID}, 1)">
-                  Hình ảnh
-                </button>
-
-            </li>
-            <li>
-              <button class="menu-detail${product.productID} tien-ich-b" id="tien-ich-b${product.productID}"
-              onclick="showPartDetail(${product.productID}, 2)">
-                Tiện ích
-              </button>
-            </li>
-            <li>
-              <button class="menu-detail${product.productID} diem-don-tra-b" id="diem-don-tra-b${product.productID}"
-              onclick="showPartDetail(${product.productID}, 3)">
-                Điểm đón trả
-              </button>
-            </li>
-            <li>
-              <button class="menu-detail${product.productID} chinh-sach-b" id="chinh-sach-b${product.productID}"
-              onclick="showPartDetail(${product.productID}, 4)"> Chính sách </button>
-            </li>
-            <li>
-              <button class="menu-detail${product.productID} review-b" id="review-b${product.productID}"
-              onclick="showPartDetail(${product.productID}, 5)"> Thông tin </button>
-            </li>
-          </ul>
-        </div>
-
-        <div class="five-info" id="five-info">
-          <!--Hinh anh-->
-          <div class="part-detail${product.productID} detai-img" id="detai-img${product.productID}">
-            <img class="main-detail-img" src="https://static.vexere.com/production/images/1691571338555.jpeg" alt="" />
-            <img class="main-detail-img" src="https://static.vexere.com/production/images/1691571338859.jpeg" alt="" />
-            <img class="main-detail-img" src="https://static.vexere.com/production/images/1691571339090.jpeg" alt="" />
-            <img class="main-detail-img" src="https://static.vexere.com/production/images/1692701522841.jpeg" alt="" />
-            <div class="sub-img">
-            </div>
-          </div>
-          <!--Diem don tra-->
-          <div class="part-detail${product.productID} diem-don-tra" id="diem-don-tra${product.productID}">
-            <div class="luu-y">
-              <h3>Lưu ý</h3>
-              <p>
-                Các mốc thời gian đón trả bên dưới là thời gian dự kiến. <br />
-                Lịch này có thể thay đổi tùy tình hình thực tế
-              </p>
-            </div>
-
-            <div id="stopList${product.productID}">
-
-            </div>
-          </div>
-          <!--Tien ich-->
-          <div class="part-detail${product.productID} tien-ich" id="tien-ich${product.productID}">
-            <ul class="list-tien-ich">
-            <h3>Tiện ích</h3>
-            ${product.tienIch}
-            </ul>
-          </div>
-          <!--Chinh sach -->
-          <div class="part-detail${product.productID} chinh-sach" id="chinh-sach${product.productID}">
-<!--            <h3>Chính sách nhà xe</h3>-->
-            ${product.policy}
-          </div>
-          <!--Review-->
-          <div class="part-detail${product.productID} review" id="review${product.productID}">
-<!--          <h3>Mô tả</h3>-->
-             ${product.description}
-          </div>
-        </div>
-      </div>
-    </div>
-            <button class="update btn-action btn btn-primary"> <a href="/management/${product.productID}/update-product" >Sửa</a> </button>
-            <button class="delete btn-action btn btn-danger"
-                data-bs-toggle="modal" data-bs-target="#myModal${product.productID}"
-            >Xóa</button>
-            <!-- The Modal -->
-<div class="modal" id="myModal${product.productID}">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Xóa vé</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-        Bạn có chắc chắn muốn xóa vé này?
-      </div>
-
-      <!-- Modal footer -->
-      <div class="modal-footer">
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-        onclick="softDelete('true', ${product.productID})"
-      >Đồng ý</button>
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
-      </div>
-
-    </div>
-  </div>
-</div>
-            <button class="hide btn-action btn btn-dark" id="hide${product.productID}"
-                onclick="hideProduct(${product.productID})">Ẩn</button>
-
-            <button class="show btn-action btn btn-success" id="show${product.productID}"
-                onclick="displayProduct(${product.productID})">Hiện</button>
-            <button class="show btn-action btn btn-primary"
-                onclick="openMarkStopForm(${product.productID})">Chia sẻ vị trí</button>
-
-
-        <div id="mark-stop-backgr${product.productID}" class="mark-stop-backgr">
-
-        <form action="/management/my-store/mark-stop" method="post"
-            object="stopDtoList" class="mark-stop-form" id="mark-stop-form${product.productID}"
-        >
-
-        </form>
-
-        </div>
-
-</div>`;
-            const showBtn = document.getElementById(`show${product.productID}`);
-            const hideBtn = document.getElementById(`hide${product.productID}`);
-
-            if (displays == 'Ẩn') {
-                showBtn.style.display = 'block';
-                hideBtn.style.display = 'none';
-            }
-            else {
-                showBtn.style.display = 'none';
-                hideBtn.style.display = 'block';
-            }
-
-
-            const stopListDiv = document.getElementById(`stopList${product.productID}`);
-            if (product.stopList && product.stopList.length > 0) {
-                const ul = document.createElement('ul');
-                product.stopList.forEach(function (stop) {
-                    const li = document.createElement('li');
-                    const formattedStopTime = moment(stop.stopTime, "HH:mm:ss").format('HH:mm');
-                    li.innerHTML =
-                        displayValue(formattedStopTime) +
-                        ' - ' + displayValue(stop.stopAddress) + (displayValue(stop.rightNow) ? ' - Vị trí hiện tại' : '') ;
-                    if (displayValue(stop.rightNow) == true) {
-                        li.style.color = 'red';
-                    }
-                    ul.appendChild(li);
-                });
-                stopListDiv.appendChild(ul);
-            }
-
-
-            const markStopListDiv = document.getElementById(`mark-stop-form${product.productID}`);
-            const h3 = document.createElement('h3');
-            h3.textContent = 'Chia sẻ vị trí';
-            markStopListDiv.appendChild(h3);
-
-            if (product.stopList && product.stopList.length > 0) {
-                let stopCount = 0;
-                product.stopList.forEach(function (stop) {
-                    // Tạo một div mới cho điểm dừng
-                    const newStopDiv = document.createElement('div');
-                    newStopDiv.classList.add('stop-at');
-                    newStopDiv.style.display = 'flex';
-                    newStopDiv.id = 'stop-at' + stopCount;
-                    newStopDiv.innerHTML = `
-
-                    <input type="hidden" class="form-control m-2" placeholder="Nhập stopId"
-                        name="stopDTOList[${stopCount}].stopId" value="${stop.stopId}"
-                    >
-                    <input type="text" class="form-control m-2"
-                        name="stopDTOList[${stopCount}].stopAddress" value="${stop.stopAddress}"
-                        style="width: 65%;"
-                         readonly
-                    >
-                    <input type="time" class="form-control m-2 w-25"
-                        name="stopDTOList[${stopCount}].stopTime" value="${stop.stopTime}"
-                         readonly
-                    >
-                    <input type="checkbox" class="rightNow${product.productID}" style="width: 30px;"
-                        name="stopDTOList[${stopCount}].rightNow"
-                        value="${stop.rightNow}" id="rightNow${stopCount}${product.productID}"
-                        onchange="toggleInputs(${stopCount}, ${product.productID})"
-                        ${stop.rightNow ? 'checked' : ''}
-                    >
-                        `;
-
-                    stopCount++;
-                    markStopListDiv.appendChild(newStopDiv);
-                })
-
-                // const resetBtn = document.createElement('button');
-                // resetBtn.classList.add('resetMarkBtn');
-                // resetBtn.type = 'button';
-                // resetBtn.textContent = 'Tắt chia sẻ';
-                // resetBtn.style.width = '100px';
-                // resetBtn.onclick = function() {
-                //     // Gọi hàm resetChecked và truyền tham số (ví dụ: productId)
-                //     resetChecked(stopCount, product['productID']);
-                // };
-                // markStopListDiv.appendChild(resetBtn);
-
-                const div = document.createElement('div');
-                div.innerHTML = `
-<button class="resetMarkBtn btn btn-dark" type="button"
-        style="width: 100px;" onclick="resetChecked(${stopCount}, ${product.productID})">
-        Tắt chia sẻ
-</button>
-<button type="reset" class="btn btn-danger" style="float: right; margin-left: 8px"
-        onclick="closeMarkStopForm(${product.productID})">Hủy
-</button>
-<button type="submit" class="btn btn-primary" style="margin-left: 8px; float: right">Xong</button>
-`;
-                markStopListDiv.appendChild(div);
-            }
-
-
-
-        });
-    })
-        .catch(error => console.error('Error fetching products:', error));
-</script>
-
-<!--Chuyển đổi giữa các tab menu chi tiet-->
-<script>
-    function showPartDetail(productId, typeDetail) {
-        const partDetails = document.querySelectorAll('.part-detail'+ productId);
-        partDetails.forEach(function (partDetail) {
-            partDetail.style.display = 'none';
-        });
-
-        const menuDetails = document.querySelectorAll('.menu-detail'+ productId);
-        menuDetails.forEach(function (menuDetail) {
-            menuDetail.style.color = 'black';
-        });
-
-        if (typeDetail === 1) {
-            const detailImgElement = document.getElementById('detai-img' + productId);
-            const menuImgElement = document.getElementById('detail-img-b' + productId);
-            // displayAndChangeColor(detailImgElement, menuImgElement);
-            menuImgElement.style.color = '#2474E5';
-            detailImgElement.style.display = 'flex';
-        }
-        else if (typeDetail === 2) {
-            const detailTienIchElement = document.getElementById('tien-ich' + productId);
-            const menuTienIchElement = document.getElementById('tien-ich-b' + productId);
-            displayAndChangeColor(detailTienIchElement, menuTienIchElement);
-        }
-        else if (typeDetail === 3) {
-            const detailDiemDonTraElement = document.getElementById('diem-don-tra' + productId);
-            const menuDiemDonTraElement = document.getElementById('diem-don-tra-b' + productId);
-            displayAndChangeColor(detailDiemDonTraElement, menuDiemDonTraElement);
-        }
-        else if (typeDetail === 4) {
-            const detailChinhSachElement = document.getElementById('chinh-sach' + productId);
-            const menuChinhSachElement = document.getElementById('chinh-sach-b' + productId);
-            displayAndChangeColor(detailChinhSachElement, menuChinhSachElement);
-        }
-        else if (typeDetail === 5) {
-            const detailReviewElement = document.getElementById('review' + productId);
-            const menuReviewElement = document.getElementById('review-b' + productId);
-            displayAndChangeColor(detailReviewElement, menuReviewElement);
-        }
-    }
-
-    function displayAndChangeColor(detail, menu) {
-        menu.style.color = '#2474E5';
-        detail.style.display = 'block';
-    }
-
-</script>
-
-
-
-<script>
-    function showProductDetail(productId) {
-        // Ẩn tất cả các chi tiết sản phẩm
-        // hideAllProductDetails();
-
-        // Hiển thị chi tiết của sản phẩm được click
-        const productDetailDiv = document.getElementById('productDetail' + productId);
-        if (productDetailDiv.style.display === 'none' || productDetailDiv.style.display === '') {
-            productDetailDiv.style.display = 'block';
-        }
-        else {
-            productDetailDiv.style.display = 'none';
-        }
-
-        const arrow_icon = document.getElementById('arrow-icon'+ productId);
-        //xoay mũi tên
-        if (arrow_icon.style.transform === 'rotate(0deg)') {
-            arrow_icon.style.transform = 'rotate(180deg)';
-        }
-        else {
-            arrow_icon.style.transform = 'rotate(0deg)';
-        }
-    }
-    function showDetailProduct(productId) {
-        hideAllProductForm();
-        const productFrm = document.getElementById('productId' + productId);
-        if (productFrm.style.display === 'none' || productFrm.style.display === '') {
-            productFrm.style.display = 'grid';
-        }
-        else if (productFrm.style.display === 'grid') {
-            productFrm.style.display = "none";
-        }
-    }
-    function hideAllProductForm() {
-        const productForms = document.querySelectorAll('.ve-xe');
-        productForms.forEach(function (productForm) {
-            productForm.style.display = 'none';
-        });
-    }
-
-    function dismissDetailProduct(productId) {
-        const productFrm = document.getElementById('productId' + productId);
-        productFrm.style.display = "none";
-    }
-
-    function displayProduct(product_id) {
-        const showBtn = document.getElementById('show' + product_id);
-        const hideBtn = document.getElementById('hide' + product_id);
-        showBtn.style.display = 'none';
-        hideBtn.style.display = 'block';
-        sendForm('true', product_id);
-
-    }
-    function hideProduct(product_id) {
-        const showBtn = document.getElementById('show' + product_id);
-        const hideBtn = document.getElementById('hide' + product_id);
-        showBtn.style.display = 'block';
-        hideBtn.style.display = 'none';
-
-        // Kiểm tra nếu product_id không phải là undefined hoặc null trước khi gửi form
-        if (product_id) {
-            sendForm('false', product_id);
-        } else {
-            console.error('Invalid product_id');
-        }
-    }
-
-    function sendForm(status, product_id) {
-        // Kiểm tra nếu product_id không phải là undefined hoặc null trước khi tạo form
-        if (product_id) {
-            // Tạo và cấu hình form
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `/management/${product_id}/display-status`;
-            form.style.display = 'none';
-            form.setAttribute('object', 'hideShowProduct'); // Thêm attribute "object" vào form
-
-            // Tạo input ẩn và cấu hình nó
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'display';
-            input.value = status;
-
-            // Thêm input vào form
-            form.appendChild(input);
-
-            // Thêm form vào body và submit form
-            document.body.appendChild(form);
-            form.submit();
-        } else {
-            console.error('Invalid product_id');
-        }
-    }
-
-    function softDelete(status, product_id) {
-        if (product_id) {
-            // Tạo và cấu hình form
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `/management/${product_id}/remove`;
-            form.style.display = 'none';
-            form.setAttribute('object', 'removeProductDTO'); // Thêm attribute "object" vào form
-
-            // Tạo input ẩn và cấu hình nó
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'deleted';
-            input.value = status;
-
-            // Thêm input vào form
-            form.appendChild(input);
-
-            // Thêm form vào body và submit form
-            document.body.appendChild(form);
-            form.submit();
-        } else {
-            console.error('Invalid product_id');
-        }
-    }
-</script>
-
-
-<!--Xử lý chia sẻ vị trí-->
-<script>
-    function openMarkStopForm(productID) {
-        const newNotice = document.getElementById('mark-stop-backgr' + productID);
-        newNotice.style.display = 'block';
-    }
-    function closeMarkStopForm(productID) {
-        const newNotice = document.getElementById('mark-stop-backgr' + productID);
-        newNotice.style.display = 'none';
-    }
-
-
-        function toggleInputs(stopCount, productId) {
-            // Lấy danh sách tất cả các input có kiểu checkbox
-            const checkboxes = document.querySelectorAll(`.rightNow${productId}`);
-
-            // Duyệt qua danh sách và đặt giá trị của các input
-            checkboxes.forEach(checkbox => {
-                // Nếu không phải là input được tích vào, đặt giá trị là false
-                checkbox.value = 'false';
-                checkbox.checked = false; // Bỏ tích chọn (nếu có)
-            });
-            const checkedInput = document.getElementById('rightNow' + stopCount + '' + productId);
-            checkedInput.value = 'true';
-            checkedInput.checked = true;
-        }
-        function resetChecked(stopCount, productId) {
-            const checkboxes = document.querySelectorAll(`.rightNow${productId}`);
-
-            // Duyệt qua danh sách và đặt giá trị của các input
-            checkboxes.forEach(checkbox => {
-                // Nếu không phải là input được tích vào, đặt giá trị là false
-                checkbox.value = 'false';
-                checkbox.checked = false; // Bỏ tích chọn (nếu có)
-            });
-        }
-</script>
-<!--Logout click-->
-<script>
-    // Gán sự kiện click cho thẻ button
-    document.getElementById('logoutButton').addEventListener('click', function () {
-        // Gửi yêu cầu POST đến endpoint /logout khi người dùng nhấn vào nút đăng xuất
-        fetch('/logout', {
-            method: 'POST',
-            credentials: 'same-origin' // Đảm bảo gửi cookie (nếu có) kèm theo yêu cầu
-        })
-            .then(response => {
-                if (response.ok) {
-                    // Nếu đăng xuất thành công, bạn có thể thực hiện các bước cần thiết
-                    window.location.href = '/'; // Chuyển hướng đến trang đăng nhập, ví dụ '/login'
-                } else {
-                    console.error('Logout failed:', response.status);
-                }
-            })
-            .catch(error => console.error('Error during logout:', error));
-    });
-</script>
-
-<!--    Ẩn hiện thông báo bằng hover-->
-<script>
-    // Hàm để hiển thị thẻ chứa noticeList
-    function showNoticeList(id) {
-        document.getElementById('noticeList' + id).style.display = 'block';
-    }
-
-    // Hàm để ẩn thẻ chứa noticeList
-    function hideNoticeList(id) {
-        document.getElementById('noticeList' + id).style.display = 'none';
-    }
-</script>
-
-<script>
-    function calculateTimeDifference(startTimeString, endTimeString) {
-        // Chuyển đổi chuỗi thời gian thành số giây
-        function timeStringToSeconds(timeString) {
-            const [hours, minutes, seconds] = timeString.split(':').map(Number);
-            return hours * 3600 + minutes * 60 + seconds;
-        }
-
-        // Lấy số giây từ chuỗi thời gian
-        const startTimeInSeconds = timeStringToSeconds(startTimeString);
-        const endTimeInSeconds = timeStringToSeconds(endTimeString);
-
-        // Tính chênh lệch thời gian trong giây
-        const timeDifferenceInSeconds = endTimeInSeconds - startTimeInSeconds;
-
-        // Chuyển đổi chênh lệch thời gian thành giờ, phút, giây
-        const hours = Math.floor(timeDifferenceInSeconds / 3600);
-        const minutes = Math.floor((timeDifferenceInSeconds % 3600) / 60);
-        const seconds = Math.floor(timeDifferenceInSeconds % 60);
-
-        // Định dạng chuỗi kết quả
-        const resultString = `${hours} Giờ ${minutes} phút`;
-
-        return resultString;
-    }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

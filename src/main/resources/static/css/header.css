@@ -1,5 +1,5 @@
 body {
-    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
 }
 
 .header {
@@ -7,34 +7,35 @@ body {
     background-color: #2474E5;
     justify-content: space-between;
     align-items: center;
-    margin: auto;
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+    /* Ensure it stays above everything, including Bootstrap sticky-top */
+    width: 100%;
 }
+
 .header .left-menu {
     text-align: left;
-    padding-left: 15px;
-    width: 70px;
-    height: 50px;
 }
-.header .left-menu a img{
-    width: 70px;
-    height: 50px;
-    cursor: pointer;
-}
+
 .header .right-menu {
     list-style: none;
     text-align: right;
     display: flex;
-    margin: 0 16px 0 0;
+    margin: 0;
+    padding: 0;
 }
 
 .header .right-menu .main-menu-a {
     text-decoration: none;
-    padding: 14px  16px;
-    color: #fff;  
+    padding: 0 16px;
+    color: #fff;
     font-family: var(--font-chu);
-    line-height: 50px;
-    font-size: 20px;
-
+    line-height: 60px;
+    /* Match header container height */
+    font-size: 18px;
+    display: block;
+    transition: all 0.2s;
 }
 
 .main-menu {
@@ -42,40 +43,63 @@ body {
 }
 
 .right-menu .main-menu-a:hover {
-    background-color: #FFD333;
-    color: #000;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #FFD333;
 }
 
 .sub-main-menu {
     position: absolute;
     list-style: none;
     text-align: left;
-    background-color: #FFD333;
+    background-color: #fff;
+    /* Changed to white for better contrast */
     display: none;
-    padding-left: 0;
-    top: 50px;
+    padding: 8px 0;
+    white-space: nowrap;
+    top: 100%;
+    /* Position right below the menu item */
     right: 0;
-    width: 150px;
+    min-width: 180px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 8px 8px;
+    z-index: 1100;
 }
 
-.main-menu li:hover {
-    background-color: #04AA6D;
-}
-.main-menu:hover .sub-main-menu{  
-    display: block;    
+.main-menu:hover .sub-main-menu {
+    display: block;
 }
 
 .sub-main-menu li {
-    padding: 5px 10px;
+    padding: 0;
 }
+
 .sub-main-menu a {
     text-decoration: none;
-    color: #000;
+    color: #333 !important;
+    display: block;
+    padding: 10px 20px;
+    font-size: 15px;
+    transition: background 0.2s;
+}
 
+.sub-main-menu li:hover {
+    background-color: #f8f9fa;
 }
-.sub-main-menu li {
-    cursor: pointer;
+
+.sub-main-menu li:hover a {
+    color: #2474E5 !important;
 }
+
+/* Logout khusus */
+#logoutButton a {
+    color: #dc3545 !important;
+}
+
+#logoutButton:hover {
+    background-color: #fff5f5;
+}
+
+/* ------------------------------------- end header---------------------------------------------- */
 
 
 /* ------------------------------------- end header---------------------------------------------- */

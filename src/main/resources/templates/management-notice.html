@@ -1,344 +1,232 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Thông báo - TransitBooking</title>
+
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
-  <link rel="stylesheet" th:href="@{/css/management.css}">
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
   <link rel="stylesheet" th:href="@{/css/header.css}">
-  <link rel="stylesheet" th:href="@{/css/home.css}">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
   <style>
-    body {
-      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+    .notice-card {
+      border-left: 4px solid var(--primary);
+      margin-bottom: 15px;
     }
 
-    button {
-      border: none;
-      padding: 5px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    th {
-      background-color: #212529;
-      color: white;
-      padding: 10px;
-    }
-    td {
-      border: 2px solid #eae6e6;
-      padding: 5px 5px 5px 10px;
-      max-width: 200px;
-    }
-    .me1:hover{
-      background-color: #ccc;
-      color: black;
-    }
-    .me {
-      cursor: pointer;
-      margin: 0;
-    }
-    #tb-order {
-      max-height: 800px;
-      overflow-y: auto;
-    }
-    #qltb {
-      background-color: #ccc;
-      color: black;
-    }
-    #qltb a {
-      color: black;
+    .notice-title {
+      font-weight: 700;
+      color: #2c3e50;
     }
 
-    a {
-      color: white;
-      text-decoration: none;
+    .notice-meta {
+      font-size: 0.8rem;
+      color: #888;
     }
-    .me1 {
-      height: 50px;
-      padding: 8px 20px;
+
+    .status-active {
+      color: var(--success);
+      font-weight: 600;
     }
-    .me1 a {
-      line-height: 32px;
-      margin: 0;
+
+    .status-expired {
+      color: var(--danger);
+      font-weight: 600;
     }
-    .new-notice-form {
-      width: 650px;
-      background-color: #f2f2f2;
-      padding: 20px;
-      position: fixed;
-      border-radius: 10px;
-      top: 110px;
-      left: 500px;
-    }
-    .update-notice-form {
-      /*display: none;*/
-      width: 650px;
-      background-color: #f2f2f2;
-      padding: 20px;
-      position: fixed;
-      border-radius: 10px;
-      top: 139px;
-      left: 500px;
-    }
-    #productID-option {
-      border: 1px solid #dee2e6;
-      border-radius: 5px;
-      height: 1cm;
-    }
-    .is-expired {
-      border: 1px solid #dee2e6;
-      border-radius: 5px;
-      height: 1cm;
-    }
+
     .update-notice-div {
       display: none;
-      background-color: rgb(40,42,53, 0.6);
-      width: 1800px;
-      height: 800px;
       position: fixed;
-      top: 0px;
-      left: 0px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1200;
+    }
+
+    .notice-form-card {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
     }
   </style>
-  <title>Management</title>
 </head>
+
 <body>
-<div th:replace="~{fragments/header}"></div>
+  <div th:replace="~{fragments/header}"></div>
 
-<div class="">
-  <div class="col-2 position-fixed bg-dark top-0 text-white p-0" style="height: 713px;">
-    <div class="me row ">
-      <h5 class="me1 " id="qlsp" ><a th:href="@{/management}">Quản lý sản phẩm</a></h5>
-    </div>
-    <div class="me row " >
-      <h5 class="me1 " id="qldh" ><a th:href="@{/management-order}">Quản lý đơn hàng</a></h5>
-    </div>
-    <div class="me row " >
-      <h5 class="me1 " id="qltb" ><a th:href="@{/management-notice}">Quản lý thông báo</a></h5>
-    </div>
-  </div>
-  <div class="col-10 ms-auto p-4" style="background-color: #fff;">
+  <div class="dashboard-wrapper">
+    <div th:replace="~{fragments/sidebar :: sidebar('notices')}"></div>
 
-    <div class="thong-bao" id="thong-bao">
-      <h1>Thông báo</h1>
-
-      <div class="row-cols-8 them-sua-sp" id="new-notice-div">
-
+    <main class="main-content">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="font-weight-bold mb-0">Quản lý Thông báo</h2>
+          <p class="text-muted mb-0">Gửi thông báo lộ trình đến hành khách</p>
+        </div>
+        <button class="btn btn-primary btn-lg shadow-sm" data-toggle="modal" data-target="#newNoticeModal"
+          style="border-radius: 10px;">
+          <i class="fas fa-plus mr-2"></i> TẠO THÔNG BÁO
+        </button>
       </div>
 
-      <table class="row-cols-1" id="tb-notice">
-        <tr>
-          <th>STT</th>
-          <th>ID</th>
-          <th>Tên vé</th>
-          <th>Giờ đi</th>
-          <th>Biển số</th>
-          <th>Tiêu đề</th>
-          <th>Nội dung</th>
-          <th>Ngày tạo</th>
-          <th>Trạng thái</th>
-          <th>Hành động</th>
-        </tr>
-      </table>
-    </div>
-
-
+      <div class="content-card">
+        <div class="card-header">
+          <h5 class="card-title">Lịch sử thông báo</h5>
+        </div>
+        <div class="table-responsive">
+          <table class="table" id="tb-notice">
+            <thead>
+              <tr>
+                <th style="width: 50px;">STT</th>
+                <th>Thông tin vé</th>
+                <th>Nội dung thông báo</th>
+                <th>Thời gian tạo</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="6" class="text-center py-5">
+                  <div class="spinner-border text-primary mb-2"></div>
+                  <p class="text-muted">Đang tải danh sách thông báo...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
   </div>
-</div>
+
+  <!-- New Notice Modal -->
+  <div class="modal fade" id="newNoticeModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content notice-form-card">
+        <form action="/management/my-store/create-notice" method="post">
+          <h4 class="font-weight-bold text-primary mb-4">Tạo Thông báo mới</h4>
+          <div class="form-group">
+            <label class="font-weight-bold">Tiêu đề</label>
+            <input type="text" name="title" class="form-control" placeholder="Ví dụ: Xe sắp đến điểm đón" required>
+          </div>
+          <div class="form-group">
+            <label class="font-weight-bold">Nội dung chi tiết</label>
+            <textarea name="content" class="form-control" rows="3" placeholder="Nhập lời nhắn gửi đến khách hàng..."
+              required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="font-weight-bold">Chọn Chuyến xe áp dụng</label>
+            <select name="productID" id="productID-option" class="form-control" required>
+              <option value="">Đang tải danh sách chuyến xe...</option>
+            </select>
+          </div>
+          <div class="d-flex justify-content-end mt-4" style="gap: 10px;">
+            <button type="submit" class="btn btn-primary px-4 font-weight-bold">GỬI THÔNG BÁO</button>
+            <button type="button" class="btn btn-light" data-dismiss="modal">HỦY</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="~{fragments/common-scripts :: commonScripts}"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script th:inline="javascript">
+    $(document).ready(function () {
+      loadNotices();
+      loadProductsForSelect();
+    });
+
+    function loadNotices() {
+      ApiService.get('/api/v1/seller/my-store/all-notices')
+        .then(notices => renderNotices(notices))
+        .catch(err => {
+          console.error(err);
+          $('#tb-notice tbody').html('<tr><td colspan="6" class="text-center p-5 text-danger">Lỗi tải thông báo.</td></tr>');
+        });
+    }
+
+    function loadProductsForSelect() {
+      ApiService.get('/api/v1/seller/my-store/all-product')
+        .then(products => {
+          const select = $('#productID-option');
+          select.empty().append('<option value="">-- Chọn chuyến xe --</option>');
+          products.forEach(p => {
+            const time = formatTime(p.startTime);
+            select.append(`<option value="${p.productId}">${p.productName} (${time}) - ${p.bienSoXe || 'No BS'}</option>`);
+          });
+        });
+    }
+
+    function renderNotices(notices) {
+      const tbody = $('#tb-notice tbody');
+      tbody.empty();
+
+      if (!notices || notices.length === 0) {
+        tbody.append('<tr><td colspan="6" class="text-center p-5 text-muted">Chưa có thông báo nào được gửi.</td></tr>');
+        return;
+      }
+
+      notices.forEach((n, i) => {
+        const date = moment(n.createdAt).format('HH:mm DD/MM/YYYY');
+        const statusText = n.expired ? 'Hết hiệu lực' : 'Đang hiển thị';
+        const statusClass = n.expired ? 'status-expired' : 'status-active';
+
+        const row = $(`
+                    <tr style="${!n.expired ? 'background: #f6ffed;' : ''}">
+                        <td class="text-muted font-weight-bold">${i + 1}</td>
+                        <td>
+                            <div class="font-weight-bold text-dark">${n.productName}</div>
+                            <div class="small text-muted"><i class="fas fa-bus mr-1"></i>${n.bienSoXe || ''}</div>
+                        </td>
+                        <td>
+                            <div class="notice-title">${n.title}</div>
+                            <div class="small text-muted text-truncate" style="max-width: 300px;">${n.content}</div>
+                        </td>
+                        <td><small class="text-muted">${date}</small></td>
+                        <td><span class="${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn btn-outline-primary btn-sm" onclick="openUpdateNotice(${n.noticeId})">Sửa</button>
+                            
+                            <div id="update-notice-frm${n.noticeId}" class="update-notice-div">
+                                <div class="modal-dialog">
+                                    <div class="modal-content notice-form-card">
+                                        <form action="/management/my-store/update-notice" method="post">
+                                            <h4 class="font-weight-bold text-primary mb-4">Sửa Thông báo #${n.noticeId}</h4>
+                                            <input type="hidden" name="noticeID" value="${n.noticeId}">
+                                            <div class="form-group"><label>Tiêu đề</label><input type="text" name="title" class="form-control" value="${n.title}" required></div>
+                                            <div class="form-group"><label>Nội dung</label><textarea name="content" class="form-control" rows="3" required>${n.content}</textarea></div>
+                                            <div class="form-group">
+                                                <label>Trạng thái hiệu lực</label>
+                                                <select name="expired" class="form-control">
+                                                    <option value="false" ${!n.expired ? 'selected' : ''}>Còn hiệu lực</option>
+                                                    <option value="true" ${n.expired ? 'selected' : ''}>Hết hiệu lực</option>
+                                                </select>
+                                            </div>
+                                            <div class="d-flex justify-content-end mt-4" style="gap: 10px;">
+                                                <button type="submit" class="btn btn-primary px-4 font-weight-bold">CẬP NHẬT</button>
+                                                <button type="button" class="btn btn-light" onclick="closeUpdateNotice(${n.noticeId})">HỦY</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+        tbody.append(row);
+      });
+    }
+
+    window.openUpdateNotice = id => $(`#update-notice-frm${id}`).fadeIn(200);
+    window.closeUpdateNotice = id => $(`#update-notice-frm${id}`).fadeOut(150);
+  </script>
 </body>
 
-<!--Danh sách thông báo-->
-<script th:inline="javascript">
-
-  // Sử dụng JavaScript để gọi API từ Spring Boot và tạo bảng
-  ApiService.get(API_ENDPOINTS.MY.NOTICE.ALL, '')
-      .then(notices => {
-          notices = noticesRes;
-          const tableOrder = document.getElementById('tb-notice');
-          var stt = 1;
-          notices.forEach(notice => {
-              const formattedStartTime = moment(notice['startTime'], "HH:mm:ss").format('HH:mm');
-              const formattedCreatedAt = moment(notice['createdAt']).format('HH:mm DD/MM/YYYY');
-              const row = tableOrder.insertRow();
-              row.insertCell().textContent = stt++;
-              row.insertCell().textContent = notice['noticeId'];
-              row.insertCell().textContent = notice['productName'];
-              row.insertCell().textContent = formattedStartTime;
-              row.insertCell().textContent = notice['bienSoXe'];
-              row.insertCell().textContent = notice['title'];
-              row.insertCell().textContent = notice['content'];
-              row.insertCell().textContent = formattedCreatedAt;
-              const status = notice['expired'] ? 'Hết hiệu lực' : 'Còn hiệu lực';
-              row.insertCell().textContent = status;
-              row.insertCell().innerHTML = `
-                  <button class="btn btn-primary" onclick="openNoticeForm(${notice.noticeId})"> Sửa </button>
-
-                  <div id="update-notice-frm${notice.noticeId}" class="update-notice-div">
-
-                    <form action="/management/my-store/update-notice" method="post"
-                        object="noticeDTO" class="update-notice-form"
-                    >
-                      <h3 style="align-content: center">Sửa thông báo</h3>
-                      <div class="row mb-3">
-                        <label for="title${notice.noticeId}" class="form-label">Tiêu đề:</label>
-                        <input type="text" id="title${notice.noticeId}" name="title" class="form-control" value="${notice.title}" required/>
-                      </div>
-                      <div class="row mb-3">
-                        <label for="content${notice.noticeId}" class="form-label">Nội dung:</label>
-                        <textarea id="content${notice.noticeId}" name="content" class="form-control">${notice.content}</textarea><br/>
-                      </div>
-
-                      <div class="row mb-3">
-                        <label for="expired${notice.noticeId}" class="form-label">Hiệu lực:</label>
-                        <select id="expired${notice.noticeId}" name="expired" class="is-expired w-100 ">
-                        </select>
-                      </div>
-                      <input type="hidden" id="noticeID${notice.noticeId}" name="noticeID" class="form-control" value="${notice.noticeId}" required/>
-                      <button type="submit" class="btn btn-primary">Xong</button>
-                      <button type="button" class="btn btn-danger" onclick="closeUpdateNotice(${notice.noticeId})">Hủy</button>
-                    </form>
-                  </div> `;
-              if (status === 'Còn hiệu lực') {
-                  row.style.backgroundColor = '#cbf7d7';
-              }
-              else {
-                  row.style.backgroundColor = '#ccc';
-              }
-
-              const expiredElment = document.getElementById(`expired${notice.noticeId}`);
-              if (notice['expired']) {
-                  const option1 = document.createElement('option');
-                  option1.value = 'true';
-                  option1.text = 'Hết hiệu lực';
-                  expiredElment.appendChild(option1);
-
-                  const option2 = document.createElement('option');
-                  option2.value = 'false';
-                  option2.text = 'Còn hiệu lực';
-
-
-                  expiredElment.appendChild(option2);
-              }
-              else {
-                  const option1 = document.createElement('option');
-                  option1.value = 'false';
-                  option1.text = 'Còn hiệu lực';
-                  const option2 = document.createElement('option');
-                  option2.value = 'true';
-                  option2.text = 'Hết hiệu lực';
-                  expiredElment.appendChild(option1);
-                  expiredElment.appendChild(option2);
-              }
-
-          });
-      })
-      .catch(e => {
-          console.error('Load my notices failed', e);
-      });
-
-  function openNoticeForm(noticeID) {
-    const newNotice = document.getElementById('update-notice-frm' + noticeID);
-    newNotice.style.display = 'block';
-  }
-  function closeUpdateNotice(noticeID) {
-    const newNotice = document.getElementById('update-notice-frm' + noticeID);
-    newNotice.style.display = 'none';
-  }
-</script>
-
-
-<!--Tạo form thông báo-->
-<script th:inline="javascript">
-  ApiService.get(API_ENDPOINTS.MY.PRODUCT.ALL, '')
-      .then(products => {
-          const newNoticeDiv = document.getElementById('new-notice-div');
-          newNoticeDiv.innerHTML = `
-            <button class="add btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-notice">
-                Tạo thông báo mới
-            </button>
-                 <div class="modal" id="new-notice" >
-                   <div class="modal-dialog">
-                        <div class="modal-content">
-                    <form action="/management/my-store/create-notice" method="post" object="noticeDTO"
-                        class="new-notice-form">
-
-                      <div class="modal-header">
-                        <h3 style="align-content: center">Tạo thông báo mới</h3>
-                      </div>
-                      <div class="modal-body">
-                        <div class="row mb-3">
-                          <label for="title" class="form-label">Tiêu đề:</label>
-                          <input type="text" id="title" name="title" class="form-control" required/>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="content" class="form-label">Nội dung:</label>
-                          <textarea id="content" name="content" class="form-control"></textarea>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="productID-option" class="form-label">Vé:</label>
-                          <select id="productID-option" name="productID" class=" w-100 ">
-                  <!--            option ...-->
-                          </select>
-                        </div>
-                       </div>
-                      <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Xong</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Hủy</button>
-                      </div>
-                    </form>
-                        </div>
-                    </div>
-                </div>
-                `;
-
-          const productIDOption = document.getElementById('productID-option');
-          products.forEach(product => {
-              const option = document.createElement('option');
-              option.value = product['productID'];
-              const formattedStartTime = moment(product['startTime'], "HH:mm:ss").format('HH:mm');
-              option.text = product['productName'] + ' - ' +  formattedStartTime +  (product.bienSoXe ? ` - ${product.bienSoXe}` : '');
-              productIDOption.appendChild(option);
-          });
-      })
-      .catch(e => {
-          console.error('Load my products failed', e);
-      });
-
-  function closeNoticeForm() {
-    const newNotice = document.getElementById('new-notice');
-    newNotice.style.display = 'none';
-  }
-</script>
-
-<!--Handle render Ui for Guest-->
-<script>
-  // Kiểm tra xem có cookie có tên "Authorization" hay không
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-  }
-
-  // Lấy giá trị của cookie "Authorization"
-  const authToken = getCookie('Authorization');
-
-  // Lấy phần tử cần ẩn
-  const meElement = document.getElementById('me');
-  const loginElement = document.getElementById('login');
-
-  // Kiểm tra và ẩn phần tử nếu không có cookie "Authorization"
-  if (!authToken) {
-    meElement.style.display = 'none'; // Ẩn phần tử
-    loginElement.style.display = 'block'
-
-  }
-</script>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </html>
-

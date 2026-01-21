@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <body>
 
-<!-- Fragment: Common Scripts -->
-<div th:fragment="commonScripts">
-    <script th:src="@{/js/lib/moment.min.js}"></script>
-    <script th:src="@{/js/config/api-endpoints.js}"></script>
-    <script th:src="@{/js/common/rest-api-service.js}"></script>
-    <script th:src="@{/js/common/toast-service.js}"></script>
-</div>
+    <!-- Fragment: Common Scripts -->
+    <div th:fragment="commonScripts">
+        <script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
+        <script th:src="@{/js/lib/moment.min.js}"></script>
+        <script th:src="@{/js/lib/toastr.min.js}"></script>
+        <script th:src="@{/js/config/api-endpoints.js}"></script>
+        <script th:src="@{/js/common/rest-api-service.js}"></script>
+        <script th:src="@{/js/common/toast-service.js}"></script>
+        <script th:src="@{/js/common-component.js}"></script>
+    </div>
 
 </body>
+
 </html>

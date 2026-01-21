@@ -1,5 +1,5 @@
 :root {
-    --font-chu: -apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+    --font-chu: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
 }
 
 body {
@@ -12,6 +12,7 @@ body {
     /*overflow: hidden;*/
     font-family: "Euclid Circular B";
 }
+
 .container1 {
     /*background-color: #F2F2F2;*/
     margin: 0;
@@ -76,10 +77,12 @@ body {
     color: #fff;
     background-color: #2474E5;
 }
+
 .search-form .search-button button:active {
     color: #fff;
     background-color: #04AA6D;
 }
+
 .search-form .input-box .search-form-icon {
     width: 24px;
     height: 24px;
@@ -90,7 +93,7 @@ body {
     padding-left: 5px;
 }
 
-.search-form .search-button button{
+.search-form .search-button button {
     height: 80%;
     color: black;
     background-color: #FFD333;
@@ -136,6 +139,7 @@ body {
     padding: 16px;
     margin-bottom: 16px;
 }
+
 .left-body .sap-xep h3 {
     margin: auto;
 }
@@ -146,9 +150,11 @@ body {
     justify-content: space-between;
     margin: auto;
 }
+
 .filter-title h3 {
     margin: 0;
 }
+
 .filter-title p {
     color: #2474E5;
     text-decoration: underline;
@@ -173,9 +179,11 @@ body {
     margin-bottom: 8px;
     font-size: 12px;
 }
+
 .left-body .filter-form .loc-thoi-gian button p {
     margin: auto;
 }
+
 /* ------------------------------------- end main left body ------------------------------------ */
 
 
@@ -192,16 +200,14 @@ body {
 
 /* ------------------------------------------ ve xe ----------------------------------- */
 .ve-xe {
-    display: grid;
-    grid-template-columns: 20% 80%;
+    display: block;
     background-color: #fff;
     border-radius: 10px;
-    padding: 16px;
+    padding: 0;
     position: relative;
     /*box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.5);*/
-    margin: 0;
-    width: 100%;
     margin: 16px 0;
+    width: 100%;
 }
 
 .ve-xe:hover {
@@ -215,8 +221,9 @@ body {
 }
 
 .ve-xe .info-ve {
-    margin-left: 20px;
+    margin-left: 0;
 }
+
 /* -------------------------------- info ve p1 ---------------------------------- */
 .ve-xe .info-ve-p1 {
     display: flex;
@@ -224,6 +231,7 @@ body {
     justify-content: space-between;
     /* background-color: #daf336; */
 }
+
 .ve-xe .info-ve-p1 .ten-nha-xe-rate {
     display: flex;
     align-items: center;
@@ -235,6 +243,7 @@ body {
     font-weight: bold;
     font-size: 20px;
 }
+
 .ve-xe .info-ve-p1 .price {
     text-align: right;
     margin: 0;
@@ -246,45 +255,55 @@ body {
 .ve-xe .car-type {
     margin: auto;
 }
+
 /* -------------------------------- end info ve p1 ------------------------------ */
 
 /* -------------------------------- info ve p2 ---------------------------------- */
 .ve-xe .info-ve-p2 {
-    display: grid;
-    grid-template-columns: auto auto;
+    /* display: grid; */
+    /* grid-template-columns: auto auto; */
 }
+
 /* -------------------------------- info ve p2-1 ------------------------ */
 .ve-xe .info-ve-p2-1 {
-    display: grid;
+    /* display: grid; */
 }
+
 .ve-xe .info-ve-p2-1 .start-icon {
     width: 15px;
     height: 15px;
 }
-.ve-xe .info-ve-p2-1 p{
+
+.ve-xe .info-ve-p2-1 p {
     margin: 0;
 }
+
 .ve-xe .info-ve-p2-1 .info-time {
     font-weight: bold;
     font-size: 20px;
     padding: 5px;
 }
+
 .ve-xe .info-ve-p2-1 #info-take-time {
     font-weight: normal;
     font-size: 14px;
 }
+
 .ve-xe .info-ve-p2-1 .info-p2-1-1 {
     display: flex;
     align-items: center;
 }
+
 .dot-dot {
     flex-direction: column;
 }
+
 /* -------------------------------- info ve p2-1-1 -------------------- */
 .ve-xe .info-ve-p2-1 .info-p2-1-1 .dot-dot {
     width: 15px;
     height: 60px;
 }
+
 /* --------------------------- end info ve p2-1-1 ------------------- */
 /* -------------------------------- end info ve p2-1 -------------------- */
 
@@ -293,6 +312,7 @@ body {
     padding-left: 10px;
     border-left: 1px solid #ccc;
 }
+
 .ve-xe .info-ve-p2-2 div {
     display: flex;
     justify-content: flex-end;
@@ -301,12 +321,13 @@ body {
 }
 
 
-.ve-xe .info-ve-p2-2 #blank, .contact {
+.ve-xe .info-ve-p2-2 #blank,
+.contact {
     /*margin: 63px 0px 3px 0px;*/
     text-align: right;
 }
 
-.ve-xe .info-ve-p2-2 #info-button{
+.ve-xe .info-ve-p2-2 #info-button {
     color: #2474E5;
     padding: 10px 17px 10px 0;
     cursor: pointer;
@@ -324,14 +345,17 @@ body {
     width: 112px;
     padding: 8px;
 }
+
 .ve-xe .info-ve-p2-2 button:hover {
     color: #fff;
     background-color: #FB6102;
 }
+
 .ve-xe .info-ve-p2-2 button:active {
     color: #fff;
     background-color: #04AA6D;
 }
+
 /* -------------------------------- end info ve p2-2 -------------------- */
 .ve-xe .type-pay {
     grid-column: 1/3;
@@ -339,6 +363,7 @@ body {
     text-align: right;
     margin: 0;
 }
+
 /* -------------------------------- info ve p2 ---------------------------------- */
 /* --------------------------------------end ve xe ----------------------------------- */
 
@@ -347,9 +372,10 @@ body {
 
 /* ------------------------------------- chi tiet ve xe-------------------------------- */
 .detail {
-    grid-column: 1/3;
-    /*display: none;*/
+    /* grid-column: 1/3; */
+    padding: 0;
 }
+
 /* ------------------------------------- menu thong tin------------------------ */
 .detail-info {
     grid-column: 1/3;
@@ -363,12 +389,12 @@ body {
     border-top: 1px solid #ccc;
     margin: 0;
 }
+
 .list-info li {
     padding: 0px 20px;
 }
-.list-info .menu-detail {
 
-}
+.list-info .menu-detail {}
 
 .list-info button {
     color: #333131;
@@ -376,6 +402,7 @@ body {
     background-color: #fff;
     cursor: pointer;
 }
+
 /* ------------------------------ end menu thong tin ---------------------------- */
 
 
@@ -383,17 +410,16 @@ body {
 
 /* ---------------------------- 5 thong tin trong menu -------------------------- */
 
-.five-info {
+.five-info {}
 
-}
 /* ------------------------------chi tiet anh---------------------------- */
 .detai-img {
     border: 1px solid #ccc;
     display: flex;
 }
-.main-detail-img {
 
-}
+.main-detail-img {}
+
 .detai-img .main-detail-img {
     max-width: 25%;
     height: auto;
@@ -401,6 +427,7 @@ body {
     display: flex;
     padding: 5px;
 }
+
 .detai-img .sub-img {
     display: flex;
     justify-content: space-evenly;
@@ -410,25 +437,25 @@ body {
 .detai-img .sub-img img {
     padding: 10px;
 }
+
 /* ------------------------------ end chi tiet anh------------------------ */
 
 /* ------------------------------ diem don tra---------------------------- */
 .diem-don-tra {
-    grid-template-columns: auto auto;
+    /* grid-template-columns: auto auto; */
     border: 1px solid #ccc;
     display: none;
     padding: 10px;
 }
+
 .luu-y {
     grid-column: 1/3;
 }
 
-.diem-don {
+.diem-don {}
 
-}
-.diem-tra {
+.diem-tra {}
 
-}
 /* ------------------------------end diem don tra------------------------ */
 
 
@@ -437,10 +464,12 @@ body {
     border: 1px solid #ccc;
     display: none;
 }
+
 .tien-ich .list-tien-ich li {
     padding: 15px;
     /*list-style: none;*/
 }
+
 /* --------------------------------- end tien ich------------------------ */
 
 /* -------------------------------chinh sach----------------------------- */
@@ -450,9 +479,8 @@ body {
     padding: 10px;
 }
 
-.chinh-sach ul {
+.chinh-sach ul {}
 
-}
 /* ------------------------------- end chinh sach------------------------ */
 
 
@@ -470,6 +498,7 @@ body {
     font-weight: bold;
 
 }
+
 .total-review span {
     padding: 0 10px 0 5px;
 }
@@ -510,6 +539,7 @@ body {
     margin-top: 0px;
 
 }
+
 /* ------------------------------- danh gia ----------------------------- */
 /* ---------------------------- 5 thong tin trong menu --------------------------- */
 /* ---------------------------------- end chi tiet ve xe -------------------------------- */
@@ -560,5 +590,3 @@ body {
     justify-content: space-around;
     cursor: pointer;
 }
-
-

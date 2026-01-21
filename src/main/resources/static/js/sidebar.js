@@ -1,28 +1,36 @@
-const subMenus = document.querySelectorAll(".sub-menu"),
-    buttons = document.querySelectorAll(".sidebar ul button");
 
-const onClick = (item) => {
-    subMenus.forEach((menu) => (menu.style.height = "0px"));
-    buttons.forEach((button) => button.classList.remove("active"));
+$(document).ready(function () {
+    // Toggle Sidebar
+    $(".sidebar-burger").on("click", function () {
+        $(".sidebar ul").toggleClass("hide");
+        $(".sidebar").toggleClass("hide");
+    });
 
-    if (!item.nextElementSibling) {
-        item.classList.add("active");
-        return;
-    }
+    // Menu Items Click
+    $(".sidebar ul > li > button").on("click", function () {
+        var button = $(this);
+        var subMenu = button.next(".sub-menu");
+        var allSubMenus = $(".sub-menu");
+        var allButtons = $(".sidebar ul button");
 
-    const subMenu = item.nextElementSibling,
-        ul = subMenu.querySelector("ul");
+        // Check if this submenu is currently open (before we reset)
+        // We check style directly or height.
+        var isAlreadyOpen = subMenu.length > 0 && subMenu[0].style.height !== "0px" && subMenu[0].style.height !== "";
+        // Note: original code set height to "0px". Initially it might be empty string (css default).
 
-    if (!subMenu.clientHeight) {
-        subMenu.style.height = `${ul.clientHeight}px`;
-        item.classList.add("active");
-    } else {
-        subMenu.style.height = "0px";
-        item.classList.remove("active");
-    }
-};
+        // Reset all
+        allSubMenus.css("height", "0px");
+        allButtons.removeClass("active");
 
-const toggleSidebar = () => {
-    document.querySelector(".sidebar ul").classList.toggle("hide");
-    document.querySelector(".sidebar").classList.toggle("hide");
-}
+        if (subMenu.length === 0) {
+            button.addClass("active");
+            return;
+        }
+
+        if (!isAlreadyOpen) {
+            var ul = subMenu.find("ul");
+            subMenu.css("height", ul.outerHeight() + "px");
+            button.addClass("active");
+        }
+    });
+});

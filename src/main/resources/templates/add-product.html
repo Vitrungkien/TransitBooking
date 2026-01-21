@@ -1,393 +1,201 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thêm sản phẩm</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <title>Thêm Vé Xe Mới - TransitBooking</title>
+
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+
   <style>
-    body {
-      font-family: sans-serif;
+    .form-section {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 25px;
     }
 
-    .container {
-      /* width: 500px;
-      margin: 0 auto; */
+    .section-title {
+      font-weight: 700;
+      color: var(--primary);
+      border-left: 4px solid var(--primary);
+      padding-left: 15px;
+      margin-bottom: 20px;
     }
 
-    .form-control {
-      /* width: 100%; */
+    .stop-item {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 10px;
+      border: 1px solid #eee;
     }
 
-    .form-label {
-      font-weight: bold;
-    }
-
-    .mb-3 {
-      margin-bottom: 1rem;
-    }
-
-    .btn {
-      background-color: #000000;
-      color: #ffffff;
-    }
-
-    .btn-primary {
-      background-color: #0080ff;
-    }
-    .stop-at {
-      display: flex;
-    }
-    .addPform {
-      margin-left: 20px;
+    .ck-editor__editable {
+      min-height: 200px;
     }
   </style>
 </head>
+
 <body>
+  <div th:replace="~{fragments/header}"></div>
 
-<div class="">
-  <h1 style="text-align: center" class="m-2">Thêm vé xe</h1>
+  <div class="dashboard-wrapper">
+    <div th:replace="~{fragments/sidebar :: sidebar('products')}"></div>
 
-  <form action="/management/my-store/add-product" method="post" class="row addform" object="productDTO">
-
-    <div class="row" style="padding-left: 60px;">
-
-      <div class="col-lg-6">
-
-        <div class="row">
-          <div class="col-lg-6 ">
-            <!--        Tên sản phẩm-->
-            <div class="mb-3">
-              <label for="productName" class="form-label">Tên vé</label>
-              <input type="text" class="form-control" id="productName" name="productName"
-                     placeholder="Nhập tên sản phẩm" value=""
-                     required
-              >
-            </div>
-
-            <!--        Ảnh sản phẩm-->
-            <div class="mb-3">
-              <label for="productImage" class="form-label">URL hình ảnh sản phẩm</label>
-              <input type="text" class="form-control" id="productImage" name="productImage"
-                     placeholder="Nhập URL hình ảnh sản phẩm" value=""
-              >
-            </div>
-
-            <!--        Chỗ trống-->
-            <div class="mb-3">
-              <label for="remainSeat" class="form-label">Số lượng chỗ còn lại</label>
-              <input type="number" class="form-control" id="remainSeat" name="remainSeat"
-                     placeholder="Nhập số lượng chỗ còn lại" value=""
-              >
-            </div>
-
-            <!--        Giá vé-->
-            <div class="mb-3">
-              <label for="price" class="form-label">Giá vé</label>
-              <input type="number" class="form-control" id="price" name="price"
-                     placeholder="Nhập giá" value=""
-              >
-            </div>
-
-            <!--        Biển số xe     -->
-            <div class="mb-3">
-              <label for="bienSoXe" class="form-label">Biển số xe</label>
-              <input type="text" class="form-control" id="bienSoXe" name="bienSoXe"
-                     placeholder="Nhập biển số xe" value=""
-              >
-            </div>
-
-            <div class="mb-3">
-              <label for="type" class="form-label">Loại xe</label>
-              <input type="text" class="form-control" id="type" name="type" placeholder="Nhập loại xe" required>
-            </div>
-
-          </div>
-
-          <div class="col-lg-6" style="padding-left: 30px;">
-
-            <div class="mb-3">
-              <label for="phoneNumber" class="form-label">Số điện thoại 1</label>
-              <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Nhập số điện thoại 1" required>
-            </div>
-
-            <div class="mb-3">
-              <label for="phoneNumber2" class="form-label">Số điện thoại 2</label>
-              <input type="text" class="form-control" id="phoneNumber2" name="phoneNumber2" placeholder="Nhập số điện thoại 2" >
-            </div>
-
-            <div class="mb-3">
-              <label for="startTime" class="form-label">Thời gian xuất phát</label>
-              <input type="time" class="form-control" id="startTime" name="startTime" placeholder="Nhập thời gian xuất phát" required>
-            </div>
-
-            <div class="mb-3">
-              <label for="endTime" class="form-label">Thời gian đến dự kiến</label>
-              <input type="time" class="form-control" id="endTime" name="endTime" placeholder="Nhập thời gian đến dự kiến" >
-            </div>
-
-            <div class="mb-3">
-              <label for="startAddress" class="form-label">Địa chỉ xuất phát</label>
-              <input type="text" class="form-control" id="startAddress" name="startAddress" placeholder="Nhập địa chỉ bắt đầu" required>
-            </div>
-
-            <div class="mb-3">
-              <label for="endAddress" class="form-label">Địa chỉ đích đến</label>
-              <input type="text" class="form-control" id="endAddress" name="endAddress" placeholder="Nhập địa đích đến" required>
-            </div>
-
-            <!--    <div class="mb-3">-->
-            <!--      <label for="description" class="form-label">Mô tả</label>-->
-            <!--      <textarea class="form-control" id="description" name="description" rows="3" placeholder="Nhập mô tả" required></textarea>-->
-            <!--    </div>-->
-
-          </div>
-
+    <main class="main-content">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="font-weight-bold mb-0">Thêm Vé Xe Mới</h2>
+          <p class="text-muted mb-0">Tạo chuyến xe ghép hoặc xe khách chất lượng cao</p>
         </div>
-
-        <div class="row">
-
-          <div class="mb-3">
-            <h4 class="m-2">Các điểm dừng</h4>
-            <div id="stopList">
-              <div class="d-flex">
-                <h5 class="m-2" style="width: 70%; font-weight: bold">Địa chỉ</h5>
-                <h5 style="font-weight: bold; margin: 8px 8px 8px 0">Thời gian</h5>
-              </div>
-              <div class="stop-at" id="stop-at0">
-                <input type="text" class="form-control m-2" id="stopAddress0" name="stopList[0].stopAddress" placeholder="Nhập địa chỉ">
-                <input type="time" class="form-control m-2 w-25" id="stopTime0" name="stopList[0].stopTime" placeholder="Nhập thời gian">
-                <input type="hidden" class="form-control m-2" id="stop-deleted0" name="stopList[0].deleted" value="false">
-                <button type="button" class="btn btn-danger m-2" onclick="removeStop(0)">Xóa</button>
-              </div>
-
-              <div class="stop-at" id="stop-at1">
-                <input type="text" class="form-control m-2" id="stopAddress1" name="stopList[1].stopAddress" placeholder="Nhập địa chỉ">
-                <input type="time" class="form-control m-2 w-25" id="stopTime1" name="stopList[1].stopTime" placeholder="Nhập thời gian">
-                <input type="hidden" class="form-control m-2" id="stop-deleted1" name="stopList[0].deleted" value="false">
-                <button type="button" class="btn btn-danger m-2" onclick="removeStop(1)">Xóa</button>
-              </div>
-
-            </div>
-            <input type="button" class="btn btn-primary m-2" id="addStop" value="Thêm địa chỉ dừng chân">
-          </div>
-
-        </div>
-
+        <a th:href="@{/management}" class="btn btn-light"><i class="fas fa-arrow-left mr-2"></i> QUAY LẠI</a>
       </div>
 
-      <div class="col-lg-6">
-        <div class="col-lg-12">
-          <!--    Mô tả sản phẩm-->
-          <div class="mb-3">
-            <label for="description" class="form-label">Mô tả chuyến xe</label>
-            <textarea class="form-control" id="description" name="description" rows="3"
-                      placeholder="Nhập mô tả"
-            ></textarea>
+      <form action="/management/my-store/add-product" method="post">
+        <div class="row">
+          <div class="col-lg-8">
+            <!-- Basic Info -->
+            <div class="form-section">
+              <h5 class="section-title">THÔNG TIN CHUNG</h5>
+              <div class="form-group">
+                <label>Tên chuyến xe (Tuyến đường)</label>
+                <input type="text" name="productName" class="form-control" placeholder="Ví dụ: Hà Nội - Lạng Sơn"
+                  required>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group"><label>Loại xe</label><input type="text" name="type" class="form-control"
+                      placeholder="Ví dụ: Limousine 9 chỗ" required></div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group"><label>Biển số</label><input type="text" name="bienSoXe" class="form-control"
+                      placeholder="29A-12345"></div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group"><label>Giá vé (VNĐ)</label><input type="number" name="price"
+                      class="form-control" placeholder="200000" required></div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group"><label>Chỗ trống</label><input type="number" name="remainSeat"
+                      class="form-control" placeholder="9" required></div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group"><label>Hình ảnh (URL)</label><input type="text" name="productImage"
+                      class="form-control" placeholder="https://..."></div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group"><label>SĐT 1</label><input type="text" name="phoneNumber" class="form-control"
+                      placeholder="Số điện thoại chính" required></div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group"><label>SĐT 2</label><input type="text" name="phoneNumber2"
+                      class="form-control" placeholder="Số điện thoại phụ"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Route Info -->
+            <div class="form-section">
+              <h5 class="section-title">LỊCH TRÌNH CHÍNH</h5>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group"><label>Điểm bắt đầu</label><input type="text" name="startAddress"
+                      class="form-control" placeholder="Điểm đón đầu tiên" required></div>
+                  <div class="form-group"><label>Giờ xuất phát</label><input type="time" name="startTime"
+                      class="form-control" required></div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group"><label>Điểm kết thúc</label><input type="text" name="endAddress"
+                      class="form-control" placeholder="Bến xe/Điểm trả cuối" required></div>
+                  <div class="form-group"><label>Giờ đến dự kiến</label><input type="time" name="endTime"
+                      class="form-control"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Detailed Stops -->
+            <div class="form-section">
+              <h5 class="section-title">ĐIỂM DỪNG TIẾP NHẬN</h5>
+              <div id="stopList"></div>
+              <button type="button" class="btn btn-outline-primary btn-block mt-3" onclick="addStop()"><i
+                  class="fas fa-plus mr-2"></i> THÊM ĐIỂM DỪNG</button>
+            </div>
           </div>
 
-          <div class="mb-3">
-            <label for="policy" class="form-label">Chính sách</label>
-            <textarea class="form-control" id="policy" name="policy" rows="3" placeholder="Nhập chính sách">
-            <h5><strong>Chính sách nhà xe</strong></h5><h6><strong>Yêu cầu khi lên xe</strong></h6><ul><li>Không vứt rác trên xe</li><li>Không mang đồ ăn, thức ăn có mùi lên xe</li><li>Không hút thuốc, uống rượu, sử dụng chất kích thích trên xe</li><li>Không mang các vật dễ cháy nổ lên xe</li><li>Không làm ồn, gây mất trật tự trên xe</li></ul><h6><strong>Hành lý sách tay</strong></h6><ul><li>Tổng trọng lượng sách tay không quá 10kg</li></ul><h6><strong>Trẻ em và phụ nữ có thai</strong></h6><ul><li>Trẻ em dưới 3 tuổi hoặc dưới 110 cm được miễn phí vé nếu ngồi cùng ghế/giường với bố mẹ</li><li>Trẻ em từ 3 tuổi hoặc cao từ 110 cm trở lên mua vé như người lớn</li></ul><h6><strong>Động vật cảnh/thú cưng</strong></h6><ul><li>Nhận chở chó, mèo</li></ul>
-        </textarea>
-          </div>
+          <div class="col-lg-4">
+            <!-- Content -->
+            <div class="form-section">
+              <h5 class="section-title">NỘI DUNG CHI TIẾT</h5>
+              <div class="form-group"><label>Mô tả chuyến xe</label><textarea id="descEditor"
+                  name="description"></textarea></div>
+              <div class="form-group"><label>Chính sách</label><textarea id="policyEditor" name="policy"></textarea>
+              </div>
+              <div class="form-group"><label>Tiện ích</label><textarea id="utilEditor" name="tienIch"></textarea></div>
+            </div>
 
-          <div class="mb-3">
-            <label for="tien-ich" class="form-label">Tiện ích</label>
-            <textarea class="form-control" id="tien-ich" name="tienIch" rows="3"
-                      placeholder="Nhập tiện ích"
-            ></textarea>
+            <button type="submit" class="btn btn-primary btn-lg btn-block shadow-sm py-3 font-weight-bold">ĐĂNG CHUYẾN
+              XE</button>
+            <a th:href="@{/management}" class="btn btn-light btn-block mt-3">HỦY BỎ</a>
           </div>
-
         </div>
-        </div>
-    </div>
+      </form>
+    </main>
+  </div>
 
+  <div th:replace="~{fragments/common-scripts :: commonScripts}"></div>
+  <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
 
+  <script th:inline="javascript">
+    let stopCount = 0;
 
+    $(document).ready(function () {
+      // Init Editors
+      ClassicEditor.create(document.querySelector('#descEditor')).catch(console.error);
+      ClassicEditor.create(document.querySelector('#policyEditor')).catch(console.error);
+      ClassicEditor.create(document.querySelector('#utilEditor')).catch(console.error);
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-
-  </form>
-</div>
-
-</body>
-
-
-<!--Thêm điểm dừng-->
-
-<script>
-    let stopCount = 2; // Bắt đầu với 2 vì đã có 2 điểm dừng mặc định
-
-    document.getElementById('addStop').addEventListener('click', function () {
-        // Tạo một div mới cho điểm dừng
-        const newStopDiv = document.createElement('div');
-        newStopDiv.classList.add('stop-at');
-
-        // Tạo input cho địa chỉ
-        const addressInput = document.createElement('input');
-        addressInput.type = 'text';
-        addressInput.classList.add('form-control', 'm-2');
-        addressInput.placeholder = 'Nhập địa chỉ';
-        addressInput.name = 'stopList[' + stopCount + '].stopAddress';
-
-        // Tạo input cho thời gian
-        const timeInput = document.createElement('input');
-        timeInput.type = 'time';
-        timeInput.classList.add('form-control', 'm-2', 'w-25');
-        timeInput.placeholder = 'Nhập thời gian';
-        timeInput.name = 'stopList[' + stopCount + '].stopTime';
-
-        // Tạo input để xóa
-        const deletedInput = document.createElement('input');
-        deletedInput.type = 'hidden';
-        deletedInput.classList.add('form-control', 'm-2');
-        deletedInput.name = 'stopList[' + stopCount + '].deleted';
-        deletedInput.value = 'false';
-
-        // Tạo nút xóa
-        const deleteButton = document.createElement('button');
-        deleteButton.type = 'button';
-        deleteButton.classList.add('btn', 'btn-danger', 'm-2');
-        deleteButton.textContent = 'Xóa';
-        deleteButton.addEventListener('click', function () {
-            // Xóa điểm dừng khi nút xóa được nhấp
-            deletedInput.value = 'true';
-            newStopDiv.style.display = 'none';
-        });
-
-        // Thêm input và nút xóa vào div mới
-        newStopDiv.appendChild(addressInput);
-        newStopDiv.appendChild(timeInput);
-        newStopDiv.appendChild(deletedInput);
-        newStopDiv.appendChild(deleteButton);
-
-        // Thêm div mới vào #stopList
-        document.getElementById('stopList').appendChild(newStopDiv);
-
-        // Tăng số đếm
-        stopCount++;
+      // Add first empty stop
+      addStop();
     });
 
-    function removeStop(num) {
-      const stop = document.getElementById('stop-at' + num);
-      const stopDeleted = document.getElementById('stop-deleted' + num);
-      stop.style.display = 'none';
-      stopDeleted.value = 'true';
+    function addStop() {
+      const stopList = $('#stopList');
+      const id = stopCount++;
+      const stopHtml = `
+                <div class="stop-item" id="stop-at-${id}">
+                    <div class="row align-items-end">
+                        <div class="col-md-7">
+                            <label class="small font-weight-bold text-muted uppercase">Địa chỉ dừng</label>
+                            <input type="text" name="stopList[${id}].stopAddress" class="form-control form-control-sm" placeholder="Ví dụ: Cổng chào Phù Ninh" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="small font-weight-bold text-muted uppercase">Giờ</label>
+                            <input type="time" name="stopList[${id}].stopTime" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeStop(${id})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `;
+      stopList.append(stopHtml);
     }
-</script>
 
-
-<script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
-<script>
-  // Remove a plugin from the default setup.
-  ClassicEditor.create( document.querySelector( '#description' ), {
-    toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
-    heading: {
-      options: [
-        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-      ]
-    },
-    language: 'vi'
-  } )
-          .catch( error => {
-            console.log( error );
-          } );
-
-  ClassicEditor.create( document.querySelector( '#policy' ), {
-    toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
-    heading: {
-      options: [
-        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-      ]
-    },
-    language: 'vi'
-  } )
-          .catch( error => {
-            console.log( error );
-          } );
-  ClassicEditor.create( document.querySelector( '#tien-ich' ), {
-    toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
-    heading: {
-      options: [
-        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-      ]
-    },
-    language: 'vi'
-  } )
-          .catch( error => {
-            console.log( error );
-          } );
-
-</script>
-<!--Thêm ảnh-->
-<!--<script>-->
-<!--  const productImages = document.querySelector("#productImages");-->
-<!--  const productImageList = document.querySelector("#productImageList");-->
-
-<!--  const productImagesList = [];-->
-
-<!--  productImages.addEventListener("change", (event) => {-->
-<!--    if (event.target.files.length > 0) {-->
-<!--      for (const file of event.target.files) {-->
-<!--        const image = document.createElement("img");-->
-<!--        image.src = URL.createObjectURL(file);-->
-<!--        image.style.width = "100px";-->
-<!--        image.style.height = "100px";-->
-
-<!--        const caption = document.createElement("span");-->
-<!--        caption.textContent = file.name;-->
-
-<!--        const imageContainer = document.createElement("div");-->
-<!--        imageContainer.classList.add("image-container");-->
-<!--        imageContainer.appendChild(image);-->
-<!--        imageContainer.appendChild(caption);-->
-
-<!--        productImageList.appendChild(imageContainer);-->
-<!--        productImagesList.push(file);-->
-<!--      }-->
-
-<!--      const deleteAllImagesButton = document.querySelector("#deleteAllImages");-->
-
-<!--      deleteAllImagesButton.addEventListener("click", (event) => {-->
-<!--        productImageList.innerHTML = "";-->
-<!--        productImagesList.appendChild(imageContainer);-->
-<!--        productImagesList.appendChild(caption);-->
-<!--      });-->
-
-<!--    } else {-->
-<!--      productImageList.innerHTML = "Không có tệp nào được chọn";-->
-<!--    }-->
-<!--  });-->
-
-
-<!--  const deleteAllImagesButton = document.querySelector("#deleteAllImages");-->
-
-<!--  deleteAllImagesButton.addEventListener("click", (event) => {-->
-<!--    productImageList.innerHTML = "";-->
-<!--    productImagesList.appendChild(imageContainer);-->
-<!--    productImagesList.appendChild(caption);-->
-<!--  });-->
-
-<!--</script>-->
+    function removeStop(id) {
+      $(`#stop-at-${id}`).remove();
+      // Optional: re-index if collection binding strictness requires it, but with Spring Boot's List binding, simple removal usually works.
+    }
+  </script>
+</body>
 
 </html>

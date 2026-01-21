@@ -2,15 +2,12 @@ package com.OneBpy.controller;
 
 import com.OneBpy.dtos.PDTO;
 import com.OneBpy.dtos.ProductDTO;
-import com.OneBpy.dtos.UserDTO;
 import com.OneBpy.models.Notice;
 import com.OneBpy.models.Product;
-import com.OneBpy.models.ResponseObject;
 import com.OneBpy.repositories.*;
 import com.OneBpy.services.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -42,24 +39,22 @@ public class HomeController {
 
             redisService.setList("all-product", result, 100000);
             return result;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Lỗi lấy danh sách vé: {}", e.getMessage(), e);
             return new ArrayList<>();
         }
     }
 
     @GetMapping("/my-orders")
-    public List<OrderDto> getUserOrders()
-    {
+    public List<OrderDto> getUserOrders() {
         Long userId = userService.getCurrentUser().getUserId();
         return orderRepository.getAllUserOrder(userId);
     }
+
     @GetMapping("/my-order/{product_id}")
     public PDTO getProductOfOrder(@PathVariable("product_id") Long product_id) {
         return userService.getProductById(product_id);
     }
-
 
     @GetMapping("/all-notice")
     public List<Notice> getAllNotice() {

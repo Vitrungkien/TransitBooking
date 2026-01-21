@@ -29,6 +29,7 @@ public class WebController {
     private final UserService userService;
     private final RedisService redisService;
     private static final Logger logger = LoggerFactory.getLogger(WebController.class);
+
     @GetMapping("/")
     public String Home(Model model) {
         model.addAttribute("searchForm", new SearchForm());
@@ -39,17 +40,17 @@ public class WebController {
         }
         return "main";
     }
+
     @GetMapping("/search-by-stop")
     public String search(@ModelAttribute("searchForm") SearchForm searchForm,
-                         @ModelAttribute("searchByKeywordRq") SearchByKeywordRq searchByKeywordRq,
-                         Model model) {
+            @ModelAttribute("searchByKeywordRq") SearchByKeywordRq searchByKeywordRq,
+            Model model) {
         if (searchForm.getEndAddress() != null && searchForm.getStartAddress() != null &&
                 searchForm.getStartTime1() != null) {
             LocalTime startTime2 = searchForm.getStartTime1().plusHours(1);
             List<Product> productList = productRepository.findProductsByTimeAndAddress(
                     searchForm.getStartTime1(), startTime2,
-                    searchForm.getStartAddress(), searchForm.getEndAddress()
-            );
+                    searchForm.getStartAddress(), searchForm.getEndAddress());
             List<PDTO> products = userService.getAllProduct(productList);
             model.addAttribute("products", products);
         } else if (searchByKeywordRq.getKeyword() != null) {
@@ -59,7 +60,6 @@ public class WebController {
         }
         return "search";
     }
-
 
     @GetMapping("/order")
     public String Order() {
@@ -75,6 +75,7 @@ public class WebController {
     public String showFormSignup() {
         return "signup";
     }
+
     @GetMapping("/profile")
     public String showProfile() {
         return "profile";
@@ -86,18 +87,18 @@ public class WebController {
     }
 
     @GetMapping("/management")
-    public String management() {
-        return "management";
+    public String adminDashboard() {
+        return "management"; // This will be our SPA shell
     }
 
     @GetMapping("/management-order")
-    public String managementOrder() {
-        return "management-order";
+    public String adminOrders() {
+        return "management"; // Point to shell, JS will handle initial state
     }
 
     @GetMapping("/management-notice")
-    public String managementNotice() {
-        return "management-notice";
+    public String adminNotices() {
+        return "management"; // Point to shell
     }
 
     @GetMapping("/management/add-product")
@@ -105,8 +106,7 @@ public class WebController {
         return "add-product";
     }
 
-
-    //Trang cập nhật sản phẩm
+    // Trang cập nhật sản phẩm
     @GetMapping("/management/{product_id}/update-product")
     public String updateProduct(@PathVariable("product_id") Long productId) {
         // Thực hiện các xử lý cần thiết dựa trên productId

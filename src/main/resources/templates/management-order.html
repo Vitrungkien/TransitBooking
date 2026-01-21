@@ -1,418 +1,262 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Đơn hàng - TransitBooking</title>
+
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
-  <link rel="stylesheet" th:href="@{/css/management.css}">
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
   <link rel="stylesheet" th:href="@{/css/header.css}">
-  <!--    <link rel="stylesheet" th:href="@{/css/update.css}">-->
-  <link rel="stylesheet" th:href="@{/css/home.css}">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
   <style>
-    body {
-      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+    .status-badge {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
     }
 
-    button {
-      border: none;
-      padding: 5px;
-      border-radius: 5px;
-      cursor: pointer;
+    .status-pending {
+      background: #fffbe6;
+      color: #faad14;
+      border: 1px solid #ffe58f;
     }
-    th {
-      background-color: #212529;
-      color: white;
-      padding: 10px;
+
+    .status-confirmed {
+      background: #e6f7ff;
+      color: #1890ff;
+      border: 1px solid #91d5ff;
     }
-    td {
-      border: 2px solid #eae6e6;
-      padding: 5px 5px 5px 10px;
-      max-width: 200px;
+
+    .status-completed {
+      background: #f6ffed;
+      color: #52c41a;
+      border: 1px solid #b7eb8f;
     }
-    .me1:hover{
-      background-color: #ccc;
-      color: black;
+
+    .status-cancelled {
+      background: #fff1f0;
+      color: #f5222d;
+      border: 1px solid #ffa39e;
     }
-    .me2:hover {
-      background-color: #564e4e;
+
+    .order-id {
+      font-family: monospace;
+      font-weight: 700;
+      color: var(--primary);
     }
-    .me {
-      cursor: pointer;
-      margin: 0;
+
+    .customer-info {
+      font-size: 0.85rem;
     }
-    .don-hang {
-      /*display: none;*/
-    }
-    .chi-tiet {
-      background-color: #55acee;
-    }
-    .max-column {
-      max-width: 150px;
-    }
-    #tb-order {
-      max-height: 800px;
-      overflow-y: auto;
-    }
-    #qlsp {
-      /*background-color: #ccc;*/
-      /*color: black;*/
-    }
-    #qldh {
-      background-color: #ccc;
-      color: black;
-    }
-    #qldh a {
-      color: black;
-    }
-    .frmDatVe {
-      background-color: #f2f2f2;
-      /*display: none;*/
-      position: fixed;
-      top: 10px;
-      left: 0;
-      /*transform: translateX(91%);*/
-      width: 50%;
-    }
-    .btn-order {
-      display: none;
-      margin: 5px;
-    }
-    .btn-secondary {
-      margin: 5px;
-    }
-    .totalPrice {
-      display: none;
-    }
-    a {
-      color: white;
-      text-decoration: none;
-    }
-    .me1 {
-      /*padding: 10px;*/
-      height: 50px;
-      padding: 8px 20px;
-    }
-    .me1 a {
-      line-height: 32px;
-      margin: 0;
+
+    .price-text {
+      font-weight: 700;
+      color: var(--danger);
     }
 
     .frmDatVe-modal {
       display: none;
-      background-color: rgb(40,42,53, 0.6);
-      width: 1800px;
-      height: 800px;
       position: fixed;
-      top: 0px;
-      left: 0px;
-      z-index: 999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1100;
     }
   </style>
-  <title>Management</title>
 </head>
+
 <body>
-<div th:replace="~{fragments/header}"></div>
+  <div th:replace="~{fragments/header}"></div>
 
-<div class="">
-  <div class="col-2 position-fixed bg-dark top-0 text-white p-0" style="height: 713px;">
-    <div class="me row ">
-      <h5 class="me1 " id="qlsp" ><a th:href="@{/management}">Quản lý sản phẩm</a></h5>
-    </div>
-    <div class="me row " >
-      <h5 class="me1 " id="qldh" ><a th:href="@{/management-order}">Quản lý đơn hàng</a></h5>
-      <ul class="" id="subOrder" style="display: none; margin-left: 15px;">
-        <li class="me2">Tất cả đơn hàng</li>
-        <li class="me2">Đơn chờ xác nhận</li>
-        <li class="me2">Đơn đã đã xác nhận</li>
-        <li class="me2">Đơn đã hoàn thành</li>
-      </ul>
-    </div>
-    <div class="me row " >
-      <h5 class="me1 " id="qltb" ><a th:href="@{/management-notice}">Quản lý thông báo</a></h5>
-    </div>
+  <div class="dashboard-wrapper">
+    <div th:replace="~{fragments/sidebar :: sidebar('orders')}"></div>
+
+    <main class="main-content">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="font-weight-bold mb-0">Quản lý Đơn hàng</h2>
+          <p class="text-muted mb-0">Xử lý yêu cầu đặt chỗ từ khách hàng</p>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: rgba(24, 144, 255, 0.1); color: #1890ff;"><i
+              class="fas fa-shopping-bag"></i></div>
+          <div class="stat-info">
+            <h3 id="stat-total">0</h3>
+            <p>Tổng đơn hàng</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: rgba(250, 173, 20, 0.1); color: #faad14;"><i
+              class="fas fa-clock"></i></div>
+          <div class="stat-info">
+            <h3 id="stat-pending">0</h3>
+            <p>Chờ xác nhận</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: rgba(82, 196, 26, 0.1); color: #52c41a;"><i
+              class="fas fa-check-double"></i></div>
+          <div class="stat-info">
+            <h3 id="stat-completed">0</h3>
+            <p>Hoàn thành</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <div class="card-header">
+          <h5 class="card-title">Danh sách giao dịch</h5>
+        </div>
+        <div class="table-responsive">
+          <table class="table" id="tb-order">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Mã đơn</th>
+                <th>Khách hàng</th>
+                <th>Thông tin vé</th>
+                <th>Thanh toán</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="7" class="text-center py-5">
+                  <div class="spinner-border text-primary mb-2"></div>
+                  <p class="text-muted">Đang tải danh sách đơn hàng...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
   </div>
-  <div class="col-10 ms-auto p-4" style="background-color: #fff;">
 
-    <div class="don-hang" id="don-hang">
-      <h1>Đơn hàng</h1>
+  <div th:replace="~{fragments/common-scripts :: commonScripts}"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-      <table class="row-cols-1" id="tb-order">
-        <tr>
-          <th>STT</th>
-          <th>ID</th>
-          <th>Tên vé</th>
-          <th class="max-column">Điểm đón</th>
-          <th class="max-column">Điểm trả</th>
-          <th>Giờ đón</th>
-          <th>Số điện thoại</th>
-          <!--                        <th>Lời nhắn</th>-->
-          <th>Số vé</th>
-          <th>Tổng tiền</th>
-          <th>Ngày tạo</th>
-          <th>Trạng thái</th>
-          <th>Hành động</th>
-        </tr>
-      </table>
-    </div>
+  <script th:inline="javascript">
+    $(document).ready(function () {
+      loadOrders();
+    });
 
+    function loadOrders() {
+      ApiService.get('/api/v1/seller/my-store/all-order')
+        .then(orders => {
+          renderOrders(orders);
+          updateStats(orders);
+        })
+        .catch(err => {
+          console.error(err);
+          $('#tb-order tbody').html('<tr><td colspan="7" class="text-center p-5 text-danger">Lỗi tải dữ liệu.</td></tr>');
+        });
+    }
 
-  </div>
-</div>
+    function updateStats(orders) {
+      $('#stat-total').text(orders.length);
+      $('#stat-pending').text(orders.filter(o => o.orderStatus === 'Chờ xác nhận').length);
+      $('#stat-completed').text(orders.filter(o => o.orderStatus === 'Đã hoàn thành').length);
+    }
+
+    function renderOrders(orders) {
+      const tbody = $('#tb-order tbody');
+      tbody.empty();
+
+      orders.forEach((o, i) => {
+        const date = moment(o.createdAt).format('HH:mm DD/MM/YYYY');
+        const pickDate = moment(o.pickTime).format('HH:mm DD/MM/YYYY');
+
+        let statusClass = 'status-pending';
+        if (o.orderStatus === 'Đã xác nhận') statusClass = 'status-confirmed';
+        if (o.orderStatus === 'Đã hoàn thành') statusClass = 'status-completed';
+        if (o.orderStatus === 'Đã hủy') statusClass = 'status-cancelled';
+
+        const row = $(`
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td class="order-id">#${o.orderId}</td>
+                        <td>
+                            <div class="customer-info">
+                                <div class="font-weight-bold">${o.phoneNumber}</div>
+                                <div class="text-muted"><i class="far fa-calendar-alt mr-1"></i>${date}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="font-weight-bold text-dark">${o.productName}</div>
+                            <div class="small text-muted">${o.pickUpAddress} &rarr; ${o.destinationAddress}</div>
+                            <div class="small text-info"><i class="far fa-clock mr-1"></i>Hẹn lúc: ${pickDate}</div>
+                        </td>
+                        <td>
+                            <div class="price-text">${o.totalPrice.toLocaleString()}đ</div>
+                            <div class="small text-muted">Số lượng: ${o.quantity}</div>
+                        </td>
+                        <td><span class="status-badge ${statusClass}">${o.orderStatus}</span></td>
+                        <td>
+                            <button class="btn btn-outline-primary btn-sm px-3" onclick="showOrderDetails(${o.orderId})">Chi tiết</button>
+                            
+                            <!-- Detail Modal Placeholder -->
+                            <div id="frmDatVe${o.orderId}" class="frmDatVe-modal">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <form action="/management/my-store/${o.orderId}/except" method="post" class="p-4">
+                                            <h4 class="mb-4 font-weight-bold text-primary">Chi tiết Đơn hàng #${o.orderId}</h4>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>Khách hàng:</strong> ${o.phoneNumber}</p>
+                                                    <p><strong>Điểm đón:</strong> ${o.pickUpAddress}</p>
+                                                    <p><strong>Điểm trả:</strong> ${o.destinationAddress}</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><strong>Thời gian đón:</strong> ${pickDate}</p>
+                                                    <p><strong>Lời nhắn:</strong> ${o.message || 'Không có'}</p>
+                                                    <p><strong>Trạng thái:</strong> <span class="badge badge-info">${o.orderStatus}</span></p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="form-group">
+                                                <label>Tổng tiền cần thu (VNĐ)</label>
+                                                <input type="number" name="totalPrice" class="form-control" value="${o.totalPrice}" ${o.orderStatus !== 'Chờ xác nhận' ? 'readonly' : ''}>
+                                            </div>
+                                            <input type="hidden" name="orderAction" id="action${o.orderId}" value="Xác nhận">
+                                            
+                                            <div class="d-flex justify-content-end mt-4" style="gap: 10px;">
+                                                ${o.orderStatus === 'Chờ xác nhận' ? `
+                                                    <button type="submit" class="btn btn-primary" onclick="$('#action${o.orderId}').val('Xác nhận')">XÁC NHẬN ĐƠN</button>
+                                                    <button type="submit" class="btn btn-danger" onclick="$('#action${o.orderId}').val('Hủy')">HỦY ĐƠN</button>
+                                                ` : ''}
+                                                ${o.orderStatus === 'Đã xác nhận' ? `
+                                                    <button type="submit" class="btn btn-success" onclick="$('#action${o.orderId}').val('Hoàn thành')">HOÀN THÀNH</button>
+                                                    <button type="submit" class="btn btn-danger" onclick="$('#action${o.orderId}').val('Hủy')">HỦY ĐƠN</button>
+                                                ` : ''}
+                                                <button type="button" class="btn btn-light" onclick="hideOrderDetails(${o.orderId})">ĐÓNG</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+        tbody.append(row);
+      });
+    }
+
+    window.showOrderDetails = id => $(`#frmDatVe${id}`).fadeIn(200);
+    window.hideOrderDetails = id => $(`#frmDatVe${id}`).fadeOut(150);
+  </script>
 </body>
 
-
-<!--Danh sach don hang-->
-<script th:inline="javascript">
-  // Sử dụng JavaScript để gọi API từ Spring Boot và tạo bảng
-  fetch('/api/v1/seller/my-store/all-order').then(response => response.json()).then(orders => {
-    const tableOrder = document.getElementById('tb-order');
-    var stt = 1;
-    orders.forEach(order => {
-      const formattedPickTime = moment(order['pickTime']).format('HH:mm DD/MM/YYYY');
-      const formattedCreatedAt = moment(order['createdAt']).format('HH:mm DD/MM/YYYY');
-      const row = tableOrder.insertRow();
-      row.insertCell().textContent = stt++;
-      row.insertCell().textContent = order['orderId'];
-      row.insertCell().textContent = order['productName'];
-      row.insertCell().textContent = order['pickUpAddress'];
-      row.insertCell().textContent = order['destinationAddress'];
-
-      row.insertCell().textContent = formattedPickTime;
-      row.insertCell().textContent = order['phoneNumber'];
-      // row.insertCell().textContent = order['message'];
-      row.insertCell().textContent = order['quantity'];
-      row.insertCell().textContent = order['totalPrice'];
-      row.insertCell().textContent = formattedCreatedAt;
-      row.insertCell().textContent = order['orderStatus'];
-
-      // Kiểm tra orderStatus để đặt màu nền
-      switch (order['orderStatus']) {
-        case 'Chờ xác nhận':
-          row.style.backgroundColor = '#f7f699';
-          break;
-        case 'Đã xác nhận':
-          row.style.backgroundColor = '#abe4f7';
-          break;
-        case 'Đã hoàn thành':
-          row.style.backgroundColor = '#cbf7d7';
-          // row.style.backgroundColor = '#04AA6D';
-          // row.style.color = '#fff';
-          break;
-        case 'Đã hủy':
-          row.style.backgroundColor = '#f5b0b0';
-          // row.style.backgroundColor = '#AD171C';
-          // row.style.color = '#fff';
-          break;
-        default:
-          break;
-      }
-      row.insertCell().innerHTML = `<button class="chi-tiet" onclick="showOrderForm(${order.orderId})">Xem chi tiết</button>
-<div id="frmDatVe${order.orderId}" class="frmDatVe-modal">
-<form class="frmDatVe p-4 rounded-1 m-auto"
-            action="/management/my-store/${order.orderId}/except"
-            method="post" id="formDatVe${order.orderId}"
-            object="updatedOrder"
-    >
-      <h3 class="text-center">Vé ${order.productName}</h3>
-
-      <div class="row mb-3 d-flex">
-        <p class="col-sm-3">Giá vé:</p>
-        <div class="col-sm-9">
-          <p class="">${order.price}</p>
-        </div>
-      </div>
-
-      <div class="row mb-3 d-flex">
-        <p class="col-sm-3">Điểm đón:</p>
-        <div class="col-sm-9">
-          <p class="">${order.pickUpAddress}</p>
-        </div>
-      </div>
-
-      <div class="row mb-3 d-flex">
-        <p class="col-sm-3">Điểm đến:</p>
-        <div class="col-sm-9">
-          <p class="">${order.destinationAddress}</p>
-        </div>
-      </div>
-
-      <div class="row mb-3 d-flex">
-        <p class="col-sm-3">Thời gian đón:</p>
-        <div class="col-sm-9">
-          <p class="">${formattedPickTime}</p>
-        </div>
-      </div>
-
-      <div class="row mb-3 d-flex">
-        <p class="col-sm-3">Lời nhắn:</p>
-        <div class="col-sm-9">
-          <p class="">${order.message}</p>
-        </div>
-      </div>
-
-      <div class="row mb-3 d-flex">
-        <p class="col-sm-3">Số điện thoại:</p>
-        <div class="col-sm-9">
-          <p class="">${order.phoneNumber}</p>
-        </div>
-      </div>
-
-      <div class="row mb-3 d-flex">
-        <p class="col-sm-3">Số lượng:</p>
-        <div class="col-sm-9">
-          <p class="">${order.quantity}</p>
-        </div>
-      </div>
-
-      <div class="totalPrice row mb-3" id="confirmPrice${order.orderId}">
-        <label for="totalPrice" class="col-sm-3 col-form-label">Tổng tiền:</label>
-        <div class="col-sm-9">
-          <input type="number" step="10000" class="form-control" id="totalPrice" name="totalPrice"
-          placeholder="Tổng tiền" required autofocus="autofocus" value="${order.totalPrice}"
-          />
-        </div>
-      </div>
-
-      <div class="totalPrice row mb-3" id="totalPrices${order.orderId}">
-        <p class="col-sm-3">Tổng tiền:</p>
-        <div class="col-sm-9">
-          <p class="">${order.totalPrice}</p>
-        </div>
-      </div>
-
-      <div class="row mb-3 d-flex">
-        <p class="col-sm-3">Trạng thái:</p>
-        <div class="col-sm-9">
-          <p class="order-status" id="order-status">${order.orderStatus}</p>
-        </div>
-      </div>
-
-      <input type="hidden" id="hiddenInput${order.orderId}" name="orderAction" value="Xác nhận">
-
-      <div class="row mb-3">
-        <div class="col-sm-9 offset-sm-3 d-flex">
-          <button type="button" class="btn-order btn btn-primary" id="confirmButton${order.orderId}"
-           onclick="setActionAndSubmit(${order.orderId}, 'Xác nhận')" >Xác nhận</button>
-
-          <button type="button" class="btn-order btn btn-success" id="completedButton${order.orderId}"
-           onclick="setActionAndSubmit(${order.orderId}, 'Hoàn thành')">Hoàn thành</button>
-
-          <button type="button" class="btn-order btn btn-danger" id="cancelButton${order.orderId}"
-           onclick="setActionAndSubmit(${order.orderId}, 'Hủy')">Hủy đơn</button>
-
-          <button type="button" class="btn btn-secondary" onclick="dismissForm(${order.orderId})">
-            Thoát
-          </button>
-        </div>
-      </div>
- </form>
-</div>
-
-`;
-      if (order['orderStatus'] == 'Chờ xác nhận') {
-        document.getElementById('confirmButton' + order['orderId']).style.display = 'block'; // Ẩn nút nếu orderStatus khác 'Đã xác nhận'
-        document.getElementById('cancelButton' + order['orderId']).style.display = 'block';
-        // document.getElementById('confirmPrice' + order['orderId']).type = 'number';
-        document.getElementById('confirmPrice' + order['orderId']).style.display = 'flex';
-
-      }
-      if (order['orderStatus'] == 'Đã xác nhận') {
-        document.getElementById('completedButton' + order['orderId']).style.display = 'block';
-        document.getElementById('cancelButton' + order['orderId']).style.display = 'block';
-        document.getElementById('totalPrices' + order['orderId']).style.display = 'flex';
-      }
-      if (order['orderStatus'] == 'Đã hoàn thành' || order['orderStatus'] == 'Đã hủy') {
-        document.getElementById('totalPrices' + order['orderId']).style.display = 'flex';
-      }
-
-    });
-  })
-          .catch(error => console.error('Error fetching orders:', error));
-</script>
-
-<!--Show/hide details info-->
-<script>
-  function showOrderForm(productId) {
-    hideAllOrderForm();
-    const clickedForm = document.getElementById('frmDatVe' + productId);
-    clickedForm.style.display = 'block';
-  }
-
-  function hideAllOrderForm() {
-    const orderForms = document.querySelectorAll('.frmDatVe-modal');
-    orderForms.forEach(function (orderForm) {
-      orderForm.style.display = 'none';
-    });
-  }
-
-  function dismissForm(orderId) {
-    // Get the form element
-    var formDatVe = document.getElementById('frmDatVe' + orderId);
-    // Change the display property of the form to none
-    formDatVe.style.display = "none";
-  }
-
-</script>
-
-<!--Hàm để thiết lập giá trị cho trường input ẩn và submit form-->
-<script>
-  function setActionAndSubmit(orderId, action) {
-    document.getElementById('hiddenInput' + orderId).value = action;
-    document.getElementById('formDatVe'+ orderId).submit();
-  }
-</script>
-
-
-<!--Logout click-->
-<script>
-  // Gán sự kiện click cho thẻ button
-  document.getElementById('logoutButton').addEventListener('click', function () {
-    // Gửi yêu cầu POST đến endpoint /logout khi người dùng nhấn vào nút đăng xuất
-    fetch('/logout', {
-      method: 'POST',
-      credentials: 'same-origin' // Đảm bảo gửi cookie (nếu có) kèm theo yêu cầu
-    })
-            .then(response => {
-              if (response.ok) {
-                // Nếu đăng xuất thành công, bạn có thể thực hiện các bước cần thiết
-                window.location.href = '/'; // Chuyển hướng đến trang đăng nhập, ví dụ '/login'
-              } else {
-                console.error('Logout failed:', response.status);
-              }
-            })
-            .catch(error => console.error('Error during logout:', error));
-  });
-</script>
-
-<!--Handle render Ui for Guest-->
-<script>
-  // Kiểm tra xem có cookie có tên "Authorization" hay không
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-  }
-
-  // Lấy giá trị của cookie "Authorization"
-  const authToken = getCookie('Authorization');
-
-  // Lấy phần tử cần ẩn
-  const meElement = document.getElementById('me');
-  const loginElement = document.getElementById('login');
-
-  // Kiểm tra và ẩn phần tử nếu không có cookie "Authorization"
-  if (!authToken) {
-    meElement.style.display = 'none'; // Ẩn phần tử
-    loginElement.style.display = 'block'
-
-  }
-</script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </html>
-

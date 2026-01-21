@@ -2,7 +2,8 @@
     <div class="product-div" th:each="product : ${productList}">
         <div class="ve-xe" th:id="'productId' + ${product.productId}">
             <div>
-                <h6 th:id="'n-hover' + ${product.productId}" th:onclick="'showNoticeList('+${product.productId}+')'" class="icon-notice">Thông báo<i class="fa-solid fa-bell" style="color: #fff"></i></h6>
+                <h6 th:id="'n-hover' + ${product.productId}" class="icon-notice">Thông báo<i class="fa-solid fa-bell"
+                        style="color: #fff"></i></h6>
                 <img id="anh-xe" src="" alt="Anh xe">
             </div>
 
@@ -14,7 +15,7 @@
                     <p class="price">0&nbsp;₫</p>
                 </div>
                 <p class="productName" style="font-weight: bold">Tuyến: Vé Tuyến Tp.Lạng Sơn - Mỹ Đình</p>
-                <p class="car-type">Mercedes 16 chỗ  - 12HA-00907</p>
+                <p class="car-type">Mercedes 16 chỗ - 12HA-00907</p>
                 <div class="info-ve-p2">
                     <div class="info-ve-p2-1">
                         <div class="info-p2-1-1">
@@ -38,12 +39,13 @@
                         <p class="contact">Liên hệ: 0343579228 - 0336271408</p>
 
                         <div>
-                            <p id="info-button" class="info-button" th:onclick="'showProductDetail('+${product.productId}+')'">
+                            <p id="info-button" class="info-button">
                                 Thông tin chi tiết
-                                <i style="transform: rotate(0deg)" th:id="'arrow-icon' + ${product.productId}" class="fa-solid fa-caret-down"></i>
+                                <i style="transform: rotate(0deg)" th:id="'arrow-icon' + ${product.productId}"
+                                    class="fa-solid fa-caret-down"></i>
                             </p>
                             <!-- <p>Thông tin chi tiết</p> -->
-                            <button th:onclick="'showOrderForm('+${product.productId}+')'">Đặt xe</button>
+                            <button class="btn-order-ticket">Đặt xe</button>
                         </div>
                     </div>
                 </div>
@@ -51,41 +53,49 @@
             <p class="type-pay">KHÔNG CẦN THANH TOÁN TRƯỚC</p>
             <div th:id="'noticeList' + ${product.productId}" class="noticeList">
                 <h5 style="margin: 10px; text-align: center">Thông báo</h5>
-                <div class="notice-list-child"><div class="notice-div">
-                    <h6 style="color: green">admin</h6>
-                    <h6 style="color: red">Thông báo: Vé miễn phí cho bệnh nhân K</h6>
-                    <p></p>
-                    <p>Còn hiệu lực</p>
-                    <p>Sửa đổi lần cuối: 00:18 30/11/2025</p>
+                <div class="notice-list-child">
+                    <div class="notice-div">
+                        <h6 style="color: green">admin</h6>
+                        <h6 style="color: red">Thông báo: Vé miễn phí cho bệnh nhân K</h6>
+                        <p></p>
+                        <p>Còn hiệu lực</p>
+                        <p>Sửa đổi lần cuối: 00:18 30/11/2025</p>
 
 
-                </div></div></div>
+                    </div>
+                </div>
+            </div>
             <div th:id="'productDetail' + ${product.productId}" class="detail" style="display: none">
                 <div class="detail-info">
                     <ul class="list-info">
                         <li>
-                            <button th:class="'menu-detail' + ${product.productId} + ' detail-img-b'" th:id="'detail-img-b' + ${product.productId}" th:onclick="'showPartDetail(' + ${product.productId} + ', 1)'">
+                            <button th:class="'menu-detail' + ${product.productId} + ' detail-img-b'"
+                                th:id="'detail-img-b' + ${product.productId}">
                                 Hình ảnh
                             </button>
 
                         </li>
                         <li>
-                            <button th:class="'menu-detail' + ${product.productId} + ' tien-ich-b'" th:id="'tien-ich-b' + ${product.productId}" th:onclick="'showPartDetail(' + ${product.productId} + ', 2)'">
+                            <button th:class="'menu-detail' + ${product.productId} + ' tien-ich-b'"
+                                th:id="'tien-ich-b' + ${product.productId}">
                                 Tiện ích
                             </button>
                         </li>
                         <li>
-                            <button th:class="'menu-detail' + ${product.productId} + ' diem-don-tra-b'" th:id="'diem-don-tra-b' + ${product.productId}" th:onclick="'showPartDetail(' + ${product.productId} + ', 3)'">
+                            <button th:class="'menu-detail' + ${product.productId} + ' diem-don-tra-b'"
+                                th:id="'diem-don-tra-b' + ${product.productId}">
                                 Điểm đón trả
                             </button>
                         </li>
                         <li>
-                            <button th:class="'menu-detail' + ${product.productId} + ' chinh-sach-b'" th:id="'chinh-sach-b' + ${product.productId}" th:onclick="'showPartDetail(' + ${product.productId} + ', 4)'">
+                            <button th:class="'menu-detail' + ${product.productId} + ' chinh-sach-b'"
+                                th:id="'chinh-sach-b' + ${product.productId}">
                                 Chính sách
                             </button>
                         </li>
                         <li>
-                            <button th:class="'menu-detail' + ${product.productId} + ' review-b'" th:id="'review-b' + ${product.productId}" th:onclick="'showPartDetail(' + ${product.productId} + ', 5)'">
+                            <button th:class="'menu-detail' + ${product.productId} + ' review-b'"
+                                th:id="'review-b' + ${product.productId}">
                                 Thông tin
                             </button>
                         </li>
@@ -94,16 +104,22 @@
 
                 <div class="five-info" id="five-info">
                     <!--Hinh anh-->
-                    <div th:class="'part-detail' + ${product.productId} + ' detai-img'" th:id="'detai-img' + ${product.productId}">
-                        <img class="main-detail-img" src="https://static.vexere.com/production/images/1691571338555.jpeg" alt="">
-                        <img class="main-detail-img" src="https://static.vexere.com/production/images/1691571338859.jpeg" alt="">
-                        <img class="main-detail-img" src="https://static.vexere.com/production/images/1691571339090.jpeg" alt="">
-                        <img class="main-detail-img" src="https://static.vexere.com/production/images/1692701522841.jpeg" alt="">
+                    <div th:class="'part-detail' + ${product.productId} + ' detai-img'"
+                        th:id="'detai-img' + ${product.productId}">
+                        <img class="main-detail-img"
+                            src="https://static.vexere.com/production/images/1691571338555.jpeg" alt="">
+                        <img class="main-detail-img"
+                            src="https://static.vexere.com/production/images/1691571338859.jpeg" alt="">
+                        <img class="main-detail-img"
+                            src="https://static.vexere.com/production/images/1691571339090.jpeg" alt="">
+                        <img class="main-detail-img"
+                            src="https://static.vexere.com/production/images/1692701522841.jpeg" alt="">
                         <div class="sub-img">
                         </div>
                     </div>
                     <!--Diem don tra-->
-                    <div th:class="'part-detail' + ${product.productId} + 'diem-don-tra'" th:id="'diem-don-tra' + ${product.productId}">
+                    <div th:class="'part-detail' + ${product.productId} + 'diem-don-tra'"
+                        th:id="'diem-don-tra' + ${product.productId}">
                         <div class="luu-y">
                             <h3>Lưu ý</h3>
                             <p>
@@ -114,22 +130,33 @@
 
                         <div th:id="'stopList' + ${product.productId}">
 
-                            <ul><li>09:00 - Tp.Lạng Sơn</li><li>10:00 - Tp.Bắc Ninh</li></ul><ul><li>17:06 - Tp.Lạng Sơn</li><li>15:07 - Tp.Bắc Ninh</li></ul></div>
+                            <ul>
+                                <li>09:00 - Tp.Lạng Sơn</li>
+                                <li>10:00 - Tp.Bắc Ninh</li>
+                            </ul>
+                            <ul>
+                                <li>17:06 - Tp.Lạng Sơn</li>
+                                <li>15:07 - Tp.Bắc Ninh</li>
+                            </ul>
+                        </div>
                     </div>
                     <!--Tien ich-->
-                    <div th:class="'part-detail' + ${product.productId} + ' tien-ich'" th:id="'tien-ich' + ${product.productId}">
+                    <div th:class="'part-detail' + ${product.productId} + ' tien-ich'"
+                        th:id="'tien-ich' + ${product.productId}">
                         <ul class="list-tien-ich">
                             <h3>Tiện ích</h3>
 
                         </ul>
                     </div>
                     <!--Chinh sach -->
-                    <div th:class="'part-detail' + ${product.productId} + ' chinh-sach'" th:id="'chinh-sach' + ${product.productId}">
+                    <div th:class="'part-detail' + ${product.productId} + ' chinh-sach'"
+                        th:id="'chinh-sach' + ${product.productId}">
                         <!--            <h3>Chính sách nhà xe</h3>-->
 
                     </div>
                     <!--Review-->
-                    <div th:class="'part-detail' + ${product.productId} + 'review'" th:id="'review' + ${product.productId}">
+                    <div th:class="'part-detail' + ${product.productId} + 'review'"
+                        th:id="'review' + ${product.productId}">
                         <!--          <h3>Mô tả</h3>-->
 
                     </div>
